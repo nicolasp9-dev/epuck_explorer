@@ -23,11 +23,12 @@
 /* Begin PBXLegacyTarget section */
 		37DB5535206F901C00E30191 /* epuck_project */ = {
 			isa = PBXLegacyTarget;
-			buildArgumentsString = "$(ACTION)";
+			buildArgumentsString = "";
 			buildConfigurationList = 37DB5538206F901C00E30191 /* Build configuration list for PBXLegacyTarget "epuck_project" */;
 			buildPhases = (
 			);
 			buildToolPath = /usr/bin/make;
+			buildWorkingDirectory = "/Users/nicolas/Library/Mobile Documents/com~apple~CloudDocs/Projects/Cours/epuck_project/Sources";
 			dependencies = (
 			);
 			name = epuck_project;

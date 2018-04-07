@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<projectDescription>
+	<name>epuck_explorer_project</name>
+	<comment></comment>
+	<projects>
+		<project>ChibiOS (whole tree)</project>
+		<project>Sources</project>
+	</projects>
+	<buildSpec>
+	</buildSpec>
+	<natures>
+	</natures>
+</projectDescription>

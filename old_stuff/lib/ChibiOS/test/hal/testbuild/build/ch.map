@@ -1,0 +1,978 @@
+
+Discarded input sections
+
+ .data          0x0000000000000000        0x0 build/obj/crt0_v7m.o
+ .bss           0x0000000000000000        0x0 build/obj/crt0_v7m.o
+ .text          0x0000000000000000        0x0 /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccCfpsMW.ltrans0.ltrans.o
+ .data          0x0000000000000000        0x0 /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccCfpsMW.ltrans0.ltrans.o
+ .bss           0x0000000000000000        0x0 /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccCfpsMW.ltrans0.ltrans.o
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+flash            0x0000000008000000 0x0000000000100000
+ram0             0x0000000020000000 0x0000000000020000
+ram1             0x0000000020000000 0x000000000001c000
+ram2             0x000000002001c000 0x0000000000004000
+ram3             0x0000000000000000 0x0000000000000000
+ram4             0x0000000010000000 0x0000000000010000
+ram5             0x0000000040024000 0x0000000000001000
+ram6             0x0000000000000000 0x0000000000000000
+ram7             0x0000000000000000 0x0000000000000000
+*default*        0x0000000000000000 0xffffffffffffffff
+
+Linker script and memory map
+
+LOAD build/obj/crt0_v7m.o
+LOAD /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccCfpsMW.ltrans0.ltrans.o
+                0x0000000020000000                __ram0_start__ = ORIGIN (ram0)
+                0x0000000000020000                __ram0_size__ = LENGTH (ram0)
+                0x0000000020020000                __ram0_end__ = (__ram0_start__ + __ram0_size__)
+                0x0000000020000000                __ram1_start__ = ORIGIN (ram1)
+                0x000000000001c000                __ram1_size__ = LENGTH (ram1)
+                0x000000002001c000                __ram1_end__ = (__ram1_start__ + __ram1_size__)
+                0x000000002001c000                __ram2_start__ = ORIGIN (ram2)
+                0x0000000000004000                __ram2_size__ = LENGTH (ram2)
+                0x0000000020020000                __ram2_end__ = (__ram2_start__ + __ram2_size__)
+                0x0000000000000000                __ram3_start__ = ORIGIN (ram3)
+                0x0000000000000000                __ram3_size__ = LENGTH (ram3)
+                0x0000000000000000                __ram3_end__ = (__ram3_start__ + __ram3_size__)
+                0x0000000010000000                __ram4_start__ = ORIGIN (ram4)
+                0x0000000000010000                __ram4_size__ = LENGTH (ram4)
+                0x0000000010010000                __ram4_end__ = (__ram4_start__ + __ram4_size__)
+                0x0000000040024000                __ram5_start__ = ORIGIN (ram5)
+                0x0000000000001000                __ram5_size__ = LENGTH (ram5)
+                0x0000000040025000                __ram5_end__ = (__ram5_start__ + __ram5_size__)
+                0x0000000000000000                __ram6_start__ = ORIGIN (ram6)
+                0x0000000000000000                __ram6_size__ = LENGTH (ram6)
+                0x0000000000000000                __ram6_end__ = (__ram6_start__ + __ram6_size__)
+                0x0000000000000000                __ram7_start__ = ORIGIN (ram7)
+                0x0000000000000000                __ram7_size__ = LENGTH (ram7)
+                0x0000000000000000                __ram7_end__ = (__ram7_start__ + __ram7_size__)
+                0x0000000000000000                . = 0x0
+                0x0000000000000000                _text = .
+
+startup         0x0000000008000000      0x1c0
+ *(.vectors)
+ .vectors       0x0000000008000000      0x1c0 /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccCfpsMW.ltrans0.ltrans.o
+                0x0000000008000000                _vectors
+
+constructors    0x00000000080001c0        0x0
+                0x00000000080001c0                PROVIDE (__init_array_start, .)
+ *(SORT_BY_NAME(.init_array.*))
+ *(.init_array)
+                0x00000000080001c0                PROVIDE (__init_array_end, .)
+
+destructors     0x00000000080001c0        0x0
+                0x00000000080001c0                PROVIDE (__fini_array_start, .)
+ *(.fini_array)
+ *(SORT_BY_NAME(.fini_array.*))
+                0x00000000080001c0                PROVIDE (__fini_array_end, .)
+
+.text           0x00000000080001c0      0x124
+ *(.text)
+ .text          0x00000000080001c0       0xbc build/obj/crt0_v7m.o
+                0x00000000080001c0                Reset_Handler
+ *(.text.*)
+ *fill*         0x000000000800027c        0x4 
+ .text._unhandled_exception
+                0x0000000008000280       0x10 /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccCfpsMW.ltrans0.ltrans.o
+ .text.startup.main
+                0x0000000008000290        0x4 /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccCfpsMW.ltrans0.ltrans.o
+                0x0000000008000290                main
+ *fill*         0x0000000008000294        0xc 
+ .text.__default_exit
+                0x00000000080002a0        0x4 /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccCfpsMW.ltrans0.ltrans.o
+                0x00000000080002a0                __default_exit
+ *fill*         0x00000000080002a4        0xc 
+ .text.__late_init
+                0x00000000080002b0        0x4 /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccCfpsMW.ltrans0.ltrans.o
+                0x00000000080002b0                __late_init
+ *fill*         0x00000000080002b4        0xc 
+ .text.__early_init
+                0x00000000080002c0        0x4 /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccCfpsMW.ltrans0.ltrans.o
+                0x00000000080002c0                __early_init
+ *(.rodata)
+ *(.rodata.*)
+ *fill*         0x00000000080002c4        0xc 
+ .rodata._unhandled_exception.str1.4
+                0x00000000080002d0       0x14 /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccCfpsMW.ltrans0.ltrans.o
+ *(.glue_7t)
+ .glue_7t       0x00000000080002e4        0x0 linker stubs
+ *(.glue_7)
+ .glue_7        0x00000000080002e4        0x0 linker stubs
+ *(.gcc*)
+
+.vfp11_veneer   0x00000000080002e4        0x0
+ .vfp11_veneer  0x00000000080002e4        0x0 linker stubs
+
+.v4_bx          0x00000000080002e4        0x0
+ .v4_bx         0x00000000080002e4        0x0 linker stubs
+
+.iplt           0x00000000080002e4        0x0
+ .iplt          0x00000000080002e4        0x0 build/obj/crt0_v7m.o
+
+.rel.dyn        0x00000000080002e4        0x0
+ .rel.iplt      0x00000000080002e4        0x0 build/obj/crt0_v7m.o
+
+.ARM.extab
+ *(.ARM.extab* .gnu.linkonce.armextab.*)
+
+.ARM.exidx      0x00000000080002e4        0x0
+                [!provide]                        PROVIDE (__exidx_start, .)
+ *(.ARM.exidx* .gnu.linkonce.armexidx.*)
+                [!provide]                        PROVIDE (__exidx_end, .)
+
+.eh_frame_hdr
+ *(.eh_frame_hdr)
+
+.eh_frame
+ *(.eh_frame)
+
+.textalign      0x00000000080002e4        0x4
+                0x00000000080002e8                . = ALIGN (0x8)
+ *fill*         0x00000000080002e4        0x4 
+                0x00000000080002e8                . = ALIGN (0x4)
+                0x00000000080002e8                _etext = .
+                0x00000000080002e8                _textdata = _etext
+
+.mstack         0x0000000020000000      0x400
+                0x0000000020000000                . = ALIGN (0x8)
+                0x0000000020000000                __main_stack_base__ = .
+                0x0000000020000400                . = (. + __main_stack_size__)
+ *fill*         0x0000000020000000      0x400 
+                0x0000000020000400                . = ALIGN (0x8)
+                0x0000000020000400                __main_stack_end__ = .
+
+.pstack         0x0000000020000400      0x400
+                0x0000000020000400                __process_stack_base__ = .
+                0x0000000020000400                __main_thread_stack_base__ = .
+                0x0000000020000800                . = (. + __process_stack_size__)
+ *fill*         0x0000000020000400      0x400 
+                0x0000000020000800                . = ALIGN (0x8)
+                0x0000000020000800                __process_stack_end__ = .
+                0x0000000020000800                __main_thread_stack_end__ = .
+
+.data           0x0000000020000800        0x0 load address 0x00000000080002e8
+                0x0000000020000800                . = ALIGN (0x4)
+                0x0000000020000800                PROVIDE (_data, .)
+ *(.data)
+ *(.data.*)
+ *(.ramtext)
+                0x0000000020000800                . = ALIGN (0x4)
+                0x0000000020000800                PROVIDE (_edata, .)
+
+.igot.plt       0x0000000020000800        0x0 load address 0x00000000080002e8
+ .igot.plt      0x0000000020000800        0x0 build/obj/crt0_v7m.o
+
+.bss            0x0000000020000800        0x0 load address 0x00000000080002e8
+                0x0000000020000800                . = ALIGN (0x4)
+                0x0000000020000800                PROVIDE (_bss_start, .)
+ *(.bss)
+ *(.bss.*)
+ *(COMMON)
+                0x0000000020000800                . = ALIGN (0x4)
+                0x0000000020000800                PROVIDE (_bss_end, .)
+                [!provide]                        PROVIDE (end, .)
+
+.ram0           0x0000000020000800        0x0 load address 0x00000000080002e8
+                0x0000000020000800                . = ALIGN (0x4)
+ *(.ram0)
+ *(.ram0.*)
+                0x0000000020000800                . = ALIGN (0x4)
+                0x0000000020000800                __ram0_free__ = .
+
+.ram1           0x0000000020000000        0x0
+                0x0000000020000000                . = ALIGN (0x4)
+ *(.ram1)
+ *(.ram1.*)
+                0x0000000020000000                . = ALIGN (0x4)
+                0x0000000020000000                __ram1_free__ = .
+
+.ram2           0x000000002001c000        0x0
+                0x000000002001c000                . = ALIGN (0x4)
+ *(.ram2)
+ *(.ram2.*)
+                0x000000002001c000                . = ALIGN (0x4)
+                0x000000002001c000                __ram2_free__ = .
+
+.ram3           0x0000000000000000        0x0
+                0x0000000000000000                . = ALIGN (0x4)
+ *(.ram3)
+ *(.ram3.*)
+                0x0000000000000000                . = ALIGN (0x4)
+                0x0000000000000000                __ram3_free__ = .
+
+.ram4           0x0000000010000000        0x0
+                0x0000000010000000                . = ALIGN (0x4)
+ *(.ram4)
+ *(.ram4.*)
+                0x0000000010000000                . = ALIGN (0x4)
+                0x0000000010000000                __ram4_free__ = .
+
+.ram5           0x0000000040024000        0x0
+                0x0000000040024000                . = ALIGN (0x4)
+ *(.ram5)
+ *(.ram5.*)
+                0x0000000040024000                . = ALIGN (0x4)
+                0x0000000040024000                __ram5_free__ = .
+
+.ram6           0x0000000000000000        0x0
+                0x0000000000000000                . = ALIGN (0x4)
+ *(.ram6)
+ *(.ram6.*)
+                0x0000000000000000                . = ALIGN (0x4)
+                0x0000000000000000                __ram6_free__ = .
+
+.ram7           0x0000000000000000        0x0
+                0x0000000000000000                . = ALIGN (0x4)
+ *(.ram7)
+ *(.ram7.*)
+                0x0000000000000000                . = ALIGN (0x4)
+                0x0000000000000000                __ram7_free__ = .
+                0x0000000020000800                __heap_base__ = __ram0_free__
+                0x0000000020020000                __heap_end__ = __ram0_end__
+                0x0000000000000400                __process_stack_size__ = 0x400
+                0x0000000000000400                __main_stack_size__ = 0x400
+START GROUP
+LOAD /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/thumb/v7e-m/libgcc.a
+LOAD /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libg.a
+LOAD /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/bin/../lib/gcc/arm-none-eabi/7.2.1/../../../../arm-none-eabi/lib/thumb/v7e-m/libc.a
+END GROUP
+OUTPUT(build/ch.elf elf32-littlearm)
+
+.ARM.attributes
+                0x0000000000000000       0x2d
+ .ARM.attributes
+                0x0000000000000000       0x21 build/obj/crt0_v7m.o
+ .ARM.attributes
+                0x0000000000000021       0x31 /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccCfpsMW.ltrans0.ltrans.o
+
+.comment        0x0000000000000000       0x7e
+ .comment       0x0000000000000000       0x7e /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccCfpsMW.ltrans0.ltrans.o
+                                         0x7f (size before relaxing)
+
+.debug_info     0x0000000000000000      0x1fb
+ .debug_info    0x0000000000000000      0x1fb /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccCfpsMW.ltrans0.ltrans.o
+
+.debug_abbrev   0x0000000000000000      0x12c
+ .debug_abbrev  0x0000000000000000      0x12c /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccCfpsMW.ltrans0.ltrans.o
+
+.debug_loc      0x0000000000000000       0x21
+ .debug_loc     0x0000000000000000       0x21 /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccCfpsMW.ltrans0.ltrans.o
+
+.debug_aranges  0x0000000000000000       0x38
+ .debug_aranges
+                0x0000000000000000       0x38 /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccCfpsMW.ltrans0.ltrans.o
+
+.debug_ranges   0x0000000000000000       0x28
+ .debug_ranges  0x0000000000000000       0x28 /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccCfpsMW.ltrans0.ltrans.o
+
+.debug_line     0x0000000000000000      0x1d2
+ .debug_line    0x0000000000000000      0x1d2 /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccCfpsMW.ltrans0.ltrans.o
+
+.debug_str      0x0000000000000000      0x337
+ .debug_str     0x0000000000000000      0x337 /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccCfpsMW.ltrans0.ltrans.o
+                                        0x348 (size before relaxing)
+
+.debug_frame    0x0000000000000000       0x68
+ .debug_frame   0x0000000000000000       0x68 /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccCfpsMW.ltrans0.ltrans.o
+
+Cross Reference Table
+
+Symbol                                            File
+BusFault_Handler                                  build/obj/vectors.o (symbol from plugin)
+DebugMon_Handler                                  build/obj/vectors.o (symbol from plugin)
+HardFault_Handler                                 build/obj/vectors.o (symbol from plugin)
+MemManage_Handler                                 build/obj/vectors.o (symbol from plugin)
+NMI_Handler                                       build/obj/vectors.o (symbol from plugin)
+PendSV_Handler                                    build/obj/vectors.o (symbol from plugin)
+Reset_Handler                                     build/obj/crt0_v7m.o
+                                                  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccCfpsMW.ltrans0.ltrans.o
+SVC_Handler                                       build/obj/vectors.o (symbol from plugin)
+SysTick_Handler                                   build/obj/vectors.o (symbol from plugin)
+UsageFault_Handler                                build/obj/vectors.o (symbol from plugin)
+Vector100                                         build/obj/vectors.o (symbol from plugin)
+Vector104                                         build/obj/vectors.o (symbol from plugin)
+Vector108                                         build/obj/vectors.o (symbol from plugin)
+Vector10C                                         build/obj/vectors.o (symbol from plugin)
+Vector110                                         build/obj/vectors.o (symbol from plugin)
+Vector114                                         build/obj/vectors.o (symbol from plugin)
+Vector118                                         build/obj/vectors.o (symbol from plugin)
+Vector11C                                         build/obj/vectors.o (symbol from plugin)
+Vector120                                         build/obj/vectors.o (symbol from plugin)
+Vector124                                         build/obj/vectors.o (symbol from plugin)
+Vector128                                         build/obj/vectors.o (symbol from plugin)
+Vector12C                                         build/obj/vectors.o (symbol from plugin)
+Vector130                                         build/obj/vectors.o (symbol from plugin)
+Vector134                                         build/obj/vectors.o (symbol from plugin)
+Vector138                                         build/obj/vectors.o (symbol from plugin)
+Vector13C                                         build/obj/vectors.o (symbol from plugin)
+Vector140                                         build/obj/vectors.o (symbol from plugin)
+Vector144                                         build/obj/vectors.o (symbol from plugin)
+Vector148                                         build/obj/vectors.o (symbol from plugin)
+Vector14C                                         build/obj/vectors.o (symbol from plugin)
+Vector150                                         build/obj/vectors.o (symbol from plugin)
+Vector154                                         build/obj/vectors.o (symbol from plugin)
+Vector158                                         build/obj/vectors.o (symbol from plugin)
+Vector15C                                         build/obj/vectors.o (symbol from plugin)
+Vector160                                         build/obj/vectors.o (symbol from plugin)
+Vector164                                         build/obj/vectors.o (symbol from plugin)
+Vector168                                         build/obj/vectors.o (symbol from plugin)
+Vector16C                                         build/obj/vectors.o (symbol from plugin)
+Vector170                                         build/obj/vectors.o (symbol from plugin)
+Vector174                                         build/obj/vectors.o (symbol from plugin)
+Vector178                                         build/obj/vectors.o (symbol from plugin)
+Vector17C                                         build/obj/vectors.o (symbol from plugin)
+Vector180                                         build/obj/vectors.o (symbol from plugin)
+Vector184                                         build/obj/vectors.o (symbol from plugin)
+Vector188                                         build/obj/vectors.o (symbol from plugin)
+Vector18C                                         build/obj/vectors.o (symbol from plugin)
+Vector190                                         build/obj/vectors.o (symbol from plugin)
+Vector194                                         build/obj/vectors.o (symbol from plugin)
+Vector198                                         build/obj/vectors.o (symbol from plugin)
+Vector19C                                         build/obj/vectors.o (symbol from plugin)
+Vector1A0                                         build/obj/vectors.o (symbol from plugin)
+Vector1A4                                         build/obj/vectors.o (symbol from plugin)
+Vector1A8                                         build/obj/vectors.o (symbol from plugin)
+Vector1AC                                         build/obj/vectors.o (symbol from plugin)
+Vector1B0                                         build/obj/vectors.o (symbol from plugin)
+Vector1B4                                         build/obj/vectors.o (symbol from plugin)
+Vector1B8                                         build/obj/vectors.o (symbol from plugin)
+Vector1BC                                         build/obj/vectors.o (symbol from plugin)
+Vector1C                                          build/obj/vectors.o (symbol from plugin)
+Vector20                                          build/obj/vectors.o (symbol from plugin)
+Vector24                                          build/obj/vectors.o (symbol from plugin)
+Vector28                                          build/obj/vectors.o (symbol from plugin)
+Vector34                                          build/obj/vectors.o (symbol from plugin)
+Vector40                                          build/obj/vectors.o (symbol from plugin)
+Vector44                                          build/obj/vectors.o (symbol from plugin)
+Vector48                                          build/obj/vectors.o (symbol from plugin)
+Vector4C                                          build/obj/vectors.o (symbol from plugin)
+Vector50                                          build/obj/vectors.o (symbol from plugin)
+Vector54                                          build/obj/vectors.o (symbol from plugin)
+Vector58                                          build/obj/vectors.o (symbol from plugin)
+Vector5C                                          build/obj/vectors.o (symbol from plugin)
+Vector60                                          build/obj/vectors.o (symbol from plugin)
+Vector64                                          build/obj/vectors.o (symbol from plugin)
+Vector68                                          build/obj/vectors.o (symbol from plugin)
+Vector6C                                          build/obj/vectors.o (symbol from plugin)
+Vector70                                          build/obj/vectors.o (symbol from plugin)
+Vector74                                          build/obj/vectors.o (symbol from plugin)
+Vector78                                          build/obj/vectors.o (symbol from plugin)
+Vector7C                                          build/obj/vectors.o (symbol from plugin)
+Vector80                                          build/obj/vectors.o (symbol from plugin)
+Vector84                                          build/obj/vectors.o (symbol from plugin)
+Vector88                                          build/obj/vectors.o (symbol from plugin)
+Vector8C                                          build/obj/vectors.o (symbol from plugin)
+Vector90                                          build/obj/vectors.o (symbol from plugin)
+Vector94                                          build/obj/vectors.o (symbol from plugin)
+Vector98                                          build/obj/vectors.o (symbol from plugin)
+Vector9C                                          build/obj/vectors.o (symbol from plugin)
+VectorA0                                          build/obj/vectors.o (symbol from plugin)
+VectorA4                                          build/obj/vectors.o (symbol from plugin)
+VectorA8                                          build/obj/vectors.o (symbol from plugin)
+VectorAC                                          build/obj/vectors.o (symbol from plugin)
+VectorB0                                          build/obj/vectors.o (symbol from plugin)
+VectorB4                                          build/obj/vectors.o (symbol from plugin)
+VectorB8                                          build/obj/vectors.o (symbol from plugin)
+VectorBC                                          build/obj/vectors.o (symbol from plugin)
+VectorC0                                          build/obj/vectors.o (symbol from plugin)
+VectorC4                                          build/obj/vectors.o (symbol from plugin)
+VectorC8                                          build/obj/vectors.o (symbol from plugin)
+VectorCC                                          build/obj/vectors.o (symbol from plugin)
+VectorD0                                          build/obj/vectors.o (symbol from plugin)
+VectorD4                                          build/obj/vectors.o (symbol from plugin)
+VectorD8                                          build/obj/vectors.o (symbol from plugin)
+VectorDC                                          build/obj/vectors.o (symbol from plugin)
+VectorE0                                          build/obj/vectors.o (symbol from plugin)
+VectorE4                                          build/obj/vectors.o (symbol from plugin)
+VectorE8                                          build/obj/vectors.o (symbol from plugin)
+VectorEC                                          build/obj/vectors.o (symbol from plugin)
+VectorF0                                          build/obj/vectors.o (symbol from plugin)
+VectorF4                                          build/obj/vectors.o (symbol from plugin)
+VectorF8                                          build/obj/vectors.o (symbol from plugin)
+VectorFC                                          build/obj/vectors.o (symbol from plugin)
+__default_exit                                    /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccCfpsMW.ltrans0.ltrans.o
+                                                  build/obj/crt1.o (symbol from plugin)
+                                                  build/obj/crt0_v7m.o
+__early_init                                      /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccCfpsMW.ltrans0.ltrans.o
+                                                  build/obj/crt1.o (symbol from plugin)
+                                                  build/obj/crt0_v7m.o
+__fini_array_end                                  build/obj/crt0_v7m.o
+__fini_array_start                                build/obj/crt0_v7m.o
+__init_array_end                                  build/obj/crt0_v7m.o
+__init_array_start                                build/obj/crt0_v7m.o
+__late_init                                       /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccCfpsMW.ltrans0.ltrans.o
+                                                  build/obj/crt1.o (symbol from plugin)
+                                                  build/obj/crt0_v7m.o
+__main_stack_base__                               build/obj/crt0_v7m.o
+__main_stack_end__                                /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccCfpsMW.ltrans0.ltrans.o
+                                                  build/obj/vectors.o (symbol from plugin)
+                                                  build/obj/crt0_v7m.o
+__process_stack_base__                            build/obj/crt0_v7m.o
+__process_stack_end__                             build/obj/crt0_v7m.o
+_bss_end                                          build/obj/crt0_v7m.o
+_bss_start                                        build/obj/crt0_v7m.o
+_data                                             build/obj/crt0_v7m.o
+_edata                                            build/obj/crt0_v7m.o
+_mmcsd_get_capacity                               build/obj/hal_mmcsd.o (symbol from plugin)
+                                                  build/obj/sdc.o (symbol from plugin)
+                                                  build/obj/mmc_spi.o (symbol from plugin)
+_mmcsd_get_capacity_ext                           build/obj/hal_mmcsd.o (symbol from plugin)
+                                                  build/obj/sdc.o (symbol from plugin)
+_mmcsd_get_slice                                  build/obj/hal_mmcsd.o (symbol from plugin)
+                                                  build/obj/sdc.o (symbol from plugin)
+_mmcsd_unpack_csd_mmc                             build/obj/hal_mmcsd.o (symbol from plugin)
+_mmcsd_unpack_csd_v10                             build/obj/hal_mmcsd.o (symbol from plugin)
+_mmcsd_unpack_csd_v20                             build/obj/hal_mmcsd.o (symbol from plugin)
+_mmcsd_unpack_mmc_cid                             build/obj/hal_mmcsd.o (symbol from plugin)
+_mmcsd_unpack_sdc_cid                             build/obj/hal_mmcsd.o (symbol from plugin)
+_pal_lld_init                                     build/obj/pal_lld.o (symbol from plugin)
+                                                  build/obj/hal.o (symbol from plugin)
+_pal_lld_setgroupmode                             build/obj/pal_lld.o (symbol from plugin)
+                                                  build/obj/pal.o (symbol from plugin)
+_sdc_wait_for_transfer_state                      build/obj/sdc.o (symbol from plugin)
+_textdata                                         build/obj/crt0_v7m.o
+_unhandled_exception                              build/obj/vectors.o (symbol from plugin)
+_usb_ep0in                                        build/obj/usb.o (symbol from plugin)
+                                                  build/obj/usb_lld.o (symbol from plugin)
+_usb_ep0out                                       build/obj/usb.o (symbol from plugin)
+                                                  build/obj/usb_lld.o (symbol from plugin)
+_usb_ep0setup                                     build/obj/usb.o (symbol from plugin)
+                                                  build/obj/usb_lld.o (symbol from plugin)
+_usb_reset                                        build/obj/usb.o (symbol from plugin)
+_vectors                                          /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccCfpsMW.ltrans0.ltrans.o
+                                                  build/obj/vectors.o (symbol from plugin)
+adcAcquireBus                                     build/obj/adc.o (symbol from plugin)
+adcConvert                                        build/obj/adc.o (symbol from plugin)
+adcInit                                           build/obj/adc.o (symbol from plugin)
+                                                  build/obj/hal.o (symbol from plugin)
+adcObjectInit                                     build/obj/adc.o (symbol from plugin)
+adcReleaseBus                                     build/obj/adc.o (symbol from plugin)
+adcStart                                          build/obj/adc.o (symbol from plugin)
+adcStartConversion                                build/obj/adc.o (symbol from plugin)
+adcStartConversionI                               build/obj/adc.o (symbol from plugin)
+adcStop                                           build/obj/adc.o (symbol from plugin)
+adcStopConversion                                 build/obj/adc.o (symbol from plugin)
+adcStopConversionI                                build/obj/adc.o (symbol from plugin)
+adc_lld_init                                      build/obj/adc_lld.o (symbol from plugin)
+                                                  build/obj/adc.o (symbol from plugin)
+adc_lld_start                                     build/obj/adc_lld.o (symbol from plugin)
+                                                  build/obj/adc.o (symbol from plugin)
+adc_lld_start_conversion                          build/obj/adc_lld.o (symbol from plugin)
+                                                  build/obj/adc.o (symbol from plugin)
+adc_lld_stop                                      build/obj/adc_lld.o (symbol from plugin)
+                                                  build/obj/adc.o (symbol from plugin)
+adc_lld_stop_conversion                           build/obj/adc_lld.o (symbol from plugin)
+                                                  build/obj/adc.o (symbol from plugin)
+boardInit                                         build/obj/hal.o (symbol from plugin)
+canInit                                           build/obj/can.o (symbol from plugin)
+                                                  build/obj/hal.o (symbol from plugin)
+canObjectInit                                     build/obj/can.o (symbol from plugin)
+canReceive                                        build/obj/can.o (symbol from plugin)
+canSleep                                          build/obj/can.o (symbol from plugin)
+canStart                                          build/obj/can.o (symbol from plugin)
+canStop                                           build/obj/can.o (symbol from plugin)
+canTransmit                                       build/obj/can.o (symbol from plugin)
+canWakeup                                         build/obj/can.o (symbol from plugin)
+can_lld_init                                      build/obj/can_lld.o (symbol from plugin)
+                                                  build/obj/can.o (symbol from plugin)
+can_lld_is_rx_nonempty                            build/obj/can_lld.o (symbol from plugin)
+                                                  build/obj/can.o (symbol from plugin)
+can_lld_is_tx_empty                               build/obj/can_lld.o (symbol from plugin)
+                                                  build/obj/can.o (symbol from plugin)
+can_lld_receive                                   build/obj/can_lld.o (symbol from plugin)
+                                                  build/obj/can.o (symbol from plugin)
+can_lld_sleep                                     build/obj/can_lld.o (symbol from plugin)
+                                                  build/obj/can.o (symbol from plugin)
+can_lld_start                                     build/obj/can_lld.o (symbol from plugin)
+                                                  build/obj/can.o (symbol from plugin)
+can_lld_stop                                      build/obj/can_lld.o (symbol from plugin)
+                                                  build/obj/can.o (symbol from plugin)
+can_lld_transmit                                  build/obj/can_lld.o (symbol from plugin)
+                                                  build/obj/can.o (symbol from plugin)
+can_lld_wakeup                                    build/obj/can_lld.o (symbol from plugin)
+                                                  build/obj/can.o (symbol from plugin)
+chSysHalt                                         /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccCfpsMW.ltrans0.ltrans.o
+                                                  build/obj/vectors.o (symbol from plugin)
+extChannelDisable                                 build/obj/ext.o (symbol from plugin)
+extChannelEnable                                  build/obj/ext.o (symbol from plugin)
+extInit                                           build/obj/ext.o (symbol from plugin)
+                                                  build/obj/hal.o (symbol from plugin)
+extObjectInit                                     build/obj/ext.o (symbol from plugin)
+extSetChannelModeI                                build/obj/ext.o (symbol from plugin)
+extStart                                          build/obj/ext.o (symbol from plugin)
+extStop                                           build/obj/ext.o (symbol from plugin)
+ext_lld_channel_disable                           build/obj/ext_lld.o (symbol from plugin)
+                                                  build/obj/ext.o (symbol from plugin)
+ext_lld_channel_enable                            build/obj/ext_lld.o (symbol from plugin)
+                                                  build/obj/ext.o (symbol from plugin)
+ext_lld_init                                      build/obj/ext_lld.o (symbol from plugin)
+                                                  build/obj/ext.o (symbol from plugin)
+ext_lld_start                                     build/obj/ext_lld.o (symbol from plugin)
+                                                  build/obj/ext.o (symbol from plugin)
+ext_lld_stop                                      build/obj/ext_lld.o (symbol from plugin)
+                                                  build/obj/ext.o (symbol from plugin)
+gptChangeInterval                                 build/obj/gpt.o (symbol from plugin)
+gptInit                                           build/obj/gpt.o (symbol from plugin)
+                                                  build/obj/hal.o (symbol from plugin)
+gptObjectInit                                     build/obj/gpt.o (symbol from plugin)
+gptPolledDelay                                    build/obj/gpt.o (symbol from plugin)
+gptStart                                          build/obj/gpt.o (symbol from plugin)
+gptStartContinuous                                build/obj/gpt.o (symbol from plugin)
+gptStartContinuousI                               build/obj/gpt.o (symbol from plugin)
+gptStartOneShot                                   build/obj/gpt.o (symbol from plugin)
+gptStartOneShotI                                  build/obj/gpt.o (symbol from plugin)
+gptStop                                           build/obj/gpt.o (symbol from plugin)
+gptStopTimer                                      build/obj/gpt.o (symbol from plugin)
+gptStopTimerI                                     build/obj/gpt.o (symbol from plugin)
+gpt_lld_init                                      build/obj/gpt_lld.o (symbol from plugin)
+                                                  build/obj/gpt.o (symbol from plugin)
+gpt_lld_polled_delay                              build/obj/gpt_lld.o (symbol from plugin)
+                                                  build/obj/gpt.o (symbol from plugin)
+gpt_lld_start                                     build/obj/gpt_lld.o (symbol from plugin)
+                                                  build/obj/gpt.o (symbol from plugin)
+gpt_lld_start_timer                               build/obj/gpt_lld.o (symbol from plugin)
+                                                  build/obj/gpt.o (symbol from plugin)
+gpt_lld_stop                                      build/obj/gpt_lld.o (symbol from plugin)
+                                                  build/obj/gpt.o (symbol from plugin)
+gpt_lld_stop_timer                                build/obj/gpt_lld.o (symbol from plugin)
+                                                  build/obj/gpt.o (symbol from plugin)
+halInit                                           build/obj/hal.o (symbol from plugin)
+hal_lld_init                                      build/obj/hal_lld.o (symbol from plugin)
+                                                  build/obj/hal.o (symbol from plugin)
+i2cAcquireBus                                     build/obj/i2c.o (symbol from plugin)
+i2cGetErrors                                      build/obj/i2c.o (symbol from plugin)
+i2cInit                                           build/obj/i2c.o (symbol from plugin)
+                                                  build/obj/hal.o (symbol from plugin)
+i2cMasterReceiveTimeout                           build/obj/i2c.o (symbol from plugin)
+i2cMasterTransmitTimeout                          build/obj/i2c.o (symbol from plugin)
+i2cObjectInit                                     build/obj/i2c.o (symbol from plugin)
+i2cReleaseBus                                     build/obj/i2c.o (symbol from plugin)
+i2cStart                                          build/obj/i2c.o (symbol from plugin)
+i2cStop                                           build/obj/i2c.o (symbol from plugin)
+i2c_lld_init                                      build/obj/i2c_lld.o (symbol from plugin)
+                                                  build/obj/i2c.o (symbol from plugin)
+i2c_lld_master_receive_timeout                    build/obj/i2c_lld.o (symbol from plugin)
+                                                  build/obj/i2c.o (symbol from plugin)
+i2c_lld_master_transmit_timeout                   build/obj/i2c_lld.o (symbol from plugin)
+                                                  build/obj/i2c.o (symbol from plugin)
+i2c_lld_start                                     build/obj/i2c_lld.o (symbol from plugin)
+                                                  build/obj/i2c.o (symbol from plugin)
+i2c_lld_stop                                      build/obj/i2c_lld.o (symbol from plugin)
+                                                  build/obj/i2c.o (symbol from plugin)
+i2sInit                                           build/obj/i2s.o (symbol from plugin)
+                                                  build/obj/hal.o (symbol from plugin)
+i2sObjectInit                                     build/obj/i2s.o (symbol from plugin)
+i2sStart                                          build/obj/i2s.o (symbol from plugin)
+i2sStartExchange                                  build/obj/i2s.o (symbol from plugin)
+i2sStop                                           build/obj/i2s.o (symbol from plugin)
+i2sStopExchange                                   build/obj/i2s.o (symbol from plugin)
+i2s_lld_init                                      build/obj/i2s.o (symbol from plugin)
+i2s_lld_start                                     build/obj/i2s.o (symbol from plugin)
+i2s_lld_start_exchange                            build/obj/i2s.o (symbol from plugin)
+i2s_lld_stop                                      build/obj/i2s.o (symbol from plugin)
+i2s_lld_stop_exchange                             build/obj/i2s.o (symbol from plugin)
+icuDisableNotifications                           build/obj/icu.o (symbol from plugin)
+icuEnableNotifications                            build/obj/icu.o (symbol from plugin)
+icuInit                                           build/obj/icu.o (symbol from plugin)
+                                                  build/obj/hal.o (symbol from plugin)
+icuObjectInit                                     build/obj/icu.o (symbol from plugin)
+icuStart                                          build/obj/icu.o (symbol from plugin)
+icuStartCapture                                   build/obj/icu.o (symbol from plugin)
+icuStop                                           build/obj/icu.o (symbol from plugin)
+icuStopCapture                                    build/obj/icu.o (symbol from plugin)
+icuWaitCapture                                    build/obj/icu.o (symbol from plugin)
+icu_lld_disable_notifications                     build/obj/icu_lld.o (symbol from plugin)
+                                                  build/obj/icu.o (symbol from plugin)
+icu_lld_enable_notifications                      build/obj/icu_lld.o (symbol from plugin)
+                                                  build/obj/icu.o (symbol from plugin)
+icu_lld_init                                      build/obj/icu_lld.o (symbol from plugin)
+                                                  build/obj/icu.o (symbol from plugin)
+icu_lld_start                                     build/obj/icu_lld.o (symbol from plugin)
+                                                  build/obj/icu.o (symbol from plugin)
+icu_lld_start_capture                             build/obj/icu_lld.o (symbol from plugin)
+                                                  build/obj/icu.o (symbol from plugin)
+icu_lld_stop                                      build/obj/icu_lld.o (symbol from plugin)
+                                                  build/obj/icu.o (symbol from plugin)
+icu_lld_stop_capture                              build/obj/icu_lld.o (symbol from plugin)
+                                                  build/obj/icu.o (symbol from plugin)
+icu_lld_wait_capture                              build/obj/icu_lld.o (symbol from plugin)
+                                                  build/obj/icu.o (symbol from plugin)
+iqGetTimeout                                      build/obj/hal_queues.o (symbol from plugin)
+                                                  build/obj/serial_usb.o (symbol from plugin)
+                                                  build/obj/serial.o (symbol from plugin)
+iqObjectInit                                      build/obj/hal_queues.o (symbol from plugin)
+                                                  build/obj/serial_usb.o (symbol from plugin)
+                                                  build/obj/serial.o (symbol from plugin)
+iqPutI                                            build/obj/hal_queues.o (symbol from plugin)
+                                                  build/obj/serial.o (symbol from plugin)
+iqReadTimeout                                     build/obj/hal_queues.o (symbol from plugin)
+                                                  build/obj/serial_usb.o (symbol from plugin)
+                                                  build/obj/serial.o (symbol from plugin)
+iqResetI                                          build/obj/hal_queues.o (symbol from plugin)
+                                                  build/obj/serial_usb.o (symbol from plugin)
+                                                  build/obj/serial.o (symbol from plugin)
+macInit                                           build/obj/mac.o (symbol from plugin)
+                                                  build/obj/hal.o (symbol from plugin)
+macObjectInit                                     build/obj/mac.o (symbol from plugin)
+macPollLinkStatus                                 build/obj/mac.o (symbol from plugin)
+macReleaseReceiveDescriptor                       build/obj/mac.o (symbol from plugin)
+macReleaseTransmitDescriptor                      build/obj/mac.o (symbol from plugin)
+macStart                                          build/obj/mac.o (symbol from plugin)
+macStop                                           build/obj/mac.o (symbol from plugin)
+macWaitReceiveDescriptor                          build/obj/mac.o (symbol from plugin)
+macWaitTransmitDescriptor                         build/obj/mac.o (symbol from plugin)
+mac_lld_get_next_receive_buffer                   build/obj/mac_lld.o (symbol from plugin)
+mac_lld_get_next_transmit_buffer                  build/obj/mac_lld.o (symbol from plugin)
+mac_lld_get_receive_descriptor                    build/obj/mac_lld.o (symbol from plugin)
+                                                  build/obj/mac.o (symbol from plugin)
+mac_lld_get_transmit_descriptor                   build/obj/mac_lld.o (symbol from plugin)
+                                                  build/obj/mac.o (symbol from plugin)
+mac_lld_init                                      build/obj/mac_lld.o (symbol from plugin)
+                                                  build/obj/mac.o (symbol from plugin)
+mac_lld_poll_link_status                          build/obj/mac_lld.o (symbol from plugin)
+                                                  build/obj/mac.o (symbol from plugin)
+mac_lld_read_receive_descriptor                   build/obj/mac_lld.o (symbol from plugin)
+mac_lld_release_receive_descriptor                build/obj/mac_lld.o (symbol from plugin)
+                                                  build/obj/mac.o (symbol from plugin)
+mac_lld_release_transmit_descriptor               build/obj/mac_lld.o (symbol from plugin)
+                                                  build/obj/mac.o (symbol from plugin)
+mac_lld_start                                     build/obj/mac_lld.o (symbol from plugin)
+                                                  build/obj/mac.o (symbol from plugin)
+mac_lld_stop                                      build/obj/mac_lld.o (symbol from plugin)
+                                                  build/obj/mac.o (symbol from plugin)
+mac_lld_write_transmit_descriptor                 build/obj/mac_lld.o (symbol from plugin)
+main                                              /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccCfpsMW.ltrans0.ltrans.o
+                                                  build/obj/main.o (symbol from plugin)
+                                                  build/obj/crt0_v7m.o
+mmcConnect                                        build/obj/mmc_spi.o (symbol from plugin)
+mmcDisconnect                                     build/obj/mmc_spi.o (symbol from plugin)
+mmcErase                                          build/obj/mmc_spi.o (symbol from plugin)
+mmcGetInfo                                        build/obj/mmc_spi.o (symbol from plugin)
+mmcInit                                           build/obj/mmc_spi.o (symbol from plugin)
+                                                  build/obj/hal.o (symbol from plugin)
+mmcObjectInit                                     build/obj/mmc_spi.o (symbol from plugin)
+mmcSequentialRead                                 build/obj/mmc_spi.o (symbol from plugin)
+mmcSequentialWrite                                build/obj/mmc_spi.o (symbol from plugin)
+mmcStart                                          build/obj/mmc_spi.o (symbol from plugin)
+mmcStartSequentialRead                            build/obj/mmc_spi.o (symbol from plugin)
+mmcStartSequentialWrite                           build/obj/mmc_spi.o (symbol from plugin)
+mmcStop                                           build/obj/mmc_spi.o (symbol from plugin)
+mmcStopSequentialRead                             build/obj/mmc_spi.o (symbol from plugin)
+mmcStopSequentialWrite                            build/obj/mmc_spi.o (symbol from plugin)
+mmcSync                                           build/obj/mmc_spi.o (symbol from plugin)
+mmc_lld_is_card_inserted                          build/obj/mmc_spi.o (symbol from plugin)
+mmc_lld_is_write_protected                        build/obj/mmc_spi.o (symbol from plugin)
+oqGetI                                            build/obj/hal_queues.o (symbol from plugin)
+                                                  build/obj/serial.o (symbol from plugin)
+oqObjectInit                                      build/obj/hal_queues.o (symbol from plugin)
+                                                  build/obj/serial_usb.o (symbol from plugin)
+                                                  build/obj/serial.o (symbol from plugin)
+oqPutTimeout                                      build/obj/hal_queues.o (symbol from plugin)
+                                                  build/obj/serial_usb.o (symbol from plugin)
+                                                  build/obj/serial.o (symbol from plugin)
+oqResetI                                          build/obj/hal_queues.o (symbol from plugin)
+                                                  build/obj/serial_usb.o (symbol from plugin)
+                                                  build/obj/serial.o (symbol from plugin)
+oqWriteTimeout                                    build/obj/hal_queues.o (symbol from plugin)
+                                                  build/obj/serial_usb.o (symbol from plugin)
+                                                  build/obj/serial.o (symbol from plugin)
+osalEventBroadcastFlags                           build/obj/osal.o (symbol from plugin)
+osalEventBroadcastFlagsI                          build/obj/osal.o (symbol from plugin)
+                                                  build/obj/serial_usb.o (symbol from plugin)
+                                                  build/obj/serial.o (symbol from plugin)
+                                                  build/obj/can.o (symbol from plugin)
+osalEventSetCallback                              build/obj/osal.o (symbol from plugin)
+osalInit                                          build/obj/osal.o (symbol from plugin)
+                                                  build/obj/hal.o (symbol from plugin)
+osalMutexLock                                     build/obj/osal.o (symbol from plugin)
+                                                  build/obj/spi.o (symbol from plugin)
+                                                  build/obj/i2c.o (symbol from plugin)
+                                                  build/obj/adc.o (symbol from plugin)
+osalMutexUnlock                                   build/obj/osal.o (symbol from plugin)
+                                                  build/obj/spi.o (symbol from plugin)
+                                                  build/obj/i2c.o (symbol from plugin)
+                                                  build/obj/adc.o (symbol from plugin)
+osalOsGetSystemTimeX                              build/obj/osal.o (symbol from plugin)
+                                                  build/obj/mac.o (symbol from plugin)
+osalOsRescheduleS                                 build/obj/osal.o (symbol from plugin)
+                                                  build/obj/serial_usb.o (symbol from plugin)
+                                                  build/obj/serial.o (symbol from plugin)
+                                                  build/obj/can.o (symbol from plugin)
+osalOsTimerHandlerI                               build/obj/osal.o (symbol from plugin)
+osalSysHalt                                       build/obj/osal.o (symbol from plugin)
+osalSysPolledDelayX                               build/obj/osal.o (symbol from plugin)
+osalThreadDequeueAllI                             build/obj/osal.o (symbol from plugin)
+                                                  build/obj/can.o (symbol from plugin)
+                                                  build/obj/hal_queues.o (symbol from plugin)
+osalThreadDequeueNextI                            build/obj/osal.o (symbol from plugin)
+                                                  build/obj/hal_queues.o (symbol from plugin)
+osalThreadEnqueueTimeoutS                         build/obj/osal.o (symbol from plugin)
+                                                  build/obj/mac.o (symbol from plugin)
+                                                  build/obj/can.o (symbol from plugin)
+                                                  build/obj/hal_queues.o (symbol from plugin)
+osalThreadResumeI                                 build/obj/osal.o (symbol from plugin)
+                                                  build/obj/adc.o (symbol from plugin)
+osalThreadResumeS                                 build/obj/osal.o (symbol from plugin)
+                                                  build/obj/adc.o (symbol from plugin)
+osalThreadSleep                                   build/obj/osal.o (symbol from plugin)
+                                                  build/obj/sdc.o (symbol from plugin)
+                                                  build/obj/mmc_spi.o (symbol from plugin)
+osalThreadSleepS                                  build/obj/osal.o (symbol from plugin)
+osalThreadSuspendS                                build/obj/osal.o (symbol from plugin)
+                                                  build/obj/spi.o (symbol from plugin)
+                                                  build/obj/adc.o (symbol from plugin)
+osalThreadSuspendTimeoutS                         build/obj/osal.o (symbol from plugin)
+osal_halt_msg                                     build/obj/osal.o (symbol from plugin)
+palReadBus                                        build/obj/pal.o (symbol from plugin)
+palSetBusMode                                     build/obj/pal.o (symbol from plugin)
+palWriteBus                                       build/obj/pal.o (symbol from plugin)
+pal_default_config                                build/obj/hal.o (symbol from plugin)
+pwmChangePeriod                                   build/obj/pwm.o (symbol from plugin)
+pwmDisableChannel                                 build/obj/pwm.o (symbol from plugin)
+pwmDisableChannelNotification                     build/obj/pwm.o (symbol from plugin)
+pwmDisablePeriodicNotification                    build/obj/pwm.o (symbol from plugin)
+pwmEnableChannel                                  build/obj/pwm.o (symbol from plugin)
+pwmEnableChannelNotification                      build/obj/pwm.o (symbol from plugin)
+pwmEnablePeriodicNotification                     build/obj/pwm.o (symbol from plugin)
+pwmInit                                           build/obj/pwm.o (symbol from plugin)
+                                                  build/obj/hal.o (symbol from plugin)
+pwmObjectInit                                     build/obj/pwm.o (symbol from plugin)
+pwmStart                                          build/obj/pwm.o (symbol from plugin)
+pwmStop                                           build/obj/pwm.o (symbol from plugin)
+pwm_lld_disable_channel                           build/obj/pwm_lld.o (symbol from plugin)
+                                                  build/obj/pwm.o (symbol from plugin)
+pwm_lld_disable_channel_notification              build/obj/pwm_lld.o (symbol from plugin)
+                                                  build/obj/pwm.o (symbol from plugin)
+pwm_lld_disable_periodic_notification             build/obj/pwm_lld.o (symbol from plugin)
+                                                  build/obj/pwm.o (symbol from plugin)
+pwm_lld_enable_channel                            build/obj/pwm_lld.o (symbol from plugin)
+                                                  build/obj/pwm.o (symbol from plugin)
+pwm_lld_enable_channel_notification               build/obj/pwm_lld.o (symbol from plugin)
+                                                  build/obj/pwm.o (symbol from plugin)
+pwm_lld_enable_periodic_notification              build/obj/pwm_lld.o (symbol from plugin)
+                                                  build/obj/pwm.o (symbol from plugin)
+pwm_lld_init                                      build/obj/pwm_lld.o (symbol from plugin)
+                                                  build/obj/pwm.o (symbol from plugin)
+pwm_lld_start                                     build/obj/pwm_lld.o (symbol from plugin)
+                                                  build/obj/pwm.o (symbol from plugin)
+pwm_lld_stop                                      build/obj/pwm_lld.o (symbol from plugin)
+                                                  build/obj/pwm.o (symbol from plugin)
+rtcConvertDateTimeToFAT                           build/obj/rtc.o (symbol from plugin)
+rtcConvertDateTimeToStructTm                      build/obj/rtc.o (symbol from plugin)
+rtcConvertStructTmToDateTime                      build/obj/rtc.o (symbol from plugin)
+rtcGetAlarm                                       build/obj/rtc.o (symbol from plugin)
+rtcGetTime                                        build/obj/rtc.o (symbol from plugin)
+rtcInit                                           build/obj/rtc.o (symbol from plugin)
+                                                  build/obj/hal.o (symbol from plugin)
+rtcObjectInit                                     build/obj/rtc.o (symbol from plugin)
+rtcSetAlarm                                       build/obj/rtc.o (symbol from plugin)
+rtcSetCallback                                    build/obj/rtc.o (symbol from plugin)
+rtcSetTime                                        build/obj/rtc.o (symbol from plugin)
+rtc_lld_get_alarm                                 build/obj/rtc.o (symbol from plugin)
+rtc_lld_get_time                                  build/obj/rtc.o (symbol from plugin)
+rtc_lld_init                                      build/obj/rtc.o (symbol from plugin)
+rtc_lld_set_alarm                                 build/obj/rtc.o (symbol from plugin)
+rtc_lld_set_callback                              build/obj/rtc.o (symbol from plugin)
+rtc_lld_set_time                                  build/obj/rtc.o (symbol from plugin)
+sdIncomingDataI                                   build/obj/serial.o (symbol from plugin)
+sdInit                                            build/obj/serial.o (symbol from plugin)
+                                                  build/obj/hal.o (symbol from plugin)
+sdObjectInit                                      build/obj/serial.o (symbol from plugin)
+sdRequestDataI                                    build/obj/serial.o (symbol from plugin)
+sdStart                                           build/obj/serial.o (symbol from plugin)
+sdStop                                            build/obj/serial.o (symbol from plugin)
+sd_lld_init                                       build/obj/serial_lld.o (symbol from plugin)
+                                                  build/obj/serial.o (symbol from plugin)
+sd_lld_start                                      build/obj/serial_lld.o (symbol from plugin)
+                                                  build/obj/serial.o (symbol from plugin)
+sd_lld_stop                                       build/obj/serial_lld.o (symbol from plugin)
+                                                  build/obj/serial.o (symbol from plugin)
+sdcConnect                                        build/obj/sdc.o (symbol from plugin)
+sdcDisconnect                                     build/obj/sdc.o (symbol from plugin)
+sdcErase                                          build/obj/sdc.o (symbol from plugin)
+sdcGetAndClearErrors                              build/obj/sdc.o (symbol from plugin)
+sdcGetInfo                                        build/obj/sdc.o (symbol from plugin)
+sdcInit                                           build/obj/sdc.o (symbol from plugin)
+                                                  build/obj/hal.o (symbol from plugin)
+sdcObjectInit                                     build/obj/sdc.o (symbol from plugin)
+sdcRead                                           build/obj/sdc.o (symbol from plugin)
+sdcStart                                          build/obj/sdc.o (symbol from plugin)
+sdcStop                                           build/obj/sdc.o (symbol from plugin)
+sdcSync                                           build/obj/sdc.o (symbol from plugin)
+sdcWrite                                          build/obj/sdc.o (symbol from plugin)
+sdc_lld_init                                      build/obj/sdc_lld.o (symbol from plugin)
+                                                  build/obj/sdc.o (symbol from plugin)
+sdc_lld_is_card_inserted                          build/obj/sdc.o (symbol from plugin)
+sdc_lld_is_write_protected                        build/obj/sdc.o (symbol from plugin)
+sdc_lld_read                                      build/obj/sdc_lld.o (symbol from plugin)
+                                                  build/obj/sdc.o (symbol from plugin)
+sdc_lld_read_special                              build/obj/sdc.o (symbol from plugin)
+sdc_lld_send_cmd_long_crc                         build/obj/sdc_lld.o (symbol from plugin)
+                                                  build/obj/sdc.o (symbol from plugin)
+sdc_lld_send_cmd_none                             build/obj/sdc_lld.o (symbol from plugin)
+                                                  build/obj/sdc.o (symbol from plugin)
+sdc_lld_send_cmd_short                            build/obj/sdc_lld.o (symbol from plugin)
+                                                  build/obj/sdc.o (symbol from plugin)
+sdc_lld_send_cmd_short_crc                        build/obj/sdc_lld.o (symbol from plugin)
+                                                  build/obj/sdc.o (symbol from plugin)
+sdc_lld_set_bus_mode                              build/obj/sdc_lld.o (symbol from plugin)
+                                                  build/obj/sdc.o (symbol from plugin)
+sdc_lld_set_data_clk                              build/obj/sdc_lld.o (symbol from plugin)
+                                                  build/obj/sdc.o (symbol from plugin)
+sdc_lld_start                                     build/obj/sdc_lld.o (symbol from plugin)
+                                                  build/obj/sdc.o (symbol from plugin)
+sdc_lld_start_clk                                 build/obj/sdc_lld.o (symbol from plugin)
+                                                  build/obj/sdc.o (symbol from plugin)
+sdc_lld_stop                                      build/obj/sdc_lld.o (symbol from plugin)
+                                                  build/obj/sdc.o (symbol from plugin)
+sdc_lld_stop_clk                                  build/obj/sdc_lld.o (symbol from plugin)
+                                                  build/obj/sdc.o (symbol from plugin)
+sdc_lld_sync                                      build/obj/sdc_lld.o (symbol from plugin)
+                                                  build/obj/sdc.o (symbol from plugin)
+sdc_lld_write                                     build/obj/sdc_lld.o (symbol from plugin)
+                                                  build/obj/sdc.o (symbol from plugin)
+sduConfigureHookI                                 build/obj/serial_usb.o (symbol from plugin)
+sduDataReceived                                   build/obj/serial_usb.o (symbol from plugin)
+sduDataTransmitted                                build/obj/serial_usb.o (symbol from plugin)
+sduInit                                           build/obj/serial_usb.o (symbol from plugin)
+                                                  build/obj/hal.o (symbol from plugin)
+sduInterruptTransmitted                           build/obj/serial_usb.o (symbol from plugin)
+sduObjectInit                                     build/obj/serial_usb.o (symbol from plugin)
+sduRequestsHook                                   build/obj/serial_usb.o (symbol from plugin)
+sduStart                                          build/obj/serial_usb.o (symbol from plugin)
+sduStop                                           build/obj/serial_usb.o (symbol from plugin)
+spiAcquireBus                                     build/obj/spi.o (symbol from plugin)
+spiExchange                                       build/obj/spi.o (symbol from plugin)
+spiIgnore                                         build/obj/spi.o (symbol from plugin)
+                                                  build/obj/mmc_spi.o (symbol from plugin)
+spiInit                                           build/obj/spi.o (symbol from plugin)
+                                                  build/obj/hal.o (symbol from plugin)
+spiObjectInit                                     build/obj/spi.o (symbol from plugin)
+spiReceive                                        build/obj/spi.o (symbol from plugin)
+                                                  build/obj/mmc_spi.o (symbol from plugin)
+spiReleaseBus                                     build/obj/spi.o (symbol from plugin)
+spiSelect                                         build/obj/spi.o (symbol from plugin)
+                                                  build/obj/mmc_spi.o (symbol from plugin)
+spiSend                                           build/obj/spi.o (symbol from plugin)
+                                                  build/obj/mmc_spi.o (symbol from plugin)
+spiStart                                          build/obj/spi.o (symbol from plugin)
+                                                  build/obj/mmc_spi.o (symbol from plugin)
+spiStartExchange                                  build/obj/spi.o (symbol from plugin)
+spiStartIgnore                                    build/obj/spi.o (symbol from plugin)
+spiStartReceive                                   build/obj/spi.o (symbol from plugin)
+spiStartSend                                      build/obj/spi.o (symbol from plugin)
+spiStop                                           build/obj/spi.o (symbol from plugin)
+                                                  build/obj/mmc_spi.o (symbol from plugin)
+spiUnselect                                       build/obj/spi.o (symbol from plugin)
+                                                  build/obj/mmc_spi.o (symbol from plugin)
+spi_lld_exchange                                  build/obj/spi_lld.o (symbol from plugin)
+                                                  build/obj/spi.o (symbol from plugin)
+spi_lld_ignore                                    build/obj/spi_lld.o (symbol from plugin)
+                                                  build/obj/spi.o (symbol from plugin)
+spi_lld_init                                      build/obj/spi_lld.o (symbol from plugin)
+                                                  build/obj/spi.o (symbol from plugin)
+spi_lld_polled_exchange                           build/obj/spi_lld.o (symbol from plugin)
+spi_lld_receive                                   build/obj/spi_lld.o (symbol from plugin)
+                                                  build/obj/spi.o (symbol from plugin)
+spi_lld_select                                    build/obj/spi_lld.o (symbol from plugin)
+                                                  build/obj/spi.o (symbol from plugin)
+spi_lld_send                                      build/obj/spi_lld.o (symbol from plugin)
+                                                  build/obj/spi.o (symbol from plugin)
+spi_lld_start                                     build/obj/spi_lld.o (symbol from plugin)
+                                                  build/obj/spi.o (symbol from plugin)
+spi_lld_stop                                      build/obj/spi_lld.o (symbol from plugin)
+                                                  build/obj/spi.o (symbol from plugin)
+spi_lld_unselect                                  build/obj/spi_lld.o (symbol from plugin)
+                                                  build/obj/spi.o (symbol from plugin)
+stGetAlarm                                        build/obj/st.o (symbol from plugin)
+stInit                                            build/obj/st.o (symbol from plugin)
+                                                  build/obj/hal.o (symbol from plugin)
+stSetAlarm                                        build/obj/st.o (symbol from plugin)
+stStartAlarm                                      build/obj/st.o (symbol from plugin)
+stStopAlarm                                       build/obj/st.o (symbol from plugin)
+st_lld_init                                       build/obj/st.o (symbol from plugin)
+uartInit                                          build/obj/uart.o (symbol from plugin)
+                                                  build/obj/hal.o (symbol from plugin)
+uartObjectInit                                    build/obj/uart.o (symbol from plugin)
+uartStart                                         build/obj/uart.o (symbol from plugin)
+uartStartReceive                                  build/obj/uart.o (symbol from plugin)
+uartStartReceiveI                                 build/obj/uart.o (symbol from plugin)
+uartStartSend                                     build/obj/uart.o (symbol from plugin)
+uartStartSendI                                    build/obj/uart.o (symbol from plugin)
+uartStop                                          build/obj/uart.o (symbol from plugin)
+uartStopReceive                                   build/obj/uart.o (symbol from plugin)
+uartStopReceiveI                                  build/obj/uart.o (symbol from plugin)
+uartStopSend                                      build/obj/uart.o (symbol from plugin)
+uartStopSendI                                     build/obj/uart.o (symbol from plugin)
+uart_lld_init                                     build/obj/uart_lld.o (symbol from plugin)
+                                                  build/obj/uart.o (symbol from plugin)
+uart_lld_start                                    build/obj/uart_lld.o (symbol from plugin)
+                                                  build/obj/uart.o (symbol from plugin)
+uart_lld_start_receive                            build/obj/uart_lld.o (symbol from plugin)
+                                                  build/obj/uart.o (symbol from plugin)
+uart_lld_start_send                               build/obj/uart_lld.o (symbol from plugin)
+                                                  build/obj/uart.o (symbol from plugin)
+uart_lld_stop                                     build/obj/uart_lld.o (symbol from plugin)
+                                                  build/obj/uart.o (symbol from plugin)
+uart_lld_stop_receive                             build/obj/uart_lld.o (symbol from plugin)
+                                                  build/obj/uart.o (symbol from plugin)
+uart_lld_stop_send                                build/obj/uart_lld.o (symbol from plugin)
+                                                  build/obj/uart.o (symbol from plugin)
+usbDisableEndpointsI                              build/obj/usb.o (symbol from plugin)
+usbInit                                           build/obj/usb.o (symbol from plugin)
+                                                  build/obj/hal.o (symbol from plugin)
+usbInitEndpointI                                  build/obj/usb.o (symbol from plugin)
+usbObjectInit                                     build/obj/usb.o (symbol from plugin)
+usbPrepareQueuedReceive                           build/obj/usb.o (symbol from plugin)
+                                                  build/obj/serial_usb.o (symbol from plugin)
+usbPrepareQueuedTransmit                          build/obj/usb.o (symbol from plugin)
+                                                  build/obj/serial_usb.o (symbol from plugin)
+usbPrepareReceive                                 build/obj/usb.o (symbol from plugin)
+usbPrepareTransmit                                build/obj/usb.o (symbol from plugin)
+usbStallReceiveI                                  build/obj/usb.o (symbol from plugin)
+usbStallTransmitI                                 build/obj/usb.o (symbol from plugin)
+usbStart                                          build/obj/usb.o (symbol from plugin)
+usbStartReceiveI                                  build/obj/usb.o (symbol from plugin)
+                                                  build/obj/serial_usb.o (symbol from plugin)
+usbStartTransmitI                                 build/obj/usb.o (symbol from plugin)
+                                                  build/obj/serial_usb.o (symbol from plugin)
+usbStop                                           build/obj/usb.o (symbol from plugin)
+usb_lld_clear_in                                  build/obj/usb_lld.o (symbol from plugin)
+                                                  build/obj/usb.o (symbol from plugin)
+usb_lld_clear_out                                 build/obj/usb_lld.o (symbol from plugin)
+                                                  build/obj/usb.o (symbol from plugin)
+usb_lld_disable_endpoints                         build/obj/usb_lld.o (symbol from plugin)
+                                                  build/obj/usb.o (symbol from plugin)
+usb_lld_get_status_in                             build/obj/usb_lld.o (symbol from plugin)
+                                                  build/obj/usb.o (symbol from plugin)
+usb_lld_get_status_out                            build/obj/usb_lld.o (symbol from plugin)
+                                                  build/obj/usb.o (symbol from plugin)
+usb_lld_init                                      build/obj/usb_lld.o (symbol from plugin)
+                                                  build/obj/usb.o (symbol from plugin)
+usb_lld_init_endpoint                             build/obj/usb_lld.o (symbol from plugin)
+                                                  build/obj/usb.o (symbol from plugin)
+usb_lld_prepare_receive                           build/obj/usb_lld.o (symbol from plugin)
+                                                  build/obj/usb.o (symbol from plugin)
+usb_lld_prepare_transmit                          build/obj/usb_lld.o (symbol from plugin)
+                                                  build/obj/usb.o (symbol from plugin)
+usb_lld_read_setup                                build/obj/usb_lld.o (symbol from plugin)
+                                                  build/obj/usb.o (symbol from plugin)
+usb_lld_reset                                     build/obj/usb_lld.o (symbol from plugin)
+                                                  build/obj/usb.o (symbol from plugin)
+usb_lld_set_address                               build/obj/usb_lld.o (symbol from plugin)
+                                                  build/obj/usb.o (symbol from plugin)
+usb_lld_stall_in                                  build/obj/usb_lld.o (symbol from plugin)
+                                                  build/obj/usb.o (symbol from plugin)
+usb_lld_stall_out                                 build/obj/usb_lld.o (symbol from plugin)
+                                                  build/obj/usb.o (symbol from plugin)
+usb_lld_start                                     build/obj/usb_lld.o (symbol from plugin)
+                                                  build/obj/usb.o (symbol from plugin)
+usb_lld_start_in                                  build/obj/usb_lld.o (symbol from plugin)
+                                                  build/obj/usb.o (symbol from plugin)
+usb_lld_start_out                                 build/obj/usb_lld.o (symbol from plugin)
+                                                  build/obj/usb.o (symbol from plugin)
+usb_lld_stop                                      build/obj/usb_lld.o (symbol from plugin)
+                                                  build/obj/usb.o (symbol from plugin)
