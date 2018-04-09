@@ -8,4 +8,30 @@
  */
 
 #include "headers/mod_motors.h"
+#include "motors.h"
+#include <arm_math.h>
 
+
+void mod_motors_init(void){
+    motors_init();
+}
+
+void mod_motors_state(int direction, int speed){
+    if(direction > 1000)
+        direction = 1000;
+    else if(direction < -1000)
+        direction = -1000;
+    
+    if(speed > 1100)
+        speed = 1100;
+    else if(speed < -1100)
+        speed = -1100;
+    
+    left_motor_set_speed(-speed * (direction-1000)/1000);
+    right_motor_set_speed(speed * (direction+1000)/1000);
+    
+}
+
+void mod_motors_stop(void){
+    mod_motors_state(.0, .0);
+}

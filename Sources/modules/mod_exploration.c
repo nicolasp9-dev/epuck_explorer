@@ -8,3 +8,24 @@
  */
 
 #include "headers/mod_exploration.h"
+
+
+// Our headers
+#include "mod_mapping.h"
+#include "mod_errors.h"
+#include "mod_sensors.h"
+
+void mod_explo_discoverArea(void){
+    
+    
+}
+
+void mod_explo_exploreArea(void){
+    
+    
+}
+
+void mod_explo_sortArea(void){
+    
+    
+}

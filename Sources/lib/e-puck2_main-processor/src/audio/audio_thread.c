@@ -106,7 +106,7 @@ void dac_play(uint16_t freq) {
 		dacStartConversion(&DACD2, &dac_conversion, dac_buffer, DAC_BUFFER_SIZE2);
 		gptStartContinuous(&GPTD6, STM32_TIMCLK1 / (freq*DAC_BUFFER_SIZE2));
 	} else {
-		gptChangeInterval(&GPTD6, STM32_TIMCLK1 / (freq*DAC_BUFFER_SIZE2));
+		(&GPTD6, STM32_TIMCLK1 / (freq*DAC_BUFFER_SIZE2));
 	}
 }
 

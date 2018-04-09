@@ -1,5 +1,4 @@
 build/obj/mod_audio.o: modules/mod_audio.c modules/headers/mod_audio.h \
- lib/e-puck2_main-processor/src/audio/play_melody.h \
  lib/e-puck2_main-processor/ChibiOS//os/rt/include/ch.h \
  lib/e-puck2_main-processor/ChibiOS//os/rt/ports/ARMCMx/compilers/GCC/chtypes.h \
  /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/lib/gcc/arm-none-eabi/7.2.1/include/stddef.h \
@@ -46,6 +45,7 @@ build/obj/mod_audio.o: modules/mod_audio.c modules/headers/mod_audio.h \
  lib/e-puck2_main-processor/ChibiOS//os/rt/include/chdynamic.h \
  lib/e-puck2_main-processor/ChibiOS//os/rt/include/chqueues.h \
  lib/e-puck2_main-processor/ChibiOS//os/rt/include/chstreams.h \
+ lib/e-puck2_main-processor/src/audio/play_melody.h \
  lib/e-puck2_main-processor/ChibiOS//os/hal/include/hal.h \
  lib/e-puck2_main-processor/ChibiOS//os/hal/osal/rt/osal.h \
  lib/e-puck2_main-processor/src/halconf.h \
@@ -100,11 +100,30 @@ build/obj/mod_audio.o: modules/mod_audio.c modules/headers/mod_audio.h \
  lib/e-puck2_main-processor/src/mcuconf.h \
  lib/e-puck2_main-processor/ChibiOS_ext/os/hal/ports/STM32/STM32F4xx/stm32_registry.h \
  lib/e-puck2_main-processor/ChibiOS//os/hal/include/mmc_spi.h \
- lib/e-puck2_main-processor/ChibiOS//os/hal/include/serial_usb.h
+ lib/e-puck2_main-processor/ChibiOS//os/hal/include/serial_usb.h \
+ lib/e-puck2_main-processor/src/audio/microphone.h \
+ lib/e-puck2_main-processor/src/audio/mp45dt02_processing.h \
+ modules/from_tp/fft.h \
+ lib/e-puck2_main-processor/ChibiOS//os/ext/CMSIS/include/arm_math.h \
+ lib/e-puck2_main-processor/ChibiOS//os/ext/CMSIS/include/core_cm4.h \
+ /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/string.h \
+ /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/_ansi.h \
+ /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/newlib.h \
+ /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/config.h \
+ /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/machine/ieeefp.h \
+ /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/reent.h \
+ /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/_ansi.h \
+ /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/_types.h \
+ /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/machine/_types.h \
+ /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/lock.h \
+ /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/cdefs.h \
+ /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/xlocale.h \
+ /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/strings.h \
+ /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/string.h \
+ /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/math.h \
+ modules/headers/mod_errors.h
 
 modules/headers/mod_audio.h:
-
-lib/e-puck2_main-processor/src/audio/play_melody.h:
 
 lib/e-puck2_main-processor/ChibiOS//os/rt/include/ch.h:
 
@@ -197,6 +216,8 @@ lib/e-puck2_main-processor/ChibiOS//os/rt/include/chdynamic.h:
 lib/e-puck2_main-processor/ChibiOS//os/rt/include/chqueues.h:
 
 lib/e-puck2_main-processor/ChibiOS//os/rt/include/chstreams.h:
+
+lib/e-puck2_main-processor/src/audio/play_melody.h:
 
 lib/e-puck2_main-processor/ChibiOS//os/hal/include/hal.h:
 
@@ -307,3 +328,45 @@ lib/e-puck2_main-processor/ChibiOS_ext/os/hal/ports/STM32/STM32F4xx/stm32_regist
 lib/e-puck2_main-processor/ChibiOS//os/hal/include/mmc_spi.h:
 
 lib/e-puck2_main-processor/ChibiOS//os/hal/include/serial_usb.h:
+
+lib/e-puck2_main-processor/src/audio/microphone.h:
+
+lib/e-puck2_main-processor/src/audio/mp45dt02_processing.h:
+
+modules/from_tp/fft.h:
+
+lib/e-puck2_main-processor/ChibiOS//os/ext/CMSIS/include/arm_math.h:
+
+lib/e-puck2_main-processor/ChibiOS//os/ext/CMSIS/include/core_cm4.h:
+
+/Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/string.h:
+
+/Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/_ansi.h:
+
+/Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/newlib.h:
+
+/Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/config.h:
+
+/Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/machine/ieeefp.h:
+
+/Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/reent.h:
+
+/Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/_ansi.h:
+
+/Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/_types.h:
+
+/Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/machine/_types.h:
+
+/Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/lock.h:
+
+/Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/cdefs.h:
+
+/Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/xlocale.h:
+
+/Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/strings.h:
+
+/Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/string.h:
+
+/Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/math.h:
+
+modules/headers/mod_errors.h:

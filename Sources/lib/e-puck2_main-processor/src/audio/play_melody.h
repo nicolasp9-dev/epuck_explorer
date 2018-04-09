@@ -113,6 +113,7 @@ typedef enum{
 	MARIO = 0,
 	UNDERWORLD,
 	STARWARS,
+    ALERT,
 	NB_SONGS
 }song_selection_t;
 

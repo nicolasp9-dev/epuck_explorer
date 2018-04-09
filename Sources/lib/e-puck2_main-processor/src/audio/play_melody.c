@@ -141,6 +141,20 @@ static float starwars_tempo[] = {
 	4.8, 12, 3.6, 4.8, 12, 3.6
 };
 
+//Alert melody
+static uint16_t alert_melody[] = {
+    NOTE_G4, NOTE_B4, NOTE_D5, NOTE_G5, NOTE_B5,0,
+    NOTE_GS4, NOTE_C4, NOTE_DS5, NOTE_GS5, NOTE_C5,0,
+    NOTE_A5, NOTE_D4, NOTE_F5, NOTE_AS5, NOTE_D5
+};
+
+//Alert tempo
+static float alert_tempo[] = {
+    25, 25, 25, 25, 25,100,
+    25, 25, 25, 25, 25,100,
+    25, 25, 25, 25, 25
+};
+
 melody_t melody[NB_SONGS] = {
 	//MARIO
 	{
@@ -161,10 +175,17 @@ melody_t melody[NB_SONGS] = {
 		.tempo = starwars_tempo,
 		.length = sizeof(starwars_melody)/sizeof(uint16_t),
 	},
+    //ALERT
+    {
+        .notes = alert_melody,
+        .tempo = alert_tempo,
+        .length = sizeof(alert_melody)/sizeof(uint16_t),
+        
+    },
 };
 
 void play_note(uint16_t note, uint16_t duration_ms) {
-
+    dac_start();
 	if(note != 0){
 		dac_play(note);
 	}

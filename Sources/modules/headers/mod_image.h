@@ -6,3 +6,13 @@
  * Written by Maxime Marchionno and Nicolas Peslerbe, April 2018
  * MICRO-315 | École Polytechnique Fédérale de Lausanne
  */
+
+
+#ifndef _MOD_IMAGE_
+#define _MOD_IMAGE_
+
+void mod_img_init(void);
+
+void mod_image_capture(void);
+#endif
+
