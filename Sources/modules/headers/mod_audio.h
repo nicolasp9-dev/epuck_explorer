@@ -39,7 +39,9 @@ typedef enum{
     CMD_SORTING
 } command_t;
 
-// Public accès to variable in source file
+/**
+ * @brief Public accès to variable in source file
+ */
 extern binary_semaphore_t mod_audio_sem_commandAvailable;
 extern command_t mod_audio_processedCommand;
 
@@ -79,11 +81,5 @@ void mod_audio_listenForSound(void);
  */
 void mod_audio_stopListenForSound(void);
 
-/**
- * @brief Process audio datas to identify desired command
- *
- * @param[out] The identified command by the programm
- */
-command_t mod_audio_getCommand(void);
 
 #endif

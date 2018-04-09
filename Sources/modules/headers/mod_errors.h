@@ -11,6 +11,9 @@
 #ifndef _MOD_ERRORS_
 #define _MOD_ERRORS_
 
+/**
+ * @brief   List of possible errors, usefull to identify which error is happening
+ */
 typedef enum {
     ASSERT_ERROR=1, // Error 1 - General
     CONV_OVERFLOW, // Error 2 - mod_secure_conv.c
@@ -19,7 +22,10 @@ typedef enum {
     NO_COMMAND, // Error 5 - main.c
 } error_t;
 
+/**
+ * @brief   Function to inform the user of a critical error with an error code
+ *          that correspond to the number of front led blink.
+ */
 void error(error_t type);
-
 
 #endif

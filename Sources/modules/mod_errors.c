@@ -12,6 +12,10 @@
 #include "headers/mod_errors.h"
 #include "headers/mod_basicIO.h"
 
+/********************
+ *  Public functions (Informations in header)
+ */
+
 void error(error_t type){
     while(1){
         mod_basicIO_alert_leds(type);

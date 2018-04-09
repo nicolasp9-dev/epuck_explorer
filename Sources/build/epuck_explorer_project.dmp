@@ -56,21 +56,21 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY
  17 .comment      0000015e  00000000  00000000  00031591  2**0
                   CONTENTS, READONLY
- 18 .debug_info   000dc5a6  00000000  00000000  000316ef  2**0
+ 18 .debug_info   000dc582  00000000  00000000  000316ef  2**0
                   CONTENTS, READONLY, DEBUGGING
- 19 .debug_abbrev 0000edae  00000000  00000000  0010dc95  2**0
+ 19 .debug_abbrev 0000ed85  00000000  00000000  0010dc71  2**0
                   CONTENTS, READONLY, DEBUGGING
- 20 .debug_aranges 000018f8  00000000  00000000  0011ca48  2**3
+ 20 .debug_aranges 000018f0  00000000  00000000  0011c9f8  2**3
                   CONTENTS, READONLY, DEBUGGING
- 21 .debug_ranges 000036a8  00000000  00000000  0011e340  2**0
+ 21 .debug_ranges 000036a0  00000000  00000000  0011e2e8  2**0
                   CONTENTS, READONLY, DEBUGGING
- 22 .debug_line   000268e1  00000000  00000000  001219e8  2**0
+ 22 .debug_line   000268cf  00000000  00000000  00121988  2**0
                   CONTENTS, READONLY, DEBUGGING
- 23 .debug_str    00008303  00000000  00000000  001482c9  2**0
+ 23 .debug_str    000082ee  00000000  00000000  00148257  2**0
                   CONTENTS, READONLY, DEBUGGING
- 24 .debug_frame  0000753c  00000000  00000000  001505cc  2**2
+ 24 .debug_frame  0000751c  00000000  00000000  00150548  2**2
                   CONTENTS, READONLY, DEBUGGING
- 25 .debug_loc    00014f23  00000000  00000000  00157b08  2**0
+ 25 .debug_loc    00014f23  00000000  00000000  00157a64  2**0
                   CONTENTS, READONLY, DEBUGGING
 SYMBOL TABLE:
 08000000 l    d  startup	00000000 startup
@@ -133,8 +133,8 @@ e000ed04 l       *ABS*	00000000 SCB_ICSR
 00000000 l    df *ABS*	00000000 main.c
 00000000 l    df *ABS*	00000000 mod_basicIO.c
 00000000 l    df *ABS*	00000000 mod_audio.c
-20004566 l     O .bss	00000002 nb_samples.12903
-20004568 l     O .bss	00000001 process.12904
+20004566 l     O .bss	00000002 nb_samples.12901
+20004568 l     O .bss	00000001 process.12902
 0800e6b0 l     O .text	0000000c __func__.7153
 00000000 l    df *ABS*	00000000 mod_errors.c
 00000000 l    df *ABS*	00000000 fft.c

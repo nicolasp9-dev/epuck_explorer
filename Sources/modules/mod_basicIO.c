@@ -8,10 +8,20 @@
  */
 
 #include "headers/mod_basicIO.h"
+
+// Epuck/ChibiOS headers
 #include "leds.h"
 
-#define ON  1
-#define OFF 0
+
+#define ON              1
+#define OFF             0
+
+#define ERROR_TIME_ON   500
+#define ERROR_TIME_OFF  300
+
+/********************
+ *  Public functions (Informations in header)
+ */
 
 void mod_basicIO_changeRobotState(state_t state){
     switch(state){
@@ -30,10 +40,10 @@ void mod_basicIO_alert_leds(int numberofblinking){
     clear_leds();
     int i = 0;
     for(i=1; i <=numberofblinking;i++){
-        set_front_led(0);
-        chThdSleepMilliseconds(300);
-        set_front_led(1);
-        chThdSleepMilliseconds(500);
+        set_front_led(OFF);
+        chThdSleepMilliseconds(ERROR_TIME_OFF);
+        set_front_led(ON);
+        chThdSleepMilliseconds(ERROR_TIME_ON);
     }
-    set_front_led(0);
+    set_front_led(OFF);
 }

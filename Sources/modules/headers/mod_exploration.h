@@ -12,17 +12,18 @@
 #define _MOD_EXPLORATION_
 
 /**
- * @brief
+ * @brief Discover the area to find borders, repport it into the mapping
  */
 void mod_explo_discoverArea(void);
 
 /**
- * @brief
+ * @brief   Explore the area to find objects, send image for processing
+ *          and repport everything int the mapping
  */
 void mod_explo_exploreArea(void);
 
 /**
- * @brief
+ * @brief   Move object depending of their classification
  */
 void mod_explo_sortArea(void);
 

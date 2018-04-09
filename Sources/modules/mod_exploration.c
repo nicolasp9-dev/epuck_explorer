@@ -15,6 +15,16 @@
 #include "mod_errors.h"
 #include "mod_sensors.h"
 
+
+/********************
+ *  Private functions
+ */
+
+
+/********************
+ *  Public functions
+ */
+
 void mod_explo_discoverArea(void){
     
     

@@ -11,8 +11,14 @@
 #ifndef _MOD_IMAGE_
 #define _MOD_IMAGE_
 
+/**
+ * @brief Initialize the video device
+ */
 void mod_img_init(void);
 
+/**
+ * @brief 
+ */
 void mod_image_capture(void);
 #endif
 

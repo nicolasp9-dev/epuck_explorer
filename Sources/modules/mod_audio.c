@@ -38,16 +38,21 @@
 #define FREQ_CMD_SORTING_L      (FREQ_CMD_SORTING-1)
 #define FREQ_CMD_SORTING_H      (FREQ_CMD_SORTING+1)
 
+/********************
+ *  Public variables
+ */
 
-//Semaphores
 BSEMAPHORE_DECL(mod_audio_sem_commandAvailable, TRUE);
-//2 time FFT_SIZE because these arrays contain complex numbers (real + imaginary)
+command_t mod_audio_processedCommand;
+
+
+/********************
+ *  Private variables
+ */
+
 float micFront_cmplx_input[2 * FFT_SIZE];
-//Arrays containing the computed magnitude of the complex numbers
 float micFront_output[FFT_SIZE];
 
-// Command to do, from mic
-command_t mod_audio_processedCommand;
 
 /********************
  *  Private functions
@@ -188,7 +193,3 @@ void mod_audio_stopListenForSound(void){
     
 }
 
-command_t mod_audio_getCommand(void){
-    
-    
-}

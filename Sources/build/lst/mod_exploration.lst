@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccnjdtku.s 			page 1
+ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -29,7 +29,7 @@ ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccnjdtku.s 			page 1
   26              	mod_explo_discoverArea:
   27              	.LFB0:
   28              		.file 1 "./modules/mod_exploration.c"
-  29              		.loc 1 18 0
+  29              		.loc 1 28 0
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 8
   32              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -39,10 +39,10 @@ ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccnjdtku.s 			page 1
   36 0002 064B     		ldr	r3, .L6
   37 0004 83B0     		sub	sp, sp, #12
   38              		.cfi_def_cfa_offset 16
-  39              		.loc 1 18 0
+  39              		.loc 1 28 0
   40 0006 1A68     		ldr	r2, [r3]
   41 0008 0192     		str	r2, [sp, #4]
-  42              		.loc 1 21 0
+  42              		.loc 1 31 0
   43 000a 019A     		ldr	r2, [sp, #4]
   44 000c 1B68     		ldr	r3, [r3]
   45 000e 9A42     		cmp	r2, r3
@@ -58,7 +58,7 @@ ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccnjdtku.s 			page 1
   55              	.LVL0:
   56              	.L7:
   57              		.align	2
-ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccnjdtku.s 			page 2
+ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s 			page 2
 
 
   58              	.L6:
@@ -118,7 +118,7 @@ ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccnjdtku.s 			page 1
  112              		.type	mod_explo_sortArea, %function
  113              	mod_explo_sortArea:
  114              	.LFB6:
-ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccnjdtku.s 			page 3
+ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s 			page 3
 
 
  115              		.cfi_startproc
@@ -174,18 +174,18 @@ ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccnjdtku.s 			page 1
  165 002c 03       		.uleb128 0x3
  166 002d 00000000 		.4byte	.LASF0
  167 0031 01       		.byte	0x1
- 168 0032 1C       		.byte	0x1c
+ 168 0032 26       		.byte	0x26
  169 0033 03       		.uleb128 0x3
  170 0034 EB010000 		.4byte	.LASF1
  171 0038 01       		.byte	0x1
-ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccnjdtku.s 			page 4
+ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s 			page 4
 
 
- 172 0039 17       		.byte	0x17
+ 172 0039 21       		.byte	0x21
  173 003a 04       		.uleb128 0x4
  174 003b B8010000 		.4byte	.LASF6
  175 003f 01       		.byte	0x1
- 176 0040 12       		.byte	0x12
+ 176 0040 1C       		.byte	0x1c
  177 0041 01       		.byte	0x1
  178 0042 05       		.uleb128 0x5
  179 0043 3A000000 		.4byte	0x3a
@@ -238,7 +238,7 @@ ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccnjdtku.s 			page 1
  226 001f 2E       		.uleb128 0x2e
  227 0020 00       		.byte	0
  228 0021 3F       		.uleb128 0x3f
-ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccnjdtku.s 			page 5
+ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s 			page 5
 
 
  229 0022 19       		.uleb128 0x19
@@ -298,7 +298,7 @@ ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccnjdtku.s 			page 1
  283 005b 07       		.uleb128 0x7
  284 005c 2E       		.uleb128 0x2e
  285 005d 00       		.byte	0
-ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccnjdtku.s 			page 6
+ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s 			page 6
 
 
  286 005e 3F       		.uleb128 0x3f
@@ -358,7 +358,7 @@ ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccnjdtku.s 			page 1
  323      2D6D6670 
  323      753D6670 
  323      76342D73 
-ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccnjdtku.s 			page 7
+ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s 			page 7
 
 
  323      702D6431 
@@ -418,7 +418,7 @@ ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccnjdtku.s 			page 1
  338      7200
  339              	.LASF7:
  340 020f 5F5F7374 		.ascii	"__stack_chk_fail\000"
-ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccnjdtku.s 			page 8
+ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s 			page 8
 
 
  340      61636B5F 
@@ -426,20 +426,20 @@ ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccnjdtku.s 			page 1
  340      6661696C 
  340      00
  341              		.ident	"GCC: (GNU Tools for Arm Embedded Processors 7-2017-q4-major) 7.2.1 20170904 (release) [ARM
-ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccnjdtku.s 			page 9
+ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s 			page 9
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 mod_exploration.c
-/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccnjdtku.s:18     .text.mod_explo_discoverArea:0000000000000000 $t
-/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccnjdtku.s:26     .text.mod_explo_discoverArea:0000000000000000 mod_explo_discoverArea
-/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccnjdtku.s:59     .text.mod_explo_discoverArea:000000000000001c $d
-/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccnjdtku.s:64     .text.mod_explo_exploreArea:0000000000000000 $t
-/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccnjdtku.s:72     .text.mod_explo_exploreArea:0000000000000000 mod_explo_exploreArea
-/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccnjdtku.s:100    .text.mod_explo_exploreArea:000000000000001c $d
-/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccnjdtku.s:105    .text.mod_explo_sortArea:0000000000000000 $t
-/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccnjdtku.s:113    .text.mod_explo_sortArea:0000000000000000 mod_explo_sortArea
-/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccnjdtku.s:141    .text.mod_explo_sortArea:000000000000001c $d
+/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s:18     .text.mod_explo_discoverArea:0000000000000000 $t
+/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s:26     .text.mod_explo_discoverArea:0000000000000000 mod_explo_discoverArea
+/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s:59     .text.mod_explo_discoverArea:000000000000001c $d
+/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s:64     .text.mod_explo_exploreArea:0000000000000000 $t
+/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s:72     .text.mod_explo_exploreArea:0000000000000000 mod_explo_exploreArea
+/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s:100    .text.mod_explo_exploreArea:000000000000001c $d
+/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s:105    .text.mod_explo_sortArea:0000000000000000 $t
+/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s:113    .text.mod_explo_sortArea:0000000000000000 mod_explo_sortArea
+/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s:141    .text.mod_explo_sortArea:000000000000001c $d
 
 UNDEFINED SYMBOLS
 __stack_chk_fail
