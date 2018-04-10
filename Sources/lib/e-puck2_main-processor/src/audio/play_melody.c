@@ -22,7 +22,7 @@ typedef struct{
 }melody_t;
 
 static thread_reference_t play_melody_ref = NULL;
-static bool play = true;
+static bool play = false;
 
 //Mario main theme melody
 static uint16_t mario_melody[] = {
@@ -207,12 +207,12 @@ static THD_FUNCTION(PlayMelodyThd, arg) {
 		chSysLock();
 		song = (melody_t*) chThdSuspendS(&play_melody_ref);
 		chSysUnlock();
-
+        
 		for (int thisNote = 0; thisNote < song->length; thisNote++) {
 
-      if(!play){
-        break;
-      }
+            if(!play){
+                break;
+            }
 
 			// to calculate the note duration, take one second
 			// divided by the note type.
@@ -225,12 +225,8 @@ static THD_FUNCTION(PlayMelodyThd, arg) {
 			// the note's duration + 30% seems to work well:
 			uint16_t pauseBetweenNotes = (uint16_t)(noteDuration * 1.30);
 			chThdSleepMilliseconds(pauseBetweenNotes);
-
 		}
 	}
-
-	
-	
 }
 
 void play_melody_start(void){
@@ -246,7 +242,7 @@ void play_melody(song_selection_t choice){
 	//if the refercence is NULL, then the thread is already running
 	//when the refercence becomes not NULL, it means the thread is waiting
 	if(play_melody_ref != NULL){
-    play = true;
+        play = true;
 		//tell the thread to play the song given
 		chThdResume(&play_melody_ref, (msg_t) song);
 	}

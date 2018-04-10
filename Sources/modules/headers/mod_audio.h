@@ -18,15 +18,25 @@
 typedef enum{
     DISCOVERING=0,
     EXPLORATION,
+    EXPLORATION_FAST,
     SORTING
 } music_t;
+
+/**
+ * @brief Playing modes
+ */
+typedef enum{
+    REPEAT=0,
+    SINGLE
+} playMode_t;
 
 /**
  * @brief Alert names
  */
 typedef enum{
     SHORT=0,
-    LONG
+    LONG,
+    IMPOSSIBLE
 } alert_t;
 
 /**
@@ -36,7 +46,9 @@ typedef enum{
     NOTHING=0,
     CMD_DISCOVERING,
     CMD_EXPLORATION,
-    CMD_SORTING
+    CMD_SORTING,
+    CMD_MAPSEND,
+    CMD_SING
 } command_t;
 
 /**

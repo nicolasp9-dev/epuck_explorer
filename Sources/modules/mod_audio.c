@@ -29,7 +29,9 @@
 #define FREQ_CMD_DISCOVERING    16    //250Hz
 #define FREQ_CMD_EXPLORATION    19    //296Hz
 #define FREQ_CMD_SORTING        23    //359HZ
-#define MAX_FREQ                25    //we don't analyze after this index to not use resources for nothing
+#define FREQ_CMD_MAPSEND        26    //406HZ
+#define FREQ_CMD_SING           29    //452HZ
+#define MAX_FREQ                32    //we don't analyze after this index to not use resources for nothing
 
 #define FREQ_CMD_DISCOVERING_L  (FREQ_CMD_DISCOVERING-1)
 #define FREQ_CMD_DISCOVERING_H  (FREQ_CMD_DISCOVERING+1)
@@ -37,6 +39,10 @@
 #define FREQ_CMD_EXPLORATION_H  (FREQ_CMD_EXPLORATION+1)
 #define FREQ_CMD_SORTING_L      (FREQ_CMD_SORTING-1)
 #define FREQ_CMD_SORTING_H      (FREQ_CMD_SORTING+1)
+#define FREQ_CMD_MAPSEND_L      (FREQ_CMD_MAPSEND-1)
+#define FREQ_CMD_MAPSEND_H      (FREQ_CMD_MAPSEND+1)
+#define FREQ_CMD_SING_L         (FREQ_CMD_SING-1)
+#define FREQ_CMD_SING_H         (FREQ_CMD_SING+1)
 
 /********************
  *  Public variables
@@ -85,6 +91,12 @@ void action_detection(float* data){
 
     else if(max_norm_index >= FREQ_CMD_SORTING_L && max_norm_index <= FREQ_CMD_SORTING_H){
         mod_audio_processedCommand = CMD_SORTING;
+    }
+    else if(max_norm_index >= FREQ_CMD_MAPSEND_L && max_norm_index <= FREQ_CMD_MAPSEND_H){
+        mod_audio_processedCommand = CMD_MAPSEND;
+    }
+    else if(max_norm_index >= FREQ_CMD_SING_L && max_norm_index <= FREQ_CMD_SING_H){
+        mod_audio_processedCommand = CMD_SING;
     }
     else{
         mod_audio_processedCommand = NOTHING;

@@ -25,6 +25,8 @@
 #include "mod_basicIO.h"
 #include "mod_audio.h"
 #include "mod_errors.h"
+#include "mod_exploration.h"
+
 
 //Semaphores
 BSEMAPHORE_DECL(sem_wip, FALSE);
@@ -38,32 +40,128 @@ typedef struct{
 history_t history = {0,0,0};
 
 
-_Bool actionChoice(void){
+/**
+ * @brief Launch the exploration of the area
+ *
+ * @note It blocks the thread until the end of the action
+ */
+void exploration(){
+    if(history.exploration > 0){
+        mod_audio_launchMelodyOnThread(EXPLORATION_FAST, REPEAT);
+        mod_explo_explorateTheAreaOnThread(CONTINUE);
+        mod_explo_waitUntilEndOfWork();
+        mod_audio_interruptMelody();
+    }
+    else{
+        mod_audio_launchMelodyOnThread(EXPLORATION, REPEAT);
+        mod_explo_explorateTheAreaOnThread(NEW);
+        mod_explo_waitUntilEndOfWork();
+        mod_audio_interruptMelody();
+    }
+    
+    history.exploration +=1;
+}
+
+
+/**
+ * @brief Launch the discovering of the area
+ *
+ * @note It blocks the thread until the end of the action
+ */
+void discovering(){
+    history = {0,0,0};
+    mod_audio_launchMelodyOnThread(DISCOVERING, REPEAT);
+    mod_explo_discoverTheAreaOnThread();
+    mod_explo_waitUntilEndOfWork();
+    mod_audio_interruptMelody();
+    
+    history.discovering +=1;
+}
+
+/**
+ * @brief Launch the sorting on the area
+ *
+ * @note It blocks the thread until the end of the action
+ */
+void sorting(){
+    mod_audio_launchMelodyOnThread(SORTING, REPEAT);
+    mod_explo_sortTheAreaOnThread();
+    mod_explo_waitUntilEndOfWork();
+    mod_audio_interruptMelody();
+    history.sorting +=1;
+}
+
+/**
+ * @brief Launch the action that play StarWars song
+ *
+ * @note It blocks the thread until the end of the action
+ */
+void song(){
+    mod_audio_launchMelodyOnThread(STARWARS);
+    mod_audio_waitUntilMelodyEnd();
+}
+
+/**
+ * @brief Launch the action that send the map to the user
+ *
+ * @note It blocks the thread until the end of the action
+ */
+void sendMap(){
+    mod_explo_sendTheMap();
+}
+
+/**
+ * @brief Launch the action to do based on audio feedback
+ *
+ * @note The robot emit a different audio signal if the action is not possible (dependent on a previous one)
+ */
+void actionChoice(void){
 
     switch(mod_audio_processedCommand){
         case CMD_DISCOVERING :
             
+            discovering();
             break;
+        
         case CMD_EXPLORATION :
             
+            if(history.discovering > 0) { exploration(); }
+            else{ mod_audio_alertInterruption(IMPOSSIBLE); return; }
             break;
+        
         case CMD_SORTING :
             
+            if(history.discovering > 0 && history.exploration > 0 && history.sorting == 0){ sorting(); }
+            else{ mod_audio_alertInterruption(IMPOSSIBLE); return; }
             break;
+        
+        case CMD_MAPSEND :
+            
+            if(history.discovering > 0){ sendMap(); }
+            else{ mod_audio_alertInterruption(IMPOSSIBLE); return; }
+            break;
+            
+        case CMD_SING :
+            
+            song();
+            break;
+        
         default :
-            error(NO_COMMAND);
+            mod_audio_alertInterruption(IMPOSSIBLE);
+            //error(NO_COMMAND);
+            return;
     }
-    return 0;
+    
+    mod_audio_alertInterruption(LONG);
 }
 
 
 int main(void)
 {
-
-    
     halInit();
     chSysInit();
     mpu_init();
+    mod_audio_initModule();
 
     while (1) {
         _Bool commandOK = 0;
