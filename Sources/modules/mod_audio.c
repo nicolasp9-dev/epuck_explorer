@@ -25,13 +25,13 @@
 
 #define MIN_VALUE_THRESHOLD     10000
 
-#define MIN_FREQ                10    //we don't analyze before this index to not use resources for nothing
+#define MIN_FREQ                10    
 #define FREQ_CMD_DISCOVERING    16    //250Hz
 #define FREQ_CMD_EXPLORATION    19    //296Hz
 #define FREQ_CMD_SORTING        23    //359HZ
 #define FREQ_CMD_MAPSEND        26    //406HZ
 #define FREQ_CMD_SING           29    //452HZ
-#define MAX_FREQ                32    //we don't analyze after this index to not use resources for nothing
+#define MAX_FREQ                32
 
 #define FREQ_CMD_DISCOVERING_L  (FREQ_CMD_DISCOVERING-1)
 #define FREQ_CMD_DISCOVERING_H  (FREQ_CMD_DISCOVERING+1)

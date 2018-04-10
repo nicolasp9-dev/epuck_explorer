@@ -52,7 +52,7 @@ typedef enum{
 } command_t;
 
 /**
- * @brief Public accès to variable in source file
+ * @brief Public access to variable in source file
  */
 extern binary_semaphore_t mod_audio_sem_commandAvailable;
 extern command_t mod_audio_processedCommand;
