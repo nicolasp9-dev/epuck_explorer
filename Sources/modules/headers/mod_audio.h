@@ -19,7 +19,8 @@ typedef enum{
     DISCOVERING=0,
     EXPLORATION,
     EXPLORATION_FAST,
-    SORTING
+    SORTING,
+    MUSIC
 } music_t;
 
 /**
@@ -69,7 +70,7 @@ void mod_audio_initModule(void);
  *
  * @param[in] musicName     The name of the melody to play
  */
-void mod_audio_launchMelody(music_t);
+void mod_audio_launchMelodyOnThread(music_t, playMode_t);
 
 /**
  * @brief Play the alert after stoping the current melody (if it's playing)
@@ -92,6 +93,8 @@ void mod_audio_listenForSound(void);
  * @brief The robot stop listening for external sounds
  */
 void mod_audio_stopListenForSound(void);
+
+void mod_audio_waitUntilMelodyEnd(void);
 
 
 #endif

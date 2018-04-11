@@ -21,11 +21,11 @@ CSRC += ./main.c \
         ./modules/mod_check.c \
         ./modules/mod_errors.c \
         ./modules/mod_secure_conv.c \
-        ./modules/from_tp/fft.c
-
+        ./modules/from_tp/fft.c 
 #Header folders to include
 INCDIR += modules/headers
 INCDIR += modules/from_tp
+
 
 #Jump to the main Makefile
 include $(GLOBAL_PATH)/Makefile

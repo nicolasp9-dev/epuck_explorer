@@ -25,17 +25,23 @@
  *  Public functions
  */
 
-void mod_explo_discoverArea(void){
-    
+
+void mod_explo_discoverTheAreaOnThread(void){
     
 }
 
-void mod_explo_exploreArea(void){
-    
+void mod_explo_explorateTheAreaOnThread(exploration_t type){
     
 }
 
-void mod_explo_sortArea(void){
+void mod_explo_sortTheAreaOnThread(void){
     
+}
+
+void mod_explo_sendTheMap(void){
+    
+}
+
+void mod_explo_waitUntilEndOfWork(void){
     
 }

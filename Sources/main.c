@@ -26,6 +26,7 @@
 #include "mod_audio.h"
 #include "mod_errors.h"
 #include "mod_exploration.h"
+#include "mod_communication.h"
 
 
 //Semaphores
@@ -45,7 +46,9 @@ history_t history = {0,0,0};
  *
  * @note It blocks the thread until the end of the action
  */
-void exploration(){
+void exploration(void){
+    mod_basicIO_changeRobotState(WIP);
+    
     if(history.exploration > 0){
         mod_audio_launchMelodyOnThread(EXPLORATION_FAST, REPEAT);
         mod_explo_explorateTheAreaOnThread(CONTINUE);
@@ -68,8 +71,10 @@ void exploration(){
  *
  * @note It blocks the thread until the end of the action
  */
-void discovering(){
-    history = {0,0,0};
+void discovering(void){
+    mod_basicIO_changeRobotState(WIP);
+    
+    history=  (history_t){0,0,0};
     mod_audio_launchMelodyOnThread(DISCOVERING, REPEAT);
     mod_explo_discoverTheAreaOnThread();
     mod_explo_waitUntilEndOfWork();
@@ -83,7 +88,9 @@ void discovering(){
  *
  * @note It blocks the thread until the end of the action
  */
-void sorting(){
+void sorting(void){
+    mod_basicIO_changeRobotState(WIP);
+
     mod_audio_launchMelodyOnThread(SORTING, REPEAT);
     mod_explo_sortTheAreaOnThread();
     mod_explo_waitUntilEndOfWork();
@@ -96,8 +103,10 @@ void sorting(){
  *
  * @note It blocks the thread until the end of the action
  */
-void song(){
-    mod_audio_launchMelodyOnThread(STARWARS);
+void song(void){
+    mod_basicIO_changeRobotState(WIP);
+    
+    mod_audio_launchMelodyOnThread(MUSIC, SINGLE);
     mod_audio_waitUntilMelodyEnd();
 }
 
@@ -106,7 +115,7 @@ void song(){
  *
  * @note It blocks the thread until the end of the action
  */
-void sendMap(){
+void sendMap(void){
     mod_explo_sendTheMap();
 }
 
@@ -126,19 +135,32 @@ void actionChoice(void){
         case CMD_EXPLORATION :
             
             if(history.discovering > 0) { exploration(); }
-            else{ mod_audio_alertInterruption(IMPOSSIBLE); return; }
+            else{
+                
+                mod_audio_alertInterruption(IMPOSSIBLE);
+                mod_audio_waitUntilMelodyEnd();
+                return;
+            }
             break;
         
         case CMD_SORTING :
             
             if(history.discovering > 0 && history.exploration > 0 && history.sorting == 0){ sorting(); }
-            else{ mod_audio_alertInterruption(IMPOSSIBLE); return; }
+            else{
+                mod_audio_alertInterruption(IMPOSSIBLE);
+                mod_audio_waitUntilMelodyEnd();
+                return;
+            }
             break;
         
         case CMD_MAPSEND :
             
             if(history.discovering > 0){ sendMap(); }
-            else{ mod_audio_alertInterruption(IMPOSSIBLE); return; }
+            else{
+                mod_audio_alertInterruption(IMPOSSIBLE);
+                mod_audio_waitUntilMelodyEnd();
+                return;
+            }
             break;
             
         case CMD_SING :
@@ -148,7 +170,7 @@ void actionChoice(void){
         
         default :
             mod_audio_alertInterruption(IMPOSSIBLE);
-            //error(NO_COMMAND);
+            mod_audio_waitUntilMelodyEnd();
             return;
     }
     
@@ -162,17 +184,19 @@ int main(void)
     chSysInit();
     mpu_init();
     mod_audio_initModule();
-
+    mod_com_initConnexion();
     while (1) {
-        _Bool commandOK = 0;
+        mod_com_writeDatas("Info", "Processing loop",0);
+        //Bool commandOK = 0;
         mod_basicIO_changeRobotState(WAITING);
-        while(!commandOK){
-            mod_audio_listenForSound();
-            chBSemWait(&mod_audio_sem_commandAvailable);
-            actionChoice();
-        }
-        mod_basicIO_changeRobotState(WIP);
-        commandOK = chBSemWait(&sem_wip);
+        //while(!commandOK){
+        mod_audio_listenForSound();
+        chBSemWait(&mod_audio_sem_commandAvailable);
+        actionChoice();
+        mod_audio_processedCommand = NOTHING;
+        //}
+        
+        //commandOK = chBSemWait(&sem_wip);
     }
 }
 

@@ -1,4 +1,4 @@
-ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s 			page 1
+ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccYd2Azd.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -17,19 +17,19 @@ ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s 			page 1
   14              		.text
   15              	.Ltext0:
   16              		.cfi_sections	.debug_frame
-  17              		.section	.text.mod_explo_discoverArea,"ax",%progbits
+  17              		.section	.text.mod_explo_discoverTheAreaOnThread,"ax",%progbits
   18              		.align	1
   19              		.p2align 4,,15
-  20              		.global	mod_explo_discoverArea
+  20              		.global	mod_explo_discoverTheAreaOnThread
   21              		.syntax unified
   22              		.thumb
   23              		.thumb_func
   24              		.fpu fpv4-sp-d16
-  25              		.type	mod_explo_discoverArea, %function
-  26              	mod_explo_discoverArea:
+  25              		.type	mod_explo_discoverTheAreaOnThread, %function
+  26              	mod_explo_discoverTheAreaOnThread:
   27              	.LFB0:
   28              		.file 1 "./modules/mod_exploration.c"
-  29              		.loc 1 28 0
+  29              		.loc 1 29 0
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 8
   32              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -39,7 +39,7 @@ ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s 			page 1
   36 0002 064B     		ldr	r3, .L6
   37 0004 83B0     		sub	sp, sp, #12
   38              		.cfi_def_cfa_offset 16
-  39              		.loc 1 28 0
+  39              		.loc 1 29 0
   40 0006 1A68     		ldr	r2, [r3]
   41 0008 0192     		str	r2, [sp, #4]
   42              		.loc 1 31 0
@@ -58,388 +58,668 @@ ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s 			page 1
   55              	.LVL0:
   56              	.L7:
   57              		.align	2
-ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s 			page 2
+ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccYd2Azd.s 			page 2
 
 
   58              	.L6:
   59 001c 00000000 		.word	__stack_chk_guard
   60              		.cfi_endproc
   61              	.LFE0:
-  62              		.size	mod_explo_discoverArea, .-mod_explo_discoverArea
-  63              		.section	.text.mod_explo_exploreArea,"ax",%progbits
+  62              		.size	mod_explo_discoverTheAreaOnThread, .-mod_explo_discoverTheAreaOnThread
+  63              		.section	.text.mod_explo_explorateTheAreaOnThread,"ax",%progbits
   64              		.align	1
   65              		.p2align 4,,15
-  66              		.global	mod_explo_exploreArea
+  66              		.global	mod_explo_explorateTheAreaOnThread
   67              		.syntax unified
   68              		.thumb
   69              		.thumb_func
   70              		.fpu fpv4-sp-d16
-  71              		.type	mod_explo_exploreArea, %function
-  72              	mod_explo_exploreArea:
-  73              	.LFB4:
-  74              		.cfi_startproc
-  75              		@ args = 0, pretend = 0, frame = 8
-  76              		@ frame_needed = 0, uses_anonymous_args = 0
-  77 0000 00B5     		push	{lr}
-  78              		.cfi_def_cfa_offset 4
-  79              		.cfi_offset 14, -4
-  80 0002 064B     		ldr	r3, .L12
-  81 0004 83B0     		sub	sp, sp, #12
-  82              		.cfi_def_cfa_offset 16
-  83 0006 1A68     		ldr	r2, [r3]
-  84 0008 0192     		str	r2, [sp, #4]
-  85 000a 019A     		ldr	r2, [sp, #4]
-  86 000c 1B68     		ldr	r3, [r3]
-  87 000e 9A42     		cmp	r2, r3
-  88 0010 02D1     		bne	.L11
-  89 0012 03B0     		add	sp, sp, #12
-  90              		.cfi_remember_state
-  91              		.cfi_def_cfa_offset 4
-  92              		@ sp needed
-  93 0014 5DF804FB 		ldr	pc, [sp], #4
-  94              	.L11:
-  95              		.cfi_restore_state
-  96 0018 FFF7FEFF 		bl	__stack_chk_fail
-  97              	.L13:
-  98              		.align	2
-  99              	.L12:
- 100 001c 00000000 		.word	__stack_chk_guard
- 101              		.cfi_endproc
- 102              	.LFE4:
- 103              		.size	mod_explo_exploreArea, .-mod_explo_exploreArea
- 104              		.section	.text.mod_explo_sortArea,"ax",%progbits
- 105              		.align	1
- 106              		.p2align 4,,15
- 107              		.global	mod_explo_sortArea
- 108              		.syntax unified
- 109              		.thumb
- 110              		.thumb_func
- 111              		.fpu fpv4-sp-d16
- 112              		.type	mod_explo_sortArea, %function
- 113              	mod_explo_sortArea:
- 114              	.LFB6:
-ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s 			page 3
+  71              		.type	mod_explo_explorateTheAreaOnThread, %function
+  72              	mod_explo_explorateTheAreaOnThread:
+  73              	.LFB1:
+  74              		.loc 1 33 0
+  75              		.cfi_startproc
+  76              		@ args = 0, pretend = 0, frame = 8
+  77              		@ frame_needed = 0, uses_anonymous_args = 0
+  78              	.LVL1:
+  79 0000 00B5     		push	{lr}
+  80              		.cfi_def_cfa_offset 4
+  81              		.cfi_offset 14, -4
+  82 0002 064B     		ldr	r3, .L12
+  83 0004 83B0     		sub	sp, sp, #12
+  84              		.cfi_def_cfa_offset 16
+  85              		.loc 1 33 0
+  86 0006 1A68     		ldr	r2, [r3]
+  87 0008 0192     		str	r2, [sp, #4]
+  88              		.loc 1 35 0
+  89 000a 019A     		ldr	r2, [sp, #4]
+  90 000c 1B68     		ldr	r3, [r3]
+  91 000e 9A42     		cmp	r2, r3
+  92 0010 02D1     		bne	.L11
+  93 0012 03B0     		add	sp, sp, #12
+  94              		.cfi_remember_state
+  95              		.cfi_def_cfa_offset 4
+  96              		@ sp needed
+  97 0014 5DF804FB 		ldr	pc, [sp], #4
+  98              	.L11:
+  99              		.cfi_restore_state
+ 100 0018 FFF7FEFF 		bl	__stack_chk_fail
+ 101              	.LVL2:
+ 102              	.L13:
+ 103              		.align	2
+ 104              	.L12:
+ 105 001c 00000000 		.word	__stack_chk_guard
+ 106              		.cfi_endproc
+ 107              	.LFE1:
+ 108              		.size	mod_explo_explorateTheAreaOnThread, .-mod_explo_explorateTheAreaOnThread
+ 109              		.section	.text.mod_explo_sortTheAreaOnThread,"ax",%progbits
+ 110              		.align	1
+ 111              		.p2align 4,,15
+ 112              		.global	mod_explo_sortTheAreaOnThread
+ 113              		.syntax unified
+ 114              		.thumb
+ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccYd2Azd.s 			page 3
 
 
- 115              		.cfi_startproc
- 116              		@ args = 0, pretend = 0, frame = 8
- 117              		@ frame_needed = 0, uses_anonymous_args = 0
- 118 0000 00B5     		push	{lr}
- 119              		.cfi_def_cfa_offset 4
- 120              		.cfi_offset 14, -4
- 121 0002 064B     		ldr	r3, .L18
- 122 0004 83B0     		sub	sp, sp, #12
- 123              		.cfi_def_cfa_offset 16
- 124 0006 1A68     		ldr	r2, [r3]
- 125 0008 0192     		str	r2, [sp, #4]
- 126 000a 019A     		ldr	r2, [sp, #4]
- 127 000c 1B68     		ldr	r3, [r3]
- 128 000e 9A42     		cmp	r2, r3
- 129 0010 02D1     		bne	.L17
- 130 0012 03B0     		add	sp, sp, #12
- 131              		.cfi_remember_state
- 132              		.cfi_def_cfa_offset 4
- 133              		@ sp needed
- 134 0014 5DF804FB 		ldr	pc, [sp], #4
- 135              	.L17:
- 136              		.cfi_restore_state
- 137 0018 FFF7FEFF 		bl	__stack_chk_fail
- 138              	.L19:
- 139              		.align	2
- 140              	.L18:
- 141 001c 00000000 		.word	__stack_chk_guard
- 142              		.cfi_endproc
- 143              	.LFE6:
- 144              		.size	mod_explo_sortArea, .-mod_explo_sortArea
- 145              		.text
- 146              	.Letext0:
- 147              		.section	.debug_info,"",%progbits
- 148              	.Ldebug_info0:
- 149 0000 65000000 		.4byte	0x65
- 150 0004 0400     		.2byte	0x4
- 151 0006 00000000 		.4byte	.Ldebug_abbrev0
- 152 000a 04       		.byte	0x4
- 153 000b 01       		.uleb128 0x1
- 154 000c 13000000 		.4byte	.LASF2
- 155 0010 0C       		.byte	0xc
- 156 0011 CF010000 		.4byte	.LASF3
- 157 0015 57010000 		.4byte	.LASF4
- 158 0019 00000000 		.4byte	.Ldebug_ranges0+0
- 159 001d 00000000 		.4byte	0
- 160 0021 00000000 		.4byte	.Ldebug_line0
- 161 0025 02       		.uleb128 0x2
- 162 0026 01       		.byte	0x1
- 163 0027 08       		.byte	0x8
- 164 0028 01020000 		.4byte	.LASF5
- 165 002c 03       		.uleb128 0x3
- 166 002d 00000000 		.4byte	.LASF0
- 167 0031 01       		.byte	0x1
- 168 0032 26       		.byte	0x26
- 169 0033 03       		.uleb128 0x3
- 170 0034 EB010000 		.4byte	.LASF1
- 171 0038 01       		.byte	0x1
-ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s 			page 4
+ 115              		.thumb_func
+ 116              		.fpu fpv4-sp-d16
+ 117              		.type	mod_explo_sortTheAreaOnThread, %function
+ 118              	mod_explo_sortTheAreaOnThread:
+ 119              	.LFB6:
+ 120              		.cfi_startproc
+ 121              		@ args = 0, pretend = 0, frame = 8
+ 122              		@ frame_needed = 0, uses_anonymous_args = 0
+ 123 0000 00B5     		push	{lr}
+ 124              		.cfi_def_cfa_offset 4
+ 125              		.cfi_offset 14, -4
+ 126 0002 064B     		ldr	r3, .L18
+ 127 0004 83B0     		sub	sp, sp, #12
+ 128              		.cfi_def_cfa_offset 16
+ 129 0006 1A68     		ldr	r2, [r3]
+ 130 0008 0192     		str	r2, [sp, #4]
+ 131 000a 019A     		ldr	r2, [sp, #4]
+ 132 000c 1B68     		ldr	r3, [r3]
+ 133 000e 9A42     		cmp	r2, r3
+ 134 0010 02D1     		bne	.L17
+ 135 0012 03B0     		add	sp, sp, #12
+ 136              		.cfi_remember_state
+ 137              		.cfi_def_cfa_offset 4
+ 138              		@ sp needed
+ 139 0014 5DF804FB 		ldr	pc, [sp], #4
+ 140              	.L17:
+ 141              		.cfi_restore_state
+ 142 0018 FFF7FEFF 		bl	__stack_chk_fail
+ 143              	.L19:
+ 144              		.align	2
+ 145              	.L18:
+ 146 001c 00000000 		.word	__stack_chk_guard
+ 147              		.cfi_endproc
+ 148              	.LFE6:
+ 149              		.size	mod_explo_sortTheAreaOnThread, .-mod_explo_sortTheAreaOnThread
+ 150              		.section	.text.mod_explo_sendTheMap,"ax",%progbits
+ 151              		.align	1
+ 152              		.p2align 4,,15
+ 153              		.global	mod_explo_sendTheMap
+ 154              		.syntax unified
+ 155              		.thumb
+ 156              		.thumb_func
+ 157              		.fpu fpv4-sp-d16
+ 158              		.type	mod_explo_sendTheMap, %function
+ 159              	mod_explo_sendTheMap:
+ 160              	.LFB8:
+ 161              		.cfi_startproc
+ 162              		@ args = 0, pretend = 0, frame = 8
+ 163              		@ frame_needed = 0, uses_anonymous_args = 0
+ 164 0000 00B5     		push	{lr}
+ 165              		.cfi_def_cfa_offset 4
+ 166              		.cfi_offset 14, -4
+ 167 0002 064B     		ldr	r3, .L24
+ 168 0004 83B0     		sub	sp, sp, #12
+ 169              		.cfi_def_cfa_offset 16
+ 170 0006 1A68     		ldr	r2, [r3]
+ 171 0008 0192     		str	r2, [sp, #4]
+ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccYd2Azd.s 			page 4
 
 
- 172 0039 21       		.byte	0x21
- 173 003a 04       		.uleb128 0x4
- 174 003b B8010000 		.4byte	.LASF6
- 175 003f 01       		.byte	0x1
- 176 0040 1C       		.byte	0x1c
- 177 0041 01       		.byte	0x1
- 178 0042 05       		.uleb128 0x5
- 179 0043 3A000000 		.4byte	0x3a
- 180 0047 00000000 		.4byte	.LFB0
- 181 004b 20000000 		.4byte	.LFE0-.LFB0
- 182 004f 01       		.uleb128 0x1
- 183 0050 9C       		.byte	0x9c
- 184 0051 5F000000 		.4byte	0x5f
- 185 0055 06       		.uleb128 0x6
- 186 0056 1C000000 		.4byte	.LVL0
- 187 005a 5F000000 		.4byte	0x5f
- 188 005e 00       		.byte	0
- 189 005f 07       		.uleb128 0x7
- 190 0060 0F020000 		.4byte	.LASF7
- 191 0064 0F020000 		.4byte	.LASF7
- 192 0068 00       		.byte	0
- 193              		.section	.debug_abbrev,"",%progbits
- 194              	.Ldebug_abbrev0:
- 195 0000 01       		.uleb128 0x1
- 196 0001 11       		.uleb128 0x11
- 197 0002 01       		.byte	0x1
- 198 0003 25       		.uleb128 0x25
- 199 0004 0E       		.uleb128 0xe
- 200 0005 13       		.uleb128 0x13
- 201 0006 0B       		.uleb128 0xb
- 202 0007 03       		.uleb128 0x3
- 203 0008 0E       		.uleb128 0xe
- 204 0009 1B       		.uleb128 0x1b
- 205 000a 0E       		.uleb128 0xe
- 206 000b 55       		.uleb128 0x55
- 207 000c 17       		.uleb128 0x17
- 208 000d 11       		.uleb128 0x11
- 209 000e 01       		.uleb128 0x1
- 210 000f 10       		.uleb128 0x10
- 211 0010 17       		.uleb128 0x17
- 212 0011 00       		.byte	0
- 213 0012 00       		.byte	0
- 214 0013 02       		.uleb128 0x2
- 215 0014 24       		.uleb128 0x24
- 216 0015 00       		.byte	0
- 217 0016 0B       		.uleb128 0xb
- 218 0017 0B       		.uleb128 0xb
- 219 0018 3E       		.uleb128 0x3e
- 220 0019 0B       		.uleb128 0xb
- 221 001a 03       		.uleb128 0x3
- 222 001b 0E       		.uleb128 0xe
- 223 001c 00       		.byte	0
- 224 001d 00       		.byte	0
- 225 001e 03       		.uleb128 0x3
- 226 001f 2E       		.uleb128 0x2e
- 227 0020 00       		.byte	0
- 228 0021 3F       		.uleb128 0x3f
-ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s 			page 5
+ 172 000a 019A     		ldr	r2, [sp, #4]
+ 173 000c 1B68     		ldr	r3, [r3]
+ 174 000e 9A42     		cmp	r2, r3
+ 175 0010 02D1     		bne	.L23
+ 176 0012 03B0     		add	sp, sp, #12
+ 177              		.cfi_remember_state
+ 178              		.cfi_def_cfa_offset 4
+ 179              		@ sp needed
+ 180 0014 5DF804FB 		ldr	pc, [sp], #4
+ 181              	.L23:
+ 182              		.cfi_restore_state
+ 183 0018 FFF7FEFF 		bl	__stack_chk_fail
+ 184              	.L25:
+ 185              		.align	2
+ 186              	.L24:
+ 187 001c 00000000 		.word	__stack_chk_guard
+ 188              		.cfi_endproc
+ 189              	.LFE8:
+ 190              		.size	mod_explo_sendTheMap, .-mod_explo_sendTheMap
+ 191              		.section	.text.mod_explo_waitUntilEndOfWork,"ax",%progbits
+ 192              		.align	1
+ 193              		.p2align 4,,15
+ 194              		.global	mod_explo_waitUntilEndOfWork
+ 195              		.syntax unified
+ 196              		.thumb
+ 197              		.thumb_func
+ 198              		.fpu fpv4-sp-d16
+ 199              		.type	mod_explo_waitUntilEndOfWork, %function
+ 200              	mod_explo_waitUntilEndOfWork:
+ 201              	.LFB10:
+ 202              		.cfi_startproc
+ 203              		@ args = 0, pretend = 0, frame = 8
+ 204              		@ frame_needed = 0, uses_anonymous_args = 0
+ 205 0000 00B5     		push	{lr}
+ 206              		.cfi_def_cfa_offset 4
+ 207              		.cfi_offset 14, -4
+ 208 0002 064B     		ldr	r3, .L30
+ 209 0004 83B0     		sub	sp, sp, #12
+ 210              		.cfi_def_cfa_offset 16
+ 211 0006 1A68     		ldr	r2, [r3]
+ 212 0008 0192     		str	r2, [sp, #4]
+ 213 000a 019A     		ldr	r2, [sp, #4]
+ 214 000c 1B68     		ldr	r3, [r3]
+ 215 000e 9A42     		cmp	r2, r3
+ 216 0010 02D1     		bne	.L29
+ 217 0012 03B0     		add	sp, sp, #12
+ 218              		.cfi_remember_state
+ 219              		.cfi_def_cfa_offset 4
+ 220              		@ sp needed
+ 221 0014 5DF804FB 		ldr	pc, [sp], #4
+ 222              	.L29:
+ 223              		.cfi_restore_state
+ 224 0018 FFF7FEFF 		bl	__stack_chk_fail
+ 225              	.L31:
+ 226              		.align	2
+ 227              	.L30:
+ 228 001c 00000000 		.word	__stack_chk_guard
+ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccYd2Azd.s 			page 5
 
 
- 229 0022 19       		.uleb128 0x19
- 230 0023 03       		.uleb128 0x3
- 231 0024 0E       		.uleb128 0xe
- 232 0025 3A       		.uleb128 0x3a
- 233 0026 0B       		.uleb128 0xb
- 234 0027 3B       		.uleb128 0x3b
- 235 0028 0B       		.uleb128 0xb
- 236 0029 27       		.uleb128 0x27
- 237 002a 19       		.uleb128 0x19
- 238 002b 00       		.byte	0
- 239 002c 00       		.byte	0
- 240 002d 04       		.uleb128 0x4
- 241 002e 2E       		.uleb128 0x2e
- 242 002f 00       		.byte	0
- 243 0030 3F       		.uleb128 0x3f
- 244 0031 19       		.uleb128 0x19
- 245 0032 03       		.uleb128 0x3
- 246 0033 0E       		.uleb128 0xe
- 247 0034 3A       		.uleb128 0x3a
- 248 0035 0B       		.uleb128 0xb
- 249 0036 3B       		.uleb128 0x3b
- 250 0037 0B       		.uleb128 0xb
- 251 0038 27       		.uleb128 0x27
- 252 0039 19       		.uleb128 0x19
- 253 003a 20       		.uleb128 0x20
- 254 003b 0B       		.uleb128 0xb
- 255 003c 00       		.byte	0
- 256 003d 00       		.byte	0
- 257 003e 05       		.uleb128 0x5
- 258 003f 2E       		.uleb128 0x2e
- 259 0040 01       		.byte	0x1
- 260 0041 31       		.uleb128 0x31
- 261 0042 13       		.uleb128 0x13
- 262 0043 11       		.uleb128 0x11
- 263 0044 01       		.uleb128 0x1
- 264 0045 12       		.uleb128 0x12
- 265 0046 06       		.uleb128 0x6
- 266 0047 40       		.uleb128 0x40
- 267 0048 18       		.uleb128 0x18
- 268 0049 9742     		.uleb128 0x2117
- 269 004b 19       		.uleb128 0x19
- 270 004c 01       		.uleb128 0x1
- 271 004d 13       		.uleb128 0x13
- 272 004e 00       		.byte	0
- 273 004f 00       		.byte	0
- 274 0050 06       		.uleb128 0x6
- 275 0051 898201   		.uleb128 0x4109
- 276 0054 00       		.byte	0
- 277 0055 11       		.uleb128 0x11
- 278 0056 01       		.uleb128 0x1
- 279 0057 31       		.uleb128 0x31
- 280 0058 13       		.uleb128 0x13
- 281 0059 00       		.byte	0
- 282 005a 00       		.byte	0
- 283 005b 07       		.uleb128 0x7
- 284 005c 2E       		.uleb128 0x2e
- 285 005d 00       		.byte	0
-ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s 			page 6
+ 229              		.cfi_endproc
+ 230              	.LFE10:
+ 231              		.size	mod_explo_waitUntilEndOfWork, .-mod_explo_waitUntilEndOfWork
+ 232              		.text
+ 233              	.Letext0:
+ 234              		.file 2 "./modules/headers/mod_exploration.h"
+ 235              		.section	.debug_info,"",%progbits
+ 236              	.Ldebug_info0:
+ 237 0000 BF000000 		.4byte	0xbf
+ 238 0004 0400     		.2byte	0x4
+ 239 0006 00000000 		.4byte	.Ldebug_abbrev0
+ 240 000a 04       		.byte	0x4
+ 241 000b 01       		.uleb128 0x1
+ 242 000c 05000000 		.4byte	.LASF4
+ 243 0010 0C       		.byte	0xc
+ 244 0011 B8010000 		.4byte	.LASF5
+ 245 0015 49010000 		.4byte	.LASF6
+ 246 0019 00000000 		.4byte	.Ldebug_ranges0+0
+ 247 001d 00000000 		.4byte	0
+ 248 0021 00000000 		.4byte	.Ldebug_line0
+ 249 0025 02       		.uleb128 0x2
+ 250 0026 07       		.byte	0x7
+ 251 0027 01       		.byte	0x1
+ 252 0028 3F000000 		.4byte	0x3f
+ 253 002c 02       		.byte	0x2
+ 254 002d 0E       		.byte	0xe
+ 255 002e 3F000000 		.4byte	0x3f
+ 256 0032 03       		.uleb128 0x3
+ 257 0033 04020000 		.4byte	.LASF0
+ 258 0037 00       		.byte	0
+ 259 0038 04       		.uleb128 0x4
+ 260 0039 4E455700 		.ascii	"NEW\000"
+ 261 003d 01       		.byte	0x1
+ 262 003e 00       		.byte	0
+ 263 003f 05       		.uleb128 0x5
+ 264 0040 01       		.byte	0x1
+ 265 0041 08       		.byte	0x8
+ 266 0042 F6010000 		.4byte	.LASF7
+ 267 0046 06       		.uleb128 0x6
+ 268 0047 AA010000 		.4byte	.LASF8
+ 269 004b 02       		.byte	0x2
+ 270 004c 11       		.byte	0x11
+ 271 004d 25000000 		.4byte	0x25
+ 272 0051 07       		.uleb128 0x7
+ 273 0052 22020000 		.4byte	.LASF1
+ 274 0056 01       		.byte	0x1
+ 275 0057 2D       		.byte	0x2d
+ 276 0058 07       		.uleb128 0x7
+ 277 0059 0D020000 		.4byte	.LASF2
+ 278 005d 01       		.byte	0x1
+ 279 005e 29       		.byte	0x29
+ 280 005f 07       		.uleb128 0x7
+ 281 0060 73020000 		.4byte	.LASF3
+ 282 0064 01       		.byte	0x1
+ 283 0065 25       		.byte	0x25
+ 284 0066 08       		.uleb128 0x8
+ 285 0067 50020000 		.4byte	.LASF9
+ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccYd2Azd.s 			page 6
 
 
- 286 005e 3F       		.uleb128 0x3f
- 287 005f 19       		.uleb128 0x19
- 288 0060 3C       		.uleb128 0x3c
- 289 0061 19       		.uleb128 0x19
- 290 0062 6E       		.uleb128 0x6e
- 291 0063 0E       		.uleb128 0xe
- 292 0064 03       		.uleb128 0x3
- 293 0065 0E       		.uleb128 0xe
- 294 0066 00       		.byte	0
- 295 0067 00       		.byte	0
- 296 0068 00       		.byte	0
- 297              		.section	.debug_aranges,"",%progbits
- 298 0000 1C000000 		.4byte	0x1c
- 299 0004 0200     		.2byte	0x2
- 300 0006 00000000 		.4byte	.Ldebug_info0
- 301 000a 04       		.byte	0x4
- 302 000b 00       		.byte	0
- 303 000c 0000     		.2byte	0
- 304 000e 0000     		.2byte	0
- 305 0010 00000000 		.4byte	.LFB0
- 306 0014 20000000 		.4byte	.LFE0-.LFB0
- 307 0018 00000000 		.4byte	0
- 308 001c 00000000 		.4byte	0
- 309              		.section	.debug_ranges,"",%progbits
- 310              	.Ldebug_ranges0:
- 311 0000 00000000 		.4byte	.LFB0
- 312 0004 20000000 		.4byte	.LFE0
- 313 0008 00000000 		.4byte	0
- 314 000c 00000000 		.4byte	0
- 315              		.section	.debug_line,"",%progbits
- 316              	.Ldebug_line0:
- 317 0000 49000000 		.section	.debug_str,"MS",%progbits,1
- 317      02003200 
- 317      00000201 
- 317      FB0E0D00 
- 317      01010101 
- 318              	.LASF0:
- 319 0000 6D6F645F 		.ascii	"mod_explo_sortArea\000"
- 319      6578706C 
- 319      6F5F736F 
- 319      72744172 
- 319      656100
- 320              	.LASF2:
- 321 0013 474E5520 		.ascii	"GNU C11 7.2.1 20170904 (release) [ARM/embedded-7-br"
- 321      43313120 
- 321      372E322E 
- 321      31203230 
- 321      31373039 
- 322 0046 616E6368 		.ascii	"anch revision 255204] -mcpu=cortex-m4 -mfloat-abi=h"
- 322      20726576 
- 322      6973696F 
- 322      6E203235 
- 322      35323034 
- 323 0079 61726420 		.ascii	"ard -mfpu=fpv4-sp-d16 -mno-thumb-interwork -mthumb "
- 323      2D6D6670 
- 323      753D6670 
- 323      76342D73 
-ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s 			page 7
+ 286 006b 01       		.byte	0x1
+ 287 006c 21       		.byte	0x21
+ 288 006d 00000000 		.4byte	.LFB1
+ 289 0071 20000000 		.4byte	.LFE1-.LFB1
+ 290 0075 01       		.uleb128 0x1
+ 291 0076 9C       		.byte	0x9c
+ 292 0077 94000000 		.4byte	0x94
+ 293 007b 09       		.uleb128 0x9
+ 294 007c 00000000 		.4byte	.LASF10
+ 295 0080 01       		.byte	0x1
+ 296 0081 21       		.byte	0x21
+ 297 0082 46000000 		.4byte	0x46
+ 298 0086 00000000 		.4byte	.LLST0
+ 299 008a 0A       		.uleb128 0xa
+ 300 008b 1C000000 		.4byte	.LVL2
+ 301 008f B9000000 		.4byte	0xb9
+ 302 0093 00       		.byte	0
+ 303 0094 0B       		.uleb128 0xb
+ 304 0095 D4010000 		.4byte	.LASF11
+ 305 0099 01       		.byte	0x1
+ 306 009a 1D       		.byte	0x1d
+ 307 009b 01       		.byte	0x1
+ 308 009c 0C       		.uleb128 0xc
+ 309 009d 94000000 		.4byte	0x94
+ 310 00a1 00000000 		.4byte	.LFB0
+ 311 00a5 20000000 		.4byte	.LFE0-.LFB0
+ 312 00a9 01       		.uleb128 0x1
+ 313 00aa 9C       		.byte	0x9c
+ 314 00ab B9000000 		.4byte	0xb9
+ 315 00af 0A       		.uleb128 0xa
+ 316 00b0 1C000000 		.4byte	.LVL0
+ 317 00b4 B9000000 		.4byte	0xb9
+ 318 00b8 00       		.byte	0
+ 319 00b9 0D       		.uleb128 0xd
+ 320 00ba 3F020000 		.4byte	.LASF12
+ 321 00be 3F020000 		.4byte	.LASF12
+ 322 00c2 00       		.byte	0
+ 323              		.section	.debug_abbrev,"",%progbits
+ 324              	.Ldebug_abbrev0:
+ 325 0000 01       		.uleb128 0x1
+ 326 0001 11       		.uleb128 0x11
+ 327 0002 01       		.byte	0x1
+ 328 0003 25       		.uleb128 0x25
+ 329 0004 0E       		.uleb128 0xe
+ 330 0005 13       		.uleb128 0x13
+ 331 0006 0B       		.uleb128 0xb
+ 332 0007 03       		.uleb128 0x3
+ 333 0008 0E       		.uleb128 0xe
+ 334 0009 1B       		.uleb128 0x1b
+ 335 000a 0E       		.uleb128 0xe
+ 336 000b 55       		.uleb128 0x55
+ 337 000c 17       		.uleb128 0x17
+ 338 000d 11       		.uleb128 0x11
+ 339 000e 01       		.uleb128 0x1
+ 340 000f 10       		.uleb128 0x10
+ 341 0010 17       		.uleb128 0x17
+ 342 0011 00       		.byte	0
+ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccYd2Azd.s 			page 7
 
 
- 323      702D6431 
- 324 00ac 2D676764 		.ascii	"-ggdb -O2 -fomit-frame-pointer -falign-functions=16"
- 324      62202D4F 
- 324      32202D66 
- 324      6F6D6974 
- 324      2D667261 
- 325 00df 202D666E 		.ascii	" -fno-strict-aliasing -fstack-protector-all -ffunct"
- 325      6F2D7374 
- 325      72696374 
- 325      2D616C69 
- 325      6173696E 
- 326 0112 696F6E2D 		.ascii	"ion-sections -fdata-sections -fno-common -fsingle-p"
- 326      73656374 
- 326      696F6E73 
- 326      202D6664 
- 326      6174612D 
- 327 0145 72656369 		.ascii	"recision-constant\000"
- 327      73696F6E 
- 327      2D636F6E 
- 327      7374616E 
- 327      7400
- 328              	.LASF4:
- 329 0157 2F557365 		.ascii	"/Users/nicolas/Library/Mobile Documents/com~apple~C"
- 329      72732F6E 
- 329      69636F6C 
- 329      61732F4C 
- 329      69627261 
- 330 018a 6C6F7564 		.ascii	"loudDocs/Projects/Cours/epuck_project/Sources\000"
- 330      446F6373 
- 330      2F50726F 
- 330      6A656374 
- 330      732F436F 
- 331              	.LASF6:
- 332 01b8 6D6F645F 		.ascii	"mod_explo_discoverArea\000"
- 332      6578706C 
- 332      6F5F6469 
- 332      73636F76 
- 332      65724172 
- 333              	.LASF3:
- 334 01cf 2E2F6D6F 		.ascii	"./modules/mod_exploration.c\000"
- 334      64756C65 
- 334      732F6D6F 
- 334      645F6578 
- 334      706C6F72 
- 335              	.LASF1:
- 336 01eb 6D6F645F 		.ascii	"mod_explo_exploreArea\000"
- 336      6578706C 
- 336      6F5F6578 
- 336      706C6F72 
- 336      65417265 
- 337              	.LASF5:
- 338 0201 756E7369 		.ascii	"unsigned char\000"
- 338      676E6564 
- 338      20636861 
- 338      7200
- 339              	.LASF7:
- 340 020f 5F5F7374 		.ascii	"__stack_chk_fail\000"
-ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s 			page 8
+ 343 0012 00       		.byte	0
+ 344 0013 02       		.uleb128 0x2
+ 345 0014 04       		.uleb128 0x4
+ 346 0015 01       		.byte	0x1
+ 347 0016 3E       		.uleb128 0x3e
+ 348 0017 0B       		.uleb128 0xb
+ 349 0018 0B       		.uleb128 0xb
+ 350 0019 0B       		.uleb128 0xb
+ 351 001a 49       		.uleb128 0x49
+ 352 001b 13       		.uleb128 0x13
+ 353 001c 3A       		.uleb128 0x3a
+ 354 001d 0B       		.uleb128 0xb
+ 355 001e 3B       		.uleb128 0x3b
+ 356 001f 0B       		.uleb128 0xb
+ 357 0020 01       		.uleb128 0x1
+ 358 0021 13       		.uleb128 0x13
+ 359 0022 00       		.byte	0
+ 360 0023 00       		.byte	0
+ 361 0024 03       		.uleb128 0x3
+ 362 0025 28       		.uleb128 0x28
+ 363 0026 00       		.byte	0
+ 364 0027 03       		.uleb128 0x3
+ 365 0028 0E       		.uleb128 0xe
+ 366 0029 1C       		.uleb128 0x1c
+ 367 002a 0B       		.uleb128 0xb
+ 368 002b 00       		.byte	0
+ 369 002c 00       		.byte	0
+ 370 002d 04       		.uleb128 0x4
+ 371 002e 28       		.uleb128 0x28
+ 372 002f 00       		.byte	0
+ 373 0030 03       		.uleb128 0x3
+ 374 0031 08       		.uleb128 0x8
+ 375 0032 1C       		.uleb128 0x1c
+ 376 0033 0B       		.uleb128 0xb
+ 377 0034 00       		.byte	0
+ 378 0035 00       		.byte	0
+ 379 0036 05       		.uleb128 0x5
+ 380 0037 24       		.uleb128 0x24
+ 381 0038 00       		.byte	0
+ 382 0039 0B       		.uleb128 0xb
+ 383 003a 0B       		.uleb128 0xb
+ 384 003b 3E       		.uleb128 0x3e
+ 385 003c 0B       		.uleb128 0xb
+ 386 003d 03       		.uleb128 0x3
+ 387 003e 0E       		.uleb128 0xe
+ 388 003f 00       		.byte	0
+ 389 0040 00       		.byte	0
+ 390 0041 06       		.uleb128 0x6
+ 391 0042 16       		.uleb128 0x16
+ 392 0043 00       		.byte	0
+ 393 0044 03       		.uleb128 0x3
+ 394 0045 0E       		.uleb128 0xe
+ 395 0046 3A       		.uleb128 0x3a
+ 396 0047 0B       		.uleb128 0xb
+ 397 0048 3B       		.uleb128 0x3b
+ 398 0049 0B       		.uleb128 0xb
+ 399 004a 49       		.uleb128 0x49
+ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccYd2Azd.s 			page 8
 
 
- 340      61636B5F 
- 340      63686B5F 
- 340      6661696C 
- 340      00
- 341              		.ident	"GCC: (GNU Tools for Arm Embedded Processors 7-2017-q4-major) 7.2.1 20170904 (release) [ARM
-ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s 			page 9
+ 400 004b 13       		.uleb128 0x13
+ 401 004c 00       		.byte	0
+ 402 004d 00       		.byte	0
+ 403 004e 07       		.uleb128 0x7
+ 404 004f 2E       		.uleb128 0x2e
+ 405 0050 00       		.byte	0
+ 406 0051 3F       		.uleb128 0x3f
+ 407 0052 19       		.uleb128 0x19
+ 408 0053 03       		.uleb128 0x3
+ 409 0054 0E       		.uleb128 0xe
+ 410 0055 3A       		.uleb128 0x3a
+ 411 0056 0B       		.uleb128 0xb
+ 412 0057 3B       		.uleb128 0x3b
+ 413 0058 0B       		.uleb128 0xb
+ 414 0059 27       		.uleb128 0x27
+ 415 005a 19       		.uleb128 0x19
+ 416 005b 00       		.byte	0
+ 417 005c 00       		.byte	0
+ 418 005d 08       		.uleb128 0x8
+ 419 005e 2E       		.uleb128 0x2e
+ 420 005f 01       		.byte	0x1
+ 421 0060 3F       		.uleb128 0x3f
+ 422 0061 19       		.uleb128 0x19
+ 423 0062 03       		.uleb128 0x3
+ 424 0063 0E       		.uleb128 0xe
+ 425 0064 3A       		.uleb128 0x3a
+ 426 0065 0B       		.uleb128 0xb
+ 427 0066 3B       		.uleb128 0x3b
+ 428 0067 0B       		.uleb128 0xb
+ 429 0068 27       		.uleb128 0x27
+ 430 0069 19       		.uleb128 0x19
+ 431 006a 11       		.uleb128 0x11
+ 432 006b 01       		.uleb128 0x1
+ 433 006c 12       		.uleb128 0x12
+ 434 006d 06       		.uleb128 0x6
+ 435 006e 40       		.uleb128 0x40
+ 436 006f 18       		.uleb128 0x18
+ 437 0070 9742     		.uleb128 0x2117
+ 438 0072 19       		.uleb128 0x19
+ 439 0073 01       		.uleb128 0x1
+ 440 0074 13       		.uleb128 0x13
+ 441 0075 00       		.byte	0
+ 442 0076 00       		.byte	0
+ 443 0077 09       		.uleb128 0x9
+ 444 0078 05       		.uleb128 0x5
+ 445 0079 00       		.byte	0
+ 446 007a 03       		.uleb128 0x3
+ 447 007b 0E       		.uleb128 0xe
+ 448 007c 3A       		.uleb128 0x3a
+ 449 007d 0B       		.uleb128 0xb
+ 450 007e 3B       		.uleb128 0x3b
+ 451 007f 0B       		.uleb128 0xb
+ 452 0080 49       		.uleb128 0x49
+ 453 0081 13       		.uleb128 0x13
+ 454 0082 02       		.uleb128 0x2
+ 455 0083 17       		.uleb128 0x17
+ 456 0084 00       		.byte	0
+ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccYd2Azd.s 			page 9
+
+
+ 457 0085 00       		.byte	0
+ 458 0086 0A       		.uleb128 0xa
+ 459 0087 898201   		.uleb128 0x4109
+ 460 008a 00       		.byte	0
+ 461 008b 11       		.uleb128 0x11
+ 462 008c 01       		.uleb128 0x1
+ 463 008d 31       		.uleb128 0x31
+ 464 008e 13       		.uleb128 0x13
+ 465 008f 00       		.byte	0
+ 466 0090 00       		.byte	0
+ 467 0091 0B       		.uleb128 0xb
+ 468 0092 2E       		.uleb128 0x2e
+ 469 0093 00       		.byte	0
+ 470 0094 3F       		.uleb128 0x3f
+ 471 0095 19       		.uleb128 0x19
+ 472 0096 03       		.uleb128 0x3
+ 473 0097 0E       		.uleb128 0xe
+ 474 0098 3A       		.uleb128 0x3a
+ 475 0099 0B       		.uleb128 0xb
+ 476 009a 3B       		.uleb128 0x3b
+ 477 009b 0B       		.uleb128 0xb
+ 478 009c 27       		.uleb128 0x27
+ 479 009d 19       		.uleb128 0x19
+ 480 009e 20       		.uleb128 0x20
+ 481 009f 0B       		.uleb128 0xb
+ 482 00a0 00       		.byte	0
+ 483 00a1 00       		.byte	0
+ 484 00a2 0C       		.uleb128 0xc
+ 485 00a3 2E       		.uleb128 0x2e
+ 486 00a4 01       		.byte	0x1
+ 487 00a5 31       		.uleb128 0x31
+ 488 00a6 13       		.uleb128 0x13
+ 489 00a7 11       		.uleb128 0x11
+ 490 00a8 01       		.uleb128 0x1
+ 491 00a9 12       		.uleb128 0x12
+ 492 00aa 06       		.uleb128 0x6
+ 493 00ab 40       		.uleb128 0x40
+ 494 00ac 18       		.uleb128 0x18
+ 495 00ad 9742     		.uleb128 0x2117
+ 496 00af 19       		.uleb128 0x19
+ 497 00b0 01       		.uleb128 0x1
+ 498 00b1 13       		.uleb128 0x13
+ 499 00b2 00       		.byte	0
+ 500 00b3 00       		.byte	0
+ 501 00b4 0D       		.uleb128 0xd
+ 502 00b5 2E       		.uleb128 0x2e
+ 503 00b6 00       		.byte	0
+ 504 00b7 3F       		.uleb128 0x3f
+ 505 00b8 19       		.uleb128 0x19
+ 506 00b9 3C       		.uleb128 0x3c
+ 507 00ba 19       		.uleb128 0x19
+ 508 00bb 6E       		.uleb128 0x6e
+ 509 00bc 0E       		.uleb128 0xe
+ 510 00bd 03       		.uleb128 0x3
+ 511 00be 0E       		.uleb128 0xe
+ 512 00bf 00       		.byte	0
+ 513 00c0 00       		.byte	0
+ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccYd2Azd.s 			page 10
+
+
+ 514 00c1 00       		.byte	0
+ 515              		.section	.debug_loc,"",%progbits
+ 516              	.Ldebug_loc0:
+ 517              	.LLST0:
+ 518 0000 00000000 		.4byte	.LVL1
+ 519 0004 1B000000 		.4byte	.LVL2-1
+ 520 0008 0100     		.2byte	0x1
+ 521 000a 50       		.byte	0x50
+ 522 000b 1B000000 		.4byte	.LVL2-1
+ 523 000f 20000000 		.4byte	.LFE1
+ 524 0013 0400     		.2byte	0x4
+ 525 0015 F3       		.byte	0xf3
+ 526 0016 01       		.uleb128 0x1
+ 527 0017 50       		.byte	0x50
+ 528 0018 9F       		.byte	0x9f
+ 529 0019 00000000 		.4byte	0
+ 530 001d 00000000 		.4byte	0
+ 531              		.section	.debug_aranges,"",%progbits
+ 532 0000 24000000 		.4byte	0x24
+ 533 0004 0200     		.2byte	0x2
+ 534 0006 00000000 		.4byte	.Ldebug_info0
+ 535 000a 04       		.byte	0x4
+ 536 000b 00       		.byte	0
+ 537 000c 0000     		.2byte	0
+ 538 000e 0000     		.2byte	0
+ 539 0010 00000000 		.4byte	.LFB0
+ 540 0014 20000000 		.4byte	.LFE0-.LFB0
+ 541 0018 00000000 		.4byte	.LFB1
+ 542 001c 20000000 		.4byte	.LFE1-.LFB1
+ 543 0020 00000000 		.4byte	0
+ 544 0024 00000000 		.4byte	0
+ 545              		.section	.debug_ranges,"",%progbits
+ 546              	.Ldebug_ranges0:
+ 547 0000 00000000 		.4byte	.LFB0
+ 548 0004 20000000 		.4byte	.LFE0
+ 549 0008 00000000 		.4byte	.LFB1
+ 550 000c 20000000 		.4byte	.LFE1
+ 551 0010 00000000 		.4byte	0
+ 552 0014 00000000 		.4byte	0
+ 553              		.section	.debug_line,"",%progbits
+ 554              	.Ldebug_line0:
+ 555 0000 81000000 		.section	.debug_str,"MS",%progbits,1
+ 555      02005900 
+ 555      00000201 
+ 555      FB0E0D00 
+ 555      01010101 
+ 556              	.LASF10:
+ 557 0000 74797065 		.ascii	"type\000"
+ 557      00
+ 558              	.LASF4:
+ 559 0005 474E5520 		.ascii	"GNU C11 7.2.1 20170904 (release) [ARM/embedded-7-br"
+ 559      43313120 
+ 559      372E322E 
+ 559      31203230 
+ 559      31373039 
+ 560 0038 616E6368 		.ascii	"anch revision 255204] -mcpu=cortex-m4 -mfloat-abi=h"
+ 560      20726576 
+ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccYd2Azd.s 			page 11
+
+
+ 560      6973696F 
+ 560      6E203235 
+ 560      35323034 
+ 561 006b 61726420 		.ascii	"ard -mfpu=fpv4-sp-d16 -mno-thumb-interwork -mthumb "
+ 561      2D6D6670 
+ 561      753D6670 
+ 561      76342D73 
+ 561      702D6431 
+ 562 009e 2D676764 		.ascii	"-ggdb -O2 -fomit-frame-pointer -falign-functions=16"
+ 562      62202D4F 
+ 562      32202D66 
+ 562      6F6D6974 
+ 562      2D667261 
+ 563 00d1 202D666E 		.ascii	" -fno-strict-aliasing -fstack-protector-all -ffunct"
+ 563      6F2D7374 
+ 563      72696374 
+ 563      2D616C69 
+ 563      6173696E 
+ 564 0104 696F6E2D 		.ascii	"ion-sections -fdata-sections -fno-common -fsingle-p"
+ 564      73656374 
+ 564      696F6E73 
+ 564      202D6664 
+ 564      6174612D 
+ 565 0137 72656369 		.ascii	"recision-constant\000"
+ 565      73696F6E 
+ 565      2D636F6E 
+ 565      7374616E 
+ 565      7400
+ 566              	.LASF6:
+ 567 0149 2F557365 		.ascii	"/Users/nicolas/Library/Mobile Documents/com~apple~C"
+ 567      72732F6E 
+ 567      69636F6C 
+ 567      61732F4C 
+ 567      69627261 
+ 568 017c 6C6F7564 		.ascii	"loudDocs/Projects/Cours/epuck_project/Sources\000"
+ 568      446F6373 
+ 568      2F50726F 
+ 568      6A656374 
+ 568      732F436F 
+ 569              	.LASF8:
+ 570 01aa 6578706C 		.ascii	"exploration_t\000"
+ 570      6F726174 
+ 570      696F6E5F 
+ 570      7400
+ 571              	.LASF5:
+ 572 01b8 2E2F6D6F 		.ascii	"./modules/mod_exploration.c\000"
+ 572      64756C65 
+ 572      732F6D6F 
+ 572      645F6578 
+ 572      706C6F72 
+ 573              	.LASF11:
+ 574 01d4 6D6F645F 		.ascii	"mod_explo_discoverTheAreaOnThread\000"
+ 574      6578706C 
+ 574      6F5F6469 
+ 574      73636F76 
+ 574      65725468 
+ 575              	.LASF7:
+ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccYd2Azd.s 			page 12
+
+
+ 576 01f6 756E7369 		.ascii	"unsigned char\000"
+ 576      676E6564 
+ 576      20636861 
+ 576      7200
+ 577              	.LASF0:
+ 578 0204 434F4E54 		.ascii	"CONTINUE\000"
+ 578      494E5545 
+ 578      00
+ 579              	.LASF2:
+ 580 020d 6D6F645F 		.ascii	"mod_explo_sendTheMap\000"
+ 580      6578706C 
+ 580      6F5F7365 
+ 580      6E645468 
+ 580      654D6170 
+ 581              	.LASF1:
+ 582 0222 6D6F645F 		.ascii	"mod_explo_waitUntilEndOfWork\000"
+ 582      6578706C 
+ 582      6F5F7761 
+ 582      6974556E 
+ 582      74696C45 
+ 583              	.LASF12:
+ 584 023f 5F5F7374 		.ascii	"__stack_chk_fail\000"
+ 584      61636B5F 
+ 584      63686B5F 
+ 584      6661696C 
+ 584      00
+ 585              	.LASF9:
+ 586 0250 6D6F645F 		.ascii	"mod_explo_explorateTheAreaOnThread\000"
+ 586      6578706C 
+ 586      6F5F6578 
+ 586      706C6F72 
+ 586      61746554 
+ 587              	.LASF3:
+ 588 0273 6D6F645F 		.ascii	"mod_explo_sortTheAreaOnThread\000"
+ 588      6578706C 
+ 588      6F5F736F 
+ 588      72745468 
+ 588      65417265 
+ 589              		.ident	"GCC: (GNU Tools for Arm Embedded Processors 7-2017-q4-major) 7.2.1 20170904 (release) [ARM
+ARM GAS  /var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccYd2Azd.s 			page 13
 
 
 DEFINED SYMBOLS
                             *ABS*:0000000000000000 mod_exploration.c
-/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s:18     .text.mod_explo_discoverArea:0000000000000000 $t
-/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s:26     .text.mod_explo_discoverArea:0000000000000000 mod_explo_discoverArea
-/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s:59     .text.mod_explo_discoverArea:000000000000001c $d
-/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s:64     .text.mod_explo_exploreArea:0000000000000000 $t
-/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s:72     .text.mod_explo_exploreArea:0000000000000000 mod_explo_exploreArea
-/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s:100    .text.mod_explo_exploreArea:000000000000001c $d
-/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s:105    .text.mod_explo_sortArea:0000000000000000 $t
-/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s:113    .text.mod_explo_sortArea:0000000000000000 mod_explo_sortArea
-/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccr6yJvx.s:141    .text.mod_explo_sortArea:000000000000001c $d
+/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccYd2Azd.s:18     .text.mod_explo_discoverTheAreaOnThread:0000000000000000 $t
+/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccYd2Azd.s:26     .text.mod_explo_discoverTheAreaOnThread:0000000000000000 mod_explo_discoverTheAreaOnThread
+/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccYd2Azd.s:59     .text.mod_explo_discoverTheAreaOnThread:000000000000001c $d
+/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccYd2Azd.s:64     .text.mod_explo_explorateTheAreaOnThread:0000000000000000 $t
+/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccYd2Azd.s:72     .text.mod_explo_explorateTheAreaOnThread:0000000000000000 mod_explo_explorateTheAreaOnThread
+/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccYd2Azd.s:105    .text.mod_explo_explorateTheAreaOnThread:000000000000001c $d
+/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccYd2Azd.s:110    .text.mod_explo_sortTheAreaOnThread:0000000000000000 $t
+/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccYd2Azd.s:118    .text.mod_explo_sortTheAreaOnThread:0000000000000000 mod_explo_sortTheAreaOnThread
+/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccYd2Azd.s:146    .text.mod_explo_sortTheAreaOnThread:000000000000001c $d
+/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccYd2Azd.s:151    .text.mod_explo_sendTheMap:0000000000000000 $t
+/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccYd2Azd.s:159    .text.mod_explo_sendTheMap:0000000000000000 mod_explo_sendTheMap
+/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccYd2Azd.s:187    .text.mod_explo_sendTheMap:000000000000001c $d
+/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccYd2Azd.s:192    .text.mod_explo_waitUntilEndOfWork:0000000000000000 $t
+/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccYd2Azd.s:200    .text.mod_explo_waitUntilEndOfWork:0000000000000000 mod_explo_waitUntilEndOfWork
+/var/folders/qd/4mxf5pkd0zdf0b9dd1hp39180000gn/T//ccYd2Azd.s:228    .text.mod_explo_waitUntilEndOfWork:000000000000001c $d
 
 UNDEFINED SYMBOLS
 __stack_chk_fail

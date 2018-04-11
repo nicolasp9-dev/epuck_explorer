@@ -9,6 +9,8 @@
 
 #include "mod_audio.h"
 
+#include <stdio.h>
+
 // Epuck/ChibiOS headers
 #include <ch.h>
 #include "audio/play_melody.h"
@@ -18,6 +20,8 @@
 
 // Our headers
 #include "mod_errors.h"
+#include "mod_communication.h"
+
 
 
 // Frequences for sound detection after FFT
@@ -64,6 +68,18 @@ float micFront_output[FFT_SIZE];
  *  Private functions
  */
 
+
+/********************
+ *  Public functions (Informations in header)
+ */
+
+void mod_audio_initModule(void){
+    play_melody_start();
+    mod_com_initConnexion();
+}
+
+
+
 /**
  * @brief Function used to detect the highest value
  *
@@ -72,6 +88,8 @@ float micFront_output[FFT_SIZE];
 void action_detection(float* data){
     float max_norm = MIN_VALUE_THRESHOLD;
     int16_t max_norm_index = -1;
+    
+    
     
     //search for the highest peak
     for(uint16_t i = MIN_FREQ ; i <= MAX_FREQ ; i++){
@@ -118,6 +136,7 @@ void processDatas(int16_t *data, uint16_t num_samples){
     // Get samples in a complex array
     for(uint16_t i = 0 ; i < num_samples ; i+=4){
         micFront_cmplx_input[nb_samples] = (float)data[i+3];
+        
         nb_samples++;
         micFront_cmplx_input[nb_samples] = 0;
         nb_samples++;
@@ -130,7 +149,6 @@ void processDatas(int16_t *data, uint16_t num_samples){
     
     // Process when buffer is full
     if(nb_samples >= (2 * FFT_SIZE)){
-
         // FFT Processing
         doFFT_optimized(FFT_SIZE, micFront_cmplx_input);
 
@@ -139,58 +157,71 @@ void processDatas(int16_t *data, uint16_t num_samples){
         
         if(process > 8){
             action_detection(micFront_output);
-            if(mod_audio_processedCommand != NOTHING) chBSemSignal(&mod_audio_sem_commandAvailable);
-        }
+            process = 0;
+            if(mod_audio_processedCommand != NOTHING){
+                mod_audio_stopListenForSound();
+                nb_samples = 0;
+                process = 0;
+                chBSemSignal(&mod_audio_sem_commandAvailable);
+                
+            }
         nb_samples = 0;
         process++;
+        }
     }
 }
 
 
-/********************
- *  Public functions (Informations in header)
- */
 
-void mod_audio_initModule(void){
-    
-}
+void mod_audio_launchMelodyOnThread(music_t musicName, playMode_t playMode){
 
-void mod_audio_launchMelody(music_t musicName){
-    // Check if something is playing
-    // If yes, stop it
-    // Launch the wanted thing
-    play_melody_start();
-    chThdSleepMilliseconds(50);
-    play_melody(MARIO);
+    mod_audio_interruptMelody();
+    mod_audio_waitUntilMelodyEnd();
     
     
     // New area
     switch(musicName){
         case DISCOVERING:
+            play_melody(MARIO);
             break;
             
         case EXPLORATION:
+            play_melody(UNDERWORLD);
+            break;
+            
+        case EXPLORATION_FAST:
+            play_melody(MARIO);
+            break;
+            
+        case MUSIC:
+            play_melody(STARWARS);
             break;
             
         case SORTING:
+            play_melody(MARIO);
             break;
     }
 }
 
 void mod_audio_interruptMelody(void){
-    
+    stop_current_melody();
 }
 
 void mod_audio_alertInterruption(alert_t alertName){
-//    stop_current_melody();
-//    chThdSleepMilliseconds(50);
-//    play_melody(ALERT);
+
+    mod_audio_interruptMelody();
+    mod_audio_waitUntilMelodyEnd();
     
     switch(alertName){
         case SHORT:
+            play_melody(ALERT);
             break;
             
         case LONG:
+            play_melody(ALERT);
+            break;
+            
+        case IMPOSSIBLE:
             break;
     }
     
@@ -198,6 +229,7 @@ void mod_audio_alertInterruption(alert_t alertName){
 
 void mod_audio_listenForSound(void){
     mic_start(&processDatas);
+    mod_com_writeDatas("Info", "Is Listening",0);
 }
 
 void mod_audio_stopListenForSound(void){
@@ -205,3 +237,6 @@ void mod_audio_stopListenForSound(void){
     
 }
 
+void  mod_audio_waitUntilMelodyEnd(void){
+    wait_until_melody_end();
+}

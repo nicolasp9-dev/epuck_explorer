@@ -11,6 +11,11 @@ Adapted from the code written by Dipto Pratyaksa
 taken at https://www.princetronics.com/supermariothemesong/
 */
 
+/*
+ WARNING : Edited by Maxime Marchionno and Nicolas Peslerbe.
+ */
+
+
 
 #ifndef PLAY_MELODY_H
 #define PLAY_MELODY_H
@@ -145,5 +150,7 @@ void stop_current_melody(void);
  * 					
  */
 void play_note(uint16_t note, uint16_t duration_ms);
+
+void wait_until_melody_end(void);
 
 #endif /* PLAY_MELODY_H */

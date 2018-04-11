@@ -11,6 +11,10 @@ Adapted from the code written by Dipto Pratyaksa
 taken at https://www.princetronics.com/supermariothemesong/
 */
 
+/*
+ WARNING : Edited by Maxime Marchionno and Nicolas Peslerbe.
+ */
+
 
 #include "play_melody.h"
 #include "audio_thread.h"
@@ -22,7 +26,8 @@ typedef struct{
 }melody_t;
 
 static thread_reference_t play_melody_ref = NULL;
-static bool play = false;
+static bool play = true;
+BSEMAPHORE_DECL(mod_audio_sem_playing, FALSE);
 
 //Mario main theme melody
 static uint16_t mario_melody[] = {
@@ -196,38 +201,39 @@ void play_note(uint16_t note, uint16_t duration_ms) {
 static THD_WORKING_AREA(waPlayMelodyThd, 128);
 static THD_FUNCTION(PlayMelodyThd, arg) {
 
-  chRegSetThreadName("PlayMelody Thd");
+    chRegSetThreadName("PlayMelody Thd");
 
 	(void)arg;
 
 	static melody_t* song = NULL;
 
-	while(1){
+    while(1){
 		//this thread is wating until it receives a message
-		chSysLock();
-		song = (melody_t*) chThdSuspendS(&play_melody_ref);
-		chSysUnlock();
-        
-		for (int thisNote = 0; thisNote < song->length; thisNote++) {
+        chSysLock();
+        song = (melody_t*) chThdSuspendS(&play_melody_ref);
+        chSysUnlock();
+        chBSemReset(&mod_audio_sem_playing, true);
+        play=true;
+        for (int thisNote = 0; thisNote < song->length; thisNote++) {
 
             if(!play){
+                
                 break;
             }
 
-			// to calculate the note duration, take one second
-			// divided by the note type.
-			//e.g. quarter note = 1000 / 4, eighth note = 1000/8, etc.
-			uint16_t noteDuration = (uint16_t)(1000 / song->tempo[thisNote]);
-
-			play_note(song->notes[thisNote], noteDuration);
-
-			// to distinguish the notes, set a minimum time between them.
-			// the note's duration + 30% seems to work well:
-			uint16_t pauseBetweenNotes = (uint16_t)(noteDuration * 1.30);
-			chThdSleepMilliseconds(pauseBetweenNotes);
-		}
-	}
+            uint16_t noteDuration = (uint16_t)(1000 / song->tempo[thisNote]);
+            
+            play_note(song->notes[thisNote], noteDuration);
+            
+            uint16_t pauseBetweenNotes = (uint16_t)(noteDuration * 1.30);
+            
+            chThdSleepMilliseconds(pauseBetweenNotes);
+        }
+        play=false;
+        chBSemReset(&mod_audio_sem_playing, false);
+    }
 }
+
 
 void play_melody_start(void){
 
@@ -237,19 +243,24 @@ void play_melody_start(void){
 
 void play_melody(song_selection_t choice){
 
+
 	melody_t* song = &melody[choice];
 
 	//if the refercence is NULL, then the thread is already running
 	//when the refercence becomes not NULL, it means the thread is waiting
 	if(play_melody_ref != NULL){
-        play = true;
 		//tell the thread to play the song given
 		chThdResume(&play_melody_ref, (msg_t) song);
 	}
 }
 
+void wait_until_melody_end(void){
+    if(chBSemGetStateI(&mod_audio_sem_playing) == true){
+        chBSemWait(&mod_audio_sem_playing);
+    }
+}
+
 void stop_current_melody(void){
     play = false;
 }
-
 
