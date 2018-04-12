@@ -11,6 +11,14 @@
 #ifndef _MOD_SENSORS_
 #define _MOD_SENSORS_
 
+#include <inttypes.h>
 
+void initSensors(void);
+
+uint16_t testSensor(void);
+
+int mod_sensor_getValueLightSensor(void);
+
+void getAllProximityValues(int* table);
 
 #endif

@@ -6,9 +6,11 @@ extern "C" {
 #endif
 
 #include <stdint.h>
-
+#include "msgbus/messagebus.h"
 #define PROXIMITY_NB_CHANNELS 8
 
+extern messagebus_t bus;
+    
 /** Struct containing a proximity measurment message. */
 typedef struct {
     /** Ambient light level (LED is OFF). */

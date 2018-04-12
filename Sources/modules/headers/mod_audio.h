@@ -56,6 +56,7 @@ typedef enum{
  * @brief Public access to variable in source file
  */
 extern binary_semaphore_t mod_audio_sem_commandAvailable;
+extern bool needAudio;
 extern command_t mod_audio_processedCommand;
 
 
@@ -92,9 +93,8 @@ void mod_audio_listenForSound(void);
 /**
  * @brief The robot stop listening for external sounds
  */
-void mod_audio_stopListenForSound(void);
+void  mod_audio_waitUntilMelodyEnd(void);
 
-void mod_audio_waitUntilMelodyEnd(void);
 
 
 #endif

@@ -11,7 +11,9 @@
 #ifndef _MOD_MAPPING_
 #define _MOD_MAPPING_
 
+void mod_mapping_init(void);
 
+void mod_mapping_doInitialMapping(void);
 
 
 #endif

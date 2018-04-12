@@ -27,7 +27,7 @@ typedef struct{
 
 static thread_reference_t play_melody_ref = NULL;
 static bool play = true;
-BSEMAPHORE_DECL(mod_audio_sem_playing, FALSE);
+BSEMAPHORE_DECL(mod_audio_sem_playing, TRUE);
 
 //Mario main theme melody
 static uint16_t mario_melody[] = {
@@ -212,7 +212,7 @@ static THD_FUNCTION(PlayMelodyThd, arg) {
         chSysLock();
         song = (melody_t*) chThdSuspendS(&play_melody_ref);
         chSysUnlock();
-        chBSemReset(&mod_audio_sem_playing, true);
+        //chBSemReset(&mod_audio_sem_playing, false);
         play=true;
         for (int thisNote = 0; thisNote < song->length; thisNote++) {
 
@@ -229,8 +229,10 @@ static THD_FUNCTION(PlayMelodyThd, arg) {
             
             chThdSleepMilliseconds(pauseBetweenNotes);
         }
+        chSysLock();
+        //chBSemSignal(&mod_audio_sem_playing);
+        chSysUnlock();
         play=false;
-        chBSemReset(&mod_audio_sem_playing, false);
     }
 }
 
@@ -255,12 +257,16 @@ void play_melody(song_selection_t choice){
 }
 
 void wait_until_melody_end(void){
-    if(chBSemGetStateI(&mod_audio_sem_playing) == true){
+    chSysLock();
+    if(chBSemGetStateI(&mod_audio_sem_playing) == false){
+        chSysUnlock();
         chBSemWait(&mod_audio_sem_playing);
     }
+    chSysUnlock();
 }
 
 void stop_current_melody(void){
     play = false;
+    //wait_until_melody_end();
 }
 

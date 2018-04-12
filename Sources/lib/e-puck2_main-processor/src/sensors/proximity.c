@@ -3,7 +3,7 @@
 #include "ch.h"
 #include "hal.h"
 #include "proximity.h"
-#include <main.h>
+#include "msgbus/messagebus.h"
 
 // The proximity sensors sampling is designed in order to sample two sensors at one time, the couples are chosen
 // in order to have as less interference as possible and divided as follow:
@@ -50,6 +50,8 @@ static uint8_t calibrationState = 0;
 static uint8_t calibrationNumSamples = 0;
 static int32_t calibrationSum[PROXIMITY_NB_CHANNELS] = {0};
 static proximity_msg_t prox_values;
+
+messagebus_t bus;
 
 /***************************INTERNAL FUNCTIONS************************************/
 

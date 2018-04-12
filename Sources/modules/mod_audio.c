@@ -27,7 +27,7 @@
 // Frequences for sound detection after FFT
 #define FFT_SIZE                1024
 
-#define MIN_VALUE_THRESHOLD     10000
+#define MIN_VALUE_THRESHOLD     7000
 
 #define MIN_FREQ                10    
 #define FREQ_CMD_DISCOVERING    16    //250Hz
@@ -53,6 +53,7 @@
  */
 
 BSEMAPHORE_DECL(mod_audio_sem_commandAvailable, TRUE);
+bool needAudio;
 command_t mod_audio_processedCommand;
 
 
@@ -74,8 +75,8 @@ float micFront_output[FFT_SIZE];
  */
 
 void mod_audio_initModule(void){
+    needAudio = false;
     play_melody_start();
-    mod_com_initConnexion();
 }
 
 
@@ -90,7 +91,6 @@ void action_detection(float* data){
     int16_t max_norm_index = -1;
     
     
-    
     //search for the highest peak
     for(uint16_t i = MIN_FREQ ; i <= MAX_FREQ ; i++){
         if(data[i] > max_norm){
@@ -98,7 +98,6 @@ void action_detection(float* data){
             max_norm_index = i;
         }
     }
-    
     if(max_norm_index >= FREQ_CMD_DISCOVERING_L && max_norm_index <= FREQ_CMD_DISCOVERING_H){
         mod_audio_processedCommand = CMD_DISCOVERING;
     }
@@ -119,7 +118,6 @@ void action_detection(float* data){
     else{
         mod_audio_processedCommand = NOTHING;
     }
-    
 }
 
 
@@ -129,7 +127,9 @@ void action_detection(float* data){
  * @note Inspired from processAudioData function of TP5
  */
 void processDatas(int16_t *data, uint16_t num_samples){
-    
+    if(needAudio == false){
+        return;
+    }
     static uint16_t nb_samples = 0;
     static uint8_t process = 0;
 
@@ -146,6 +146,7 @@ void processDatas(int16_t *data, uint16_t num_samples){
             break;
         }
     }
+    chThdSleepMilliseconds(10);
     
     // Process when buffer is full
     if(nb_samples >= (2 * FFT_SIZE)){
@@ -154,31 +155,30 @@ void processDatas(int16_t *data, uint16_t num_samples){
 
         // Magnitude processing
         arm_cmplx_mag_f32(micFront_cmplx_input, micFront_output, FFT_SIZE);
-        
         if(process > 8){
             action_detection(micFront_output);
             process = 0;
             if(mod_audio_processedCommand != NOTHING){
-                mod_audio_stopListenForSound();
+                needAudio = false;
                 nb_samples = 0;
-                process = 0;
                 chBSemSignal(&mod_audio_sem_commandAvailable);
-                
+                mod_com_writeDatas("Action processed", "TOUOE", 0);
+                return;
             }
+            
+        }
         nb_samples = 0;
         process++;
-        }
     }
 }
 
 
 
 void mod_audio_launchMelodyOnThread(music_t musicName, playMode_t playMode){
+    mod_com_writeDatas("mod_audio_launchMelodyOnThread before stop", "TOUOE", 0);
+    stop_current_melody();
+    mod_com_writeDatas("mod_audio_launchMelodyOnThread after stop", "TOUOE", 0);
 
-    mod_audio_interruptMelody();
-    mod_audio_waitUntilMelodyEnd();
-    
-    
     // New area
     switch(musicName){
         case DISCOVERING:
@@ -203,15 +203,11 @@ void mod_audio_launchMelodyOnThread(music_t musicName, playMode_t playMode){
     }
 }
 
-void mod_audio_interruptMelody(void){
-    stop_current_melody();
-}
 
 void mod_audio_alertInterruption(alert_t alertName){
-
-    mod_audio_interruptMelody();
-    mod_audio_waitUntilMelodyEnd();
-    
+    mod_com_writeDatas("mod_audio_alertInterruption before stop", "TOUOE", 0);
+    stop_current_melody();
+    mod_com_writeDatas("mod_audio_alertInterruption after stop", "TOUOE", 0);
     switch(alertName){
         case SHORT:
             play_melody(ALERT);
@@ -222,6 +218,7 @@ void mod_audio_alertInterruption(alert_t alertName){
             break;
             
         case IMPOSSIBLE:
+            play_melody(ALERT);
             break;
     }
     
@@ -229,13 +226,8 @@ void mod_audio_alertInterruption(alert_t alertName){
 
 void mod_audio_listenForSound(void){
     mic_start(&processDatas);
-    mod_com_writeDatas("Info", "Is Listening",0);
 }
 
-void mod_audio_stopListenForSound(void){
-    
-    
-}
 
 void  mod_audio_waitUntilMelodyEnd(void){
     wait_until_melody_end();

@@ -101,6 +101,7 @@ build/obj/mod_motors.o: modules/mod_motors.c modules/headers/mod_motors.h \
  lib/e-puck2_main-processor/ChibiOS_ext/os/hal/ports/STM32/STM32F4xx/stm32_registry.h \
  lib/e-puck2_main-processor/ChibiOS//os/hal/include/mmc_spi.h \
  lib/e-puck2_main-processor/ChibiOS//os/hal/include/serial_usb.h \
+ modules/headers/mod_mapping.h \
  lib/e-puck2_main-processor/ChibiOS//os/ext/CMSIS/include/arm_math.h \
  lib/e-puck2_main-processor/ChibiOS//os/ext/CMSIS/include/core_cm4.h \
  /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/string.h \
@@ -324,6 +325,8 @@ lib/e-puck2_main-processor/ChibiOS_ext/os/hal/ports/STM32/STM32F4xx/stm32_regist
 lib/e-puck2_main-processor/ChibiOS//os/hal/include/mmc_spi.h:
 
 lib/e-puck2_main-processor/ChibiOS//os/hal/include/serial_usb.h:
+
+modules/headers/mod_mapping.h:
 
 lib/e-puck2_main-processor/ChibiOS//os/ext/CMSIS/include/arm_math.h:
 

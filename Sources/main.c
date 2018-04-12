@@ -15,6 +15,7 @@
 #include <string.h>
 #include <math.h>
 
+
 // Epuck/ChibiOS headers
 #include "ch.h"
 #include "hal.h"
@@ -27,6 +28,8 @@
 #include "mod_errors.h"
 #include "mod_exploration.h"
 #include "mod_communication.h"
+#include "mod_sensors.h"
+#include "mod_motors.h"
 
 
 //Semaphores
@@ -48,18 +51,17 @@ history_t history = {0,0,0};
  */
 void exploration(void){
     mod_basicIO_changeRobotState(WIP);
-    
+    mod_com_writeDatas("EXPLO", "TOUOE", 0);
     if(history.exploration > 0){
         mod_audio_launchMelodyOnThread(EXPLORATION_FAST, REPEAT);
         mod_explo_explorateTheAreaOnThread(CONTINUE);
         mod_explo_waitUntilEndOfWork();
-        mod_audio_interruptMelody();
+        
     }
     else{
         mod_audio_launchMelodyOnThread(EXPLORATION, REPEAT);
         mod_explo_explorateTheAreaOnThread(NEW);
         mod_explo_waitUntilEndOfWork();
-        mod_audio_interruptMelody();
     }
     
     history.exploration +=1;
@@ -78,7 +80,6 @@ void discovering(void){
     mod_audio_launchMelodyOnThread(DISCOVERING, REPEAT);
     mod_explo_discoverTheAreaOnThread();
     mod_explo_waitUntilEndOfWork();
-    mod_audio_interruptMelody();
     
     history.discovering +=1;
 }
@@ -94,7 +95,6 @@ void sorting(void){
     mod_audio_launchMelodyOnThread(SORTING, REPEAT);
     mod_explo_sortTheAreaOnThread();
     mod_explo_waitUntilEndOfWork();
-    mod_audio_interruptMelody();
     history.sorting +=1;
 }
 
@@ -125,15 +125,14 @@ void sendMap(void){
  * @note The robot emit a different audio signal if the action is not possible (dependent on a previous one)
  */
 void actionChoice(void){
-
     switch(mod_audio_processedCommand){
         case CMD_DISCOVERING :
-            
+            mod_com_writeDatas("DISCOVER", "TOUOE", 0);
             discovering();
             break;
         
         case CMD_EXPLORATION :
-            
+            mod_com_writeDatas("EXPLO", "TOUOE", 0);
             if(history.discovering > 0) { exploration(); }
             else{
                 
@@ -144,7 +143,7 @@ void actionChoice(void){
             break;
         
         case CMD_SORTING :
-            
+            mod_com_writeDatas("SORT", "TOUOE", 0);
             if(history.discovering > 0 && history.exploration > 0 && history.sorting == 0){ sorting(); }
             else{
                 mod_audio_alertInterruption(IMPOSSIBLE);
@@ -154,7 +153,7 @@ void actionChoice(void){
             break;
         
         case CMD_MAPSEND :
-            
+            mod_com_writeDatas("MAPSEND", "TOUOE", 0);
             if(history.discovering > 0){ sendMap(); }
             else{
                 mod_audio_alertInterruption(IMPOSSIBLE);
@@ -164,7 +163,7 @@ void actionChoice(void){
             break;
             
         case CMD_SING :
-            
+            mod_com_writeDatas("SING", "TOUOE", 0);
             song();
             break;
         
@@ -173,8 +172,9 @@ void actionChoice(void){
             mod_audio_waitUntilMelodyEnd();
             return;
     }
-    
+    mod_com_writeDatas("END OF", "TOUOE", 0);
     mod_audio_alertInterruption(LONG);
+    mod_audio_waitUntilMelodyEnd();
 }
 
 
@@ -185,18 +185,40 @@ int main(void)
     mpu_init();
     mod_audio_initModule();
     mod_com_initConnexion();
+    chThdSleepMilliseconds(1000);
+    mod_com_writeDatas("Inititialisation OK", "TOUOE", 0);
+    chThdSleepMilliseconds(100);
+
+    initSensors();
+    //mod_audio_listenForSound();
     while (1) {
-        mod_com_writeDatas("Info", "Processing loop",0);
-        //Bool commandOK = 0;
-        mod_basicIO_changeRobotState(WAITING);
-        //while(!commandOK){
-        mod_audio_listenForSound();
+
+        /*mod_com_writeDatas("Robot is waiting", "TOUOE", 0);
+        needAudio = true;
         chBSemWait(&mod_audio_sem_commandAvailable);
+        mod_com_writeDatas("Robot have action to do", "TOUOE", 0);
         actionChoice();
-        mod_audio_processedCommand = NOTHING;
-        //}
+        mod_audio_processedCommand = NOTHING;*/
         
-        //commandOK = chBSemWait(&sem_wip);
+        char toSend[100];
+        int table[10];
+        getAllProximityValues(table);
+        char* pointer = toSend;
+        int i;
+        for(i=0; i<8;i++){
+            sprintf(pointer, "%d ",table[i]);
+            pointer= toSend + strlen(toSend);
+        }
+        mod_com_writeDatas(toSend, "TOUOE", 0);
+        
+        /*if(testSensor() < 50){
+            mod_basicIO_changeRobotState(WIP);
+        }
+        else{
+            mod_basicIO_changeRobotState(WAITING);
+            
+        }*/
+        chThdSleepMilliseconds(400);
     }
 }
 

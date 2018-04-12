@@ -7,13 +7,15 @@
  * MICRO-315 | École Polytechnique Fédérale de Lausanne
  */
 
-#include "headers/mod_motors.h"
+#include "mod_motors.h"
 #include "motors.h"
+#include "mod_mapping.h"
 #include <arm_math.h>
 
 
 void mod_motors_init(void){
     motors_init();
+    // + Save initial position
 }
 
 void mod_motors_state(int direction, int speed){
