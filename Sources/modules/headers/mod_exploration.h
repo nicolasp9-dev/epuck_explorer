@@ -38,5 +38,5 @@ void mod_explo_sendTheMap(void);
 
 void mod_explo_waitUntilEndOfWork(void);
 
-
+void mod_explo_init(void);
 #endif

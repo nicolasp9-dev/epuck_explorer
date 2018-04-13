@@ -11,14 +11,45 @@
 #ifndef _MOD_SENSORS_
 #define _MOD_SENSORS_
 
-#include <inttypes.h>
 
-void initSensors(void);
+/**
+ * @brief Initialize proximity and TOF sensors, to be ready for use
+ */
+void mod_sensors_initSensors(void);
 
-uint16_t testSensor(void);
+/**
+ * @brief Stop all sensors
+ */
+void mod_sensors_stopSensors(void);
 
-int mod_sensor_getValueLightSensor(void);
+/**
+ * @brief Calibrate the tof device applying a bias of the difference between actual data and desired one.
+ *
+ * @param[in] desiredValue     The current measured value of the distance
+ */
+void mod_sensors_calibrateFrontSensor(int desiredValue);
 
-void getAllProximityValues(int* table);
+/**
+ * @brief Get the value of the TOF sensor (in mm)
+ *
+ * @param[out] The value of the sensor, taking in account a possible bias
+ */
+int mod_sensors_getValueTOF(void);
+
+/**
+ * @brief 2 steps calibration of the IR sensor, the robot need to move straight ahead before the second step (to have two different measures)
+ *
+ * @param[in] currentValue The distance between the robot and the wall in front of the robot
+ */
+void mod_sensors_calibrateIRSensors(int currentValue);
+
+/**
+ * @brief Compute all values of IR sensors with calibrated datas (in mm)
+ *
+ * @param[in] table A table where to save datas
+ */
+void mod_sensors_getAllProximityValues(int* table);
+
+
 
 #endif

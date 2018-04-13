@@ -11,9 +11,19 @@
 #ifndef _MOD_MAPPING_
 #define _MOD_MAPPING_
 
+/**
+ * @brief Init needed libraries by mapping + Change position of the robot to zero
+*/
 void mod_mapping_init(void);
 
-void mod_mapping_doInitialMapping(void);
+/**
+ * @brief Calibrate sensors and motors to have correct accuracy
+ */
+void mod_mapping_calibrateTheSystem(void);
 
+
+/**
+ */
+void mod_mapping_doInitialMapping(void);
 
 #endif

@@ -9,6 +9,7 @@
 
 #include "mod_audio.h"
 
+// Standard headers
 #include <stdio.h>
 
 // Epuck/ChibiOS headers

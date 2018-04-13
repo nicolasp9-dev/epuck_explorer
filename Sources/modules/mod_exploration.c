@@ -7,14 +7,14 @@
  * MICRO-315 | École Polytechnique Fédérale de Lausanne
  */
 
-#include "headers/mod_exploration.h"
+#include "mod_exploration.h"
 
 
 // Our headers
 #include "mod_mapping.h"
 #include "mod_errors.h"
-#include "mod_sensors.h"
-
+#include "mod_communication.h"
+#include <ch.h>
 
 /********************
  *  Private functions
@@ -26,8 +26,15 @@
  */
 
 
+void mod_explo_init(void){
+    mod_mapping_init();
+}
+
+
 void mod_explo_discoverTheAreaOnThread(void){
-    
+    mod_com_writeDatas("Here all is alright", "TOUOE", 0);
+    chThdSleepMilliseconds(1000);
+    mod_mapping_doInitialMapping();
 }
 
 void mod_explo_explorateTheAreaOnThread(exploration_t type){

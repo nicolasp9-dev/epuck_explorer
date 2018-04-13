@@ -25,11 +25,8 @@
 #include "mod_errors.h"
 #include "mod_basicIO.h"
 #include "mod_audio.h"
-#include "mod_errors.h"
 #include "mod_exploration.h"
 #include "mod_communication.h"
-#include "mod_sensors.h"
-#include "mod_motors.h"
 
 
 //Semaphores
@@ -177,20 +174,27 @@ void actionChoice(void){
     mod_audio_waitUntilMelodyEnd();
 }
 
+void initSystem(void){
+    halInit();
+    chSysInit();
+    mod_audio_initModule();
+    mod_com_initConnexion();
+    mod_explo_init();
+}
+
+void calibrateSystem(void){
+    mod_com_writeDatas("Info", "The system is strating the calibration...", 0);
+    mod_mapping_calibrateTheSystem();
+    mod_com_writeDatas("Info", "End of calibration, data saved.", 0);
+}
 
 int main(void)
 {
-    halInit();
-    chSysInit();
-    mpu_init();
-    mod_audio_initModule();
-    mod_com_initConnexion();
-    chThdSleepMilliseconds(1000);
-    mod_com_writeDatas("Inititialisation OK", "TOUOE", 0);
-    chThdSleepMilliseconds(100);
-
-    initSensors();
+    initSystem();
+    calibrateSystem();
+    
     //mod_audio_listenForSound();
+    mod_explo_discoverTheAreaOnThread();
     while (1) {
 
         /*mod_com_writeDatas("Robot is waiting", "TOUOE", 0);
@@ -200,7 +204,7 @@ int main(void)
         actionChoice();
         mod_audio_processedCommand = NOTHING;*/
         
-        char toSend[100];
+        /*char toSend[100];
         int table[10];
         getAllProximityValues(table);
         char* pointer = toSend;
@@ -211,13 +215,15 @@ int main(void)
         }
         mod_com_writeDatas(toSend, "TOUOE", 0);
         
-        /*if(testSensor() < 50){
+        if(testSensor() < 50){
             mod_basicIO_changeRobotState(WIP);
         }
         else{
             mod_basicIO_changeRobotState(WAITING);
             
         }*/
+        
+        
         chThdSleepMilliseconds(400);
     }
 }

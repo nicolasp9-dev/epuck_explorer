@@ -145,9 +145,7 @@ build/obj/main.o: main.c main.h \
  lib/e-puck2_main-processor/src/memory_protection.h \
  modules/headers/mod_errors.h modules/headers/mod_basicIO.h \
  modules/headers/mod_audio.h modules/headers/mod_exploration.h \
- modules/headers/mod_communication.h modules/headers/mod_sensors.h \
- /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/inttypes.h \
- modules/headers/mod_motors.h
+ modules/headers/mod_communication.h
 
 main.h:
 
@@ -448,9 +446,3 @@ modules/headers/mod_audio.h:
 modules/headers/mod_exploration.h:
 
 modules/headers/mod_communication.h:
-
-modules/headers/mod_sensors.h:
-
-/Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/inttypes.h:
-
-modules/headers/mod_motors.h:

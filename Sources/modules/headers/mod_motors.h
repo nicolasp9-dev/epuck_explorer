@@ -13,18 +13,44 @@
 #define _MOD_MOTORS_
 
 
-/**
- * @brief Change Motors command for a certain state
- *
- * @param[in] direction     From -1000 to 1000 (totally left to totally right)
- * @param[in] speed         From -1100 to 1100
- */
-void mod_motors_state(int direction, int speed);
+typedef struct  {
+    int left;
+    int right;
+}wheelSpeed_t;
+
+typedef struct  {
+    int direction;
+    int mainSpeed;
+}robotSpeed_t;
 
 /**
  * @brief Initialize motors
  */
 void mod_motors_init(void);
+
+/**
+ * @brief Convert the robot style speed in wheel style speed
+ *
+ * @param[in] robotSpeed     The speed to convert (direction + general speed)
+ *
+ * @param[out] Speed of the robot from a wheel point of view
+ */
+wheelSpeed_t mod_motors_convertRobotSpeedToWheelspeed(robotSpeed_t robotSpeedTemp);
+
+/**
+ * @brief Change Motors command for a certain state
+ *
+ * @param[in] wheelSpeed     Desired speed for each wheel
+ */
+void mod_motors_changeStateWheelSpeedType(wheelSpeed_t wheelSpeed);
+
+/**
+ * @brief Change Motors command for a certain state
+ *
+ * @param[in] wheelSpeed     Desired speed in robot speed style struct
+ */
+void mod_motors_changeStateRobotSpeedType(robotSpeed_t robotSpeed);
+
 
 /**
  * @brief Stop the robot
