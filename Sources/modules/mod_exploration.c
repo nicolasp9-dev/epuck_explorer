@@ -33,7 +33,7 @@ void mod_explo_init(void){
 
 void mod_explo_discoverTheAreaOnThread(void){
     mod_com_writeDatas("Here all is alright", "TOUOE", 0);
-    chThdSleepMilliseconds(1000);
+    chThdSleepMilliseconds(500);
     mod_mapping_doInitialMapping();
 }
 

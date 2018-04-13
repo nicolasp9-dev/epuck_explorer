@@ -47,8 +47,6 @@ static robotPosition_t robotActualPosition;
  * Private functions
  */
 
-
-
 /**
  * @brief Compute the position of the robot based on last position and the displacement (speed + time)
  *
@@ -122,6 +120,7 @@ void moveAndComputePositionWheelSpeedType(const wheelSpeed_t* wheelSpeed, int de
     systime_t time = chVTGetSystemTime();
     robotActualPosition = newAbsolutePositionWheelSpeedType(&robotActualPosition, wheelSpeed, time);
     chThdSleepUntilWindowed(time, time + MS2ST(deltaTime));
+    mod_motors_stop();
 }
 
 void moveAndComputePositionRobotSpeedType(const robotSpeed_t* robotSpeed, int deltaTime){
@@ -133,6 +132,7 @@ void moveWheelSpeedType(const wheelSpeed_t* wheelSpeed, int deltaTime){
     mod_motors_changeStateWheelSpeedType(*wheelSpeed);
     systime_t time = chVTGetSystemTime();
     chThdSleepUntilWindowed(time, time + MS2ST(deltaTime));
+    mod_motors_stop();
 }
 
 void moveRobotSpeedType(const robotSpeed_t* robotSpeed, int deltaTime){
@@ -163,13 +163,16 @@ void mod_mapping_init(void){
 void mod_mapping_calibrateTheSystem(void){
     mod_sensors_calibrateFrontSensor(ARENA_WALL_DISTANCE);
     mod_sensors_calibrateIRSensors(mod_sensors_getValueTOF());
-    moveWheelSpeedType(&((wheelSpeed_t){200, 200}), 2000);
+    moveWheelSpeedType(&((wheelSpeed_t){200, 200}), 4000);
+    chThdSleepMilliseconds(500);
     mod_sensors_calibrateIRSensors(mod_sensors_getValueTOF());
+    moveWheelSpeedType(&((wheelSpeed_t){-200, -200}), 4000);
+    
 }
 
 
 void mod_mapping_doInitialMapping(void){
-    mesurement_t measurement[NUMBER_OF_MEASUREMENT_FOR_COMPLETE_ROTATION];
+    /*mesurement_t measurement[NUMBER_OF_MEASUREMENT_FOR_COMPLETE_ROTATION];
     storeFrontDistanceSensorValue(&(measurement[0]));
     //moveAndComputePositionWheelSpeedType(&((wheelSpeed_t){500, 500}), 9000);
     //storeFrontDistanceSensorValue(&(measurement[1]));
@@ -183,7 +186,7 @@ void mod_mapping_doInitialMapping(void){
     for(i=0;i<3;i++){
         sprintf(toSend, "Computation %d : x %d | x %d | x %d | x %d", i, measurement[i].position.x, measurement[i].position.y,measurement[i].position.theta, measurement[i].value );
         mod_com_writeDatas(toSend, "TOUOE", 0);
-    }
+    }*/
 }
 
 

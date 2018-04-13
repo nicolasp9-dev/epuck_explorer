@@ -50,6 +50,11 @@ void mod_motors_changeStateRobotSpeedType(robotSpeed_t robotSpeed){
 }
 
 
+void mod_motors_calibrateDistance(void){
+    
+    
+}
+
 
 void mod_motors_stop(void){
     mod_motors_changeStateWheelSpeedType((wheelSpeed_t){0,0});
