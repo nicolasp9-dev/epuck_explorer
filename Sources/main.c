@@ -28,8 +28,10 @@
 #include "mod_exploration.h"
 #include "mod_communication.h"
 
+// Temporary
+#include "mod_mapping.h"
 
-//Semaphores
+// Semaphores
 BSEMAPHORE_DECL(sem_wip, FALSE);
 
 typedef struct{
@@ -191,12 +193,12 @@ void calibrateSystem(void){
 int main(void)
 {
     initSystem();
-    calibrateSystem();
-    
+    //calibrateSystem();
+    chThdSleepMilliseconds(600);
     //mod_audio_listenForSound();
     mod_explo_discoverTheAreaOnThread();
     while (1) {
-
+        mod_explo_discoverTheAreaOnThread();
         /*mod_com_writeDatas("Robot is waiting", "TOUOE", 0);
         needAudio = true;
         chBSemWait(&mod_audio_sem_commandAvailable);
@@ -224,7 +226,7 @@ int main(void)
         }*/
         
         
-        chThdSleepMilliseconds(400);
+        chThdSleepMilliseconds(1500);
     }
 }
 

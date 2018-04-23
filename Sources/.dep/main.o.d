@@ -145,7 +145,8 @@ build/obj/main.o: main.c main.h \
  lib/e-puck2_main-processor/src/memory_protection.h \
  modules/headers/mod_errors.h modules/headers/mod_basicIO.h \
  modules/headers/mod_audio.h modules/headers/mod_exploration.h \
- modules/headers/mod_communication.h
+ modules/headers/mod_communication.h modules/headers/mod_mapping.h \
+ modules/headers/structs.h
 
 main.h:
 
@@ -446,3 +447,7 @@ modules/headers/mod_audio.h:
 modules/headers/mod_exploration.h:
 
 modules/headers/mod_communication.h:
+
+modules/headers/mod_mapping.h:
+
+modules/headers/structs.h:

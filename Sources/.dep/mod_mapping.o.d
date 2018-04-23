@@ -1,6 +1,5 @@
 build/obj/mod_mapping.o: modules/mod_mapping.c \
- modules/headers/mod_mapping.h modules/headers/mod_sensors.h \
- modules/headers/mod_motors.h \
+ modules/headers/mod_mapping.h modules/headers/structs.h \
  lib/e-puck2_main-processor/ChibiOS//os/rt/include/ch.h \
  lib/e-puck2_main-processor/ChibiOS//os/rt/ports/ARMCMx/compilers/GCC/chtypes.h \
  /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/lib/gcc/arm-none-eabi/7.2.1/include/stddef.h \
@@ -130,13 +129,12 @@ build/obj/mod_mapping.o: modules/mod_mapping.c \
  modules/headers/mod_communication.h \
  /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/stdlib.h \
  /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/machine/stdlib.h \
- /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/alloca.h
+ /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/alloca.h \
+ modules/headers/mod_basicIO.h
 
 modules/headers/mod_mapping.h:
 
-modules/headers/mod_sensors.h:
-
-modules/headers/mod_motors.h:
+modules/headers/structs.h:
 
 lib/e-puck2_main-processor/ChibiOS//os/rt/include/ch.h:
 
@@ -397,3 +395,5 @@ modules/headers/mod_communication.h:
 /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/machine/stdlib.h:
 
 /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/alloca.h:
+
+modules/headers/mod_basicIO.h:

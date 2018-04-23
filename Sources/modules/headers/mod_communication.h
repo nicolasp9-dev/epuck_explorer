@@ -14,6 +14,11 @@
 
 #include <stdlib.h>
 
+typedef enum{
+    SEND_MAP,
+}cmd_t;
+
+
 /**
  * @brief Initialize the serial connexion to be able to send datas
  */
@@ -30,5 +35,8 @@ void mod_com_initConnexion(void);
  */
 void mod_com_writeDatas(char* type, char* toWrite, size_t toWriteSize);
 
+void mod_com_writeMessage(char* message, int level);
+
+void mod_com_writeCommand(cmd_t order);
 
 #endif

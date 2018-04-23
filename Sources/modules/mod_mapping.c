@@ -9,42 +9,27 @@
 
 #include "mod_mapping.h"
 
-#include "mod_sensors.h"
-#include "mod_motors.h"
 #include <ch.h>
 #include <stdio.h>
 #include <hal.h>
 #include "math.h"
 #include "mod_communication.h"
+#include "mod_basicIO.h"
 
-#define NUMBER_OF_MEASUREMENT_FOR_COMPLETE_ROTATION     20
-#define WHEEL_SIZE                                      1
-#define ROBOT_SIZE                                      1
-#define COMPLETE_ANGLE                                  360
-#define REDUCTION_CONST                                 100
-#define CALIBRATED_CONST                                242
 
-#define ARENA_WALL_DISTANCE                             66 // Between epuck and wall in the arena (in mm)
 
-typedef struct {
-    int x;
-    int y;
-    int theta;
-}robotPosition_t;
+#define ARENA_WALL_DISTANCE                             66// Between epuck and wall in the arena (in mm)
+#define CALIBRATION_REF_TIME                            4000
+#define ROTATION_ELMT_TIME                              50
+#define TOLERATE_ERROR                                  4 // Error in mm
 
-typedef struct  {
-    robotPosition_t position;
-    int value;
-}mesurement_t;
+#define ROBOT_RADIUS    27
+#define TOF_RADIUS      37
 
 static robotPosition_t robotActualPosition;
 
-
-
-
-
-/**************
- * Private functions
+/********************
+ *  Private functions
  */
 
 /**
@@ -56,94 +41,31 @@ static robotPosition_t robotActualPosition;
  *
  * @param[out] The new position of the robot
  */
-robotPosition_t newAbsolutePositionWheelSpeedType(robotPosition_t* lastPosition,
-                                                              const wheelSpeed_t* wheelSpeed, int time);
+robotPosition_t PositionWheelSpeedType(robotPosition_t* lastPosition,
+                                                  const wheelSpeed_t* wheelSpeed, int time);
 
-/**
- * @brief Compute the position of the robot based on last position and the displacement (speed + time)
- *
- * @param[in] lastPosition     The position to be based on
- * @param[in] robotSpeed       The robot style speed of the robot
- * @param[in] time             The time the robot was at the indicated speed
- *
- * @param[out] The new position of the robot
- */
-robotPosition_t newAbsolutePositionRobotSpeedType(robotPosition_t* lastPosition,
-                                                              const robotSpeed_t* robotSpeed, int time);
-
-/**
- * @brief Change motors states and compute the new position of the robot
- *
- * @param[in] wheelSpeed       The wheels speed of the robot
- * @param[in] time             The time the robot was at the indicated speed
-*/
-void moveAndComputePositionWheelSpeedType(const wheelSpeed_t* wheelSpeed, int deltaTime);
-
-/**
- * @brief Change motors states and compute the new position of the robot
- *
- * @param[in] robotSpeed       The robot style speed of the robot
- * @param[in] time             The time the robot was at the indicated speed
- */
-void moveAndComputePositionRobotSpeedType(const robotSpeed_t* robotSpeed, int deltaTime);
-
-/**
- * @brief Store the current value of the front distance sensor with the actual position of the robot
- *
- * @param[in] measurement       A pointer to the storing space
- */
-void storeFrontDistanceSensorValue(mesurement_t* measurement);
 
 /***************/
 
 robotPosition_t newAbsolutePositionWheelSpeedType(robotPosition_t* lastPosition,
                                                               const wheelSpeed_t *wheelSpeed, int time){
     robotPosition_t newPosition;
-    newPosition.x = lastPosition->x +   time*((wheelSpeed->right+wheelSpeed->left)/REDUCTION_CONST)
-                                        *cos(lastPosition->theta)*CALIBRATED_CONST/REDUCTION_CONST/REDUCTION_CONST;
-    newPosition.y = lastPosition->y +   time*((wheelSpeed->right+wheelSpeed->left)/REDUCTION_CONST)
-                                        *sin(lastPosition->theta)*CALIBRATED_CONST/REDUCTION_CONST/REDUCTION_CONST;
-    newPosition.theta = lastPosition->theta +   (wheelSpeed->right-wheelSpeed->left)*
-                                                time/259/REDUCTION_CONST;
+    newPosition.x = lastPosition->x +   time*(wheelSpeed->right+wheelSpeed->left)*cos(lastPosition->theta)/(2*1000);
+    newPosition.y = lastPosition->y +   time*(wheelSpeed->right+wheelSpeed->left)*sin(lastPosition->theta)/(2*1000);
+    newPosition.theta = lastPosition->theta +   (wheelSpeed->right-wheelSpeed->left)*time/ROBOT_RADIUS;
+    if(newPosition.theta > 2*M_PI){
+        newPosition.theta -=  M_PI;
+    }
     return newPosition;
 }
 
-
-robotPosition_t newAbsolutePositionRobotSpeedType(robotPosition_t* lastPosition,
-                                                              const robotSpeed_t* robotSpeed, int time){
-    wheelSpeed_t wheelSpeed = mod_motors_convertRobotSpeedToWheelspeed(*robotSpeed);
-    return newAbsolutePositionWheelSpeedType(lastPosition, &wheelSpeed, time);
+point_t measurementToPoint(measurement_t * measurement){
+    point_t point;
+    point.x = -(measurement->value+TOF_RADIUS)*sin(robotActualPosition.theta)+robotActualPosition.x;
+    point.y = -(measurement->value+TOF_RADIUS)*cos(robotActualPosition.theta)+robotActualPosition.y;
+    return point;
 }
 
-void moveAndComputePositionWheelSpeedType(const wheelSpeed_t* wheelSpeed, int deltaTime){
-    mod_motors_changeStateWheelSpeedType(*wheelSpeed);
-    systime_t time = chVTGetSystemTime();
-    robotActualPosition = newAbsolutePositionWheelSpeedType(&robotActualPosition, wheelSpeed, time);
-    chThdSleepUntilWindowed(time, time + MS2ST(deltaTime));
-    mod_motors_stop();
-}
-
-void moveAndComputePositionRobotSpeedType(const robotSpeed_t* robotSpeed, int deltaTime){
-    wheelSpeed_t wheelSpeed = mod_motors_convertRobotSpeedToWheelspeed(*robotSpeed);
-    moveAndComputePositionWheelSpeedType(&wheelSpeed, deltaTime);
-}
-
-void moveWheelSpeedType(const wheelSpeed_t* wheelSpeed, int deltaTime){
-    mod_motors_changeStateWheelSpeedType(*wheelSpeed);
-    systime_t time = chVTGetSystemTime();
-    chThdSleepUntilWindowed(time, time + MS2ST(deltaTime));
-    mod_motors_stop();
-}
-
-void moveRobotSpeedType(const robotSpeed_t* robotSpeed, int deltaTime){
-    wheelSpeed_t wheelSpeed = mod_motors_convertRobotSpeedToWheelspeed(*robotSpeed);
-    moveWheelSpeedType(&wheelSpeed, deltaTime);
-}
-
-void storeFrontDistanceSensorValue(mesurement_t* measurement){
-    int value = mod_sensors_getValueTOF();
-    *measurement = (mesurement_t) {robotActualPosition, value };
-}
 
 /**************
  * Public  functions (informations in the header)
@@ -153,40 +75,121 @@ void storeFrontDistanceSensorValue(mesurement_t* measurement){
 void mod_mapping_init(void){
     mod_sensors_initSensors();
     mod_motors_init();
-    
-    robotActualPosition.x = 0;
-    robotActualPosition.y = 0;
-    robotActualPosition.theta = 0;
-    
+    mod_mapping_resetCoordinates();
 }
 
-void mod_mapping_calibrateTheSystem(void){
-    mod_sensors_calibrateFrontSensor(ARENA_WALL_DISTANCE);
-    mod_sensors_calibrateIRSensors(mod_sensors_getValueTOF());
-    moveWheelSpeedType(&((wheelSpeed_t){200, 200}), 4000);
-    chThdSleepMilliseconds(500);
-    mod_sensors_calibrateIRSensors(mod_sensors_getValueTOF());
-    moveWheelSpeedType(&((wheelSpeed_t){-200, -200}), 4000);
-    
+void mod_mapping_resetCoordinates(void){
+    robotActualPosition = (robotPosition_t) {0,0,0};
+}
+
+void mod_mapping_adaptCoordinatesToOrigin(int x, int y, int theta){
+    robotActualPosition = (robotPosition_t) {robotActualPosition.x,robotActualPosition.x,robotActualPosition.theta};
+}
+
+void mod_mapping_updatePositionWheelSpeedType(const wheelSpeed_t *wheelSpeed, int time){
+    robotActualPosition = newAbsolutePositionWheelSpeedType(&robotActualPosition, wheelSpeed, time);
 }
 
 
-void mod_mapping_doInitialMapping(void){
-    /*mesurement_t measurement[NUMBER_OF_MEASUREMENT_FOR_COMPLETE_ROTATION];
-    storeFrontDistanceSensorValue(&(measurement[0]));
-    //moveAndComputePositionWheelSpeedType(&((wheelSpeed_t){500, 500}), 9000);
-    //storeFrontDistanceSensorValue(&(measurement[1]));
-    //mod_motors_stop();
-    chThdSleepMilliseconds(4000);
-    moveAndComputePositionWheelSpeedType(&((wheelSpeed_t){-300, 300}), 10000);
-    storeFrontDistanceSensorValue(&(measurement[2]));
-    mod_motors_stop();
-    char toSend[100];
+void mod_mapping_computeWallLocation(measurement_t* measurement, int number){
     int i;
-    for(i=0;i<3;i++){
-        sprintf(toSend, "Computation %d : x %d | x %d | x %d | x %d", i, measurement[i].position.x, measurement[i].position.y,measurement[i].position.theta, measurement[i].value );
-        mod_com_writeDatas(toSend, "TOUOE", 0);
-    }*/
+    int measureNumber = 0;
+    int currentTable = 0;
+    
+    typedef enum {
+        INCREASING =0,
+        DECREASING,
+        NOTHING
+    } direction_t;
+    
+    typedef struct {
+        measurement_t measurement[NUMBER_OF_STEPS];
+        direction_t direction;
+        int total;
+    } measurementsVariations_t;
+    
+    measurementsVariations_t table[4];
+    
+    for(i=0; i < NUMBER_OF_STEPS; i++){
+        if(measurement[i].value > 120) continue;
+        
+        if((table[currentTable].direction == NOTHING) && (measureNumber == 0)){
+            table[currentTable].measurement[measureNumber] = measurement[i];
+        }
+        
+        else if(table[currentTable].direction == NOTHING) {
+            if(measurement[i].value < table[currentTable].measurement[0].value){
+                table[currentTable].direction = DECREASING;
+                table[currentTable].measurement[measureNumber] = measurement[i];
+            }
+            else{
+                table[currentTable].direction = INCREASING;
+                table[currentTable].measurement[measureNumber] = measurement[i];
+            }
+        }
+        else if(table[currentTable].direction == DECREASING) {
+            if(measurement[i].value < table[currentTable].measurement[measureNumber-1].value){
+                table[currentTable].measurement[measureNumber] = measurement[i];
+            }
+            else{
+                table[currentTable].total=measureNumber;
+                currentTable++;
+                measureNumber = 0;
+                if(currentTable>3) break;
+                table[currentTable].measurement[measureNumber] = measurement[i];
+                table[currentTable].direction = INCREASING;
+            }
+        }
+        else if(table[currentTable].direction == INCREASING) {
+            if(measurement[i].value > table[currentTable].measurement[measureNumber-1].value){
+                table[currentTable].measurement[measureNumber] = measurement[i];
+            }
+            else{
+                table[currentTable].total=measureNumber;
+                currentTable++;
+                measureNumber = 0;
+                if(currentTable>3) break;
+                table[currentTable].measurement[measureNumber] = measurement[i];
+                table[currentTable].direction = DECREASING;
+            }
+        }
+        
+        measureNumber++;
+    }
+    int j, k=0, l=0;
+    point_t wall1[NUMBER_OF_STEPS];
+    point_t wall2[NUMBER_OF_STEPS];
+    for(i=0;i<4;i++){
+        for(j=0;j<table[i].total;j++){
+            if((i==0) || (i==1)){
+                wall1[k] = measurementToPoint(&(table[i].measurement[j]));
+                k++;
+            }
+            else{
+                wall2[l] = measurementToPoint(&(table[i].measurement[j]));
+                l++;
+            }
+        }
+    }
+    
+}
+
+robotDistance_t mod_mapping_getRobotDisplacement(const robotPosition_t * newAbsolutePosition){
+    robotDistance_t displacement;
+    
+    int deltaX = newAbsolutePosition->x - robotActualPosition.x;
+    int deltaY = newAbsolutePosition->y - robotActualPosition.y;
+    float movementAngle = atan(deltaY/deltaX);
+    
+    displacement.rotation[0] = movementAngle - robotActualPosition.theta;
+    displacement.rotation[1] = newAbsolutePosition->theta - movementAngle;
+    displacement.translation = sqrt(deltaX*deltaX + deltaY*deltaY);
+    
+    return displacement;
+}
+
+robotPosition_t mod_mapping_getActualPosition(void){
+    return robotActualPosition;
 }
 
 

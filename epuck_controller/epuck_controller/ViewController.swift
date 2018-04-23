@@ -41,6 +41,11 @@ class ViewController: UIViewController {
         oscillator.frequency = 452
         playSong(oscillator)
     }
+    @IBAction func calibrateClicked(_ sender: Any) {
+        if playing{return}
+        oscillator.frequency = 500
+        playSong(oscillator)
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         envelope = AKAmplitudeEnvelope(oscillator)

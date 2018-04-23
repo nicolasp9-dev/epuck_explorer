@@ -19,7 +19,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hff-jx-AXA">
-                                <rect key="frame" x="56" y="362" width="263" height="40"/>
+                                <rect key="frame" x="56" y="352" width="263" height="40"/>
                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="23"/>
                                 <state key="normal" title="Discover this amazing world"/>
                                 <connections>
@@ -27,7 +27,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zTu-rn-pSx">
-                                <rect key="frame" x="41" y="432" width="293" height="40"/>
+                                <rect key="frame" x="41" y="422" width="293" height="40"/>
                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="23"/>
                                 <state key="normal" title="Explore the beauty of this world"/>
                                 <connections>
@@ -35,7 +35,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p0a-KK-yiE">
-                                <rect key="frame" x="51" y="502" width="274" height="40"/>
+                                <rect key="frame" x="51" y="492" width="274" height="40"/>
                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="23"/>
                                 <state key="normal" title="Tell me more about this world"/>
                                 <connections>
@@ -43,7 +43,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6iI-D0-d9e">
-                                <rect key="frame" x="49" y="572" width="277" height="40"/>
+                                <rect key="frame" x="49" y="562" width="277" height="40"/>
                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="23"/>
                                 <state key="normal" title="Put this world in order, please."/>
                                 <connections>
@@ -63,11 +63,23 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dNp-Mr-82g">
-                                <rect key="frame" x="98.666666666666686" y="642" width="178" height="40"/>
+                                <rect key="frame" x="98.666666666666686" y="632" width="178" height="40"/>
                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="23"/>
-                                <state key="normal" title="Sing a cool melody"/>
+                                <state key="normal" title="Sing a cool melody">
+                                    <color key="titleColor" red="0.0" green="0.63012062823834203" blue="0.0063684929943814538" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
                                 <connections>
                                     <action selector="singClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Sbg-3q-9Gh"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EEX-Xn-AH4">
+                                <rect key="frame" x="26" y="702" width="324" height="40"/>
+                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="23"/>
+                                <state key="normal" title="Calibrate your sensors in the arena">
+                                    <color key="titleColor" red="1" green="0.0" blue="0.058155415096606156" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="calibrateClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="jfr-c2-LN8"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -83,10 +95,12 @@
                             <constraint firstItem="zTu-rn-pSx" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="TmJ-Aj-cXv"/>
                             <constraint firstItem="dNp-Mr-82g" firstAttribute="top" secondItem="6iI-D0-d9e" secondAttribute="bottom" constant="30" id="bRR-4z-XRy"/>
                             <constraint firstItem="UEl-zP-KSa" firstAttribute="top" secondItem="jdv-r6-wxu" secondAttribute="bottom" constant="70" id="jRo-Sg-BfD"/>
+                            <constraint firstItem="EEX-Xn-AH4" firstAttribute="top" secondItem="dNp-Mr-82g" secondAttribute="bottom" constant="30" id="nKE-2j-zzN"/>
                             <constraint firstItem="6iI-D0-d9e" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="njt-mU-Zcm"/>
-                            <constraint firstItem="hff-jx-AXA" firstAttribute="top" secondItem="UEl-zP-KSa" secondAttribute="bottom" constant="70" id="rMm-ej-h6O"/>
+                            <constraint firstItem="hff-jx-AXA" firstAttribute="top" secondItem="UEl-zP-KSa" secondAttribute="bottom" constant="60" id="rMm-ej-h6O"/>
                             <constraint firstItem="hff-jx-AXA" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="scG-TB-kzR"/>
                             <constraint firstItem="6iI-D0-d9e" firstAttribute="top" secondItem="p0a-KK-yiE" secondAttribute="bottom" constant="30" id="xQG-U5-Gl3"/>
+                            <constraint firstItem="EEX-Xn-AH4" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="zg4-4Z-Yam"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
