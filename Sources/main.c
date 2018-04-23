@@ -43,17 +43,22 @@ typedef struct{
 history_t history = {0,0,0};
 
 
-/**
- * @brief Launch the exploration of the area
- *
- * @note It blocks the thread until the end of the action
- */
+void initSystem(void){
+    halInit();
+    chSysInit();
+    
+    mod_audio_initModule();
+    mod_com_initModule();
+    mod_explo_initModule();
+}
+
 void exploration(void){
     mod_basicIO_changeRobotState(WIP);
-    mod_com_writeDatas("EXPLO", "TOUOE", 0);
+    mod_com_writeMessage("Will explore the area", 3);
+    
     if(history.exploration > 0){
         mod_audio_launchMelodyOnThread(EXPLORATION_FAST, REPEAT);
-        mod_explo_explorateTheAreaOnThread(CONTINUE);
+        mod_explo_explorateTheAreaOnThread(IMPROVE);
         mod_explo_waitUntilEndOfWork();
         
     }
@@ -66,14 +71,9 @@ void exploration(void){
     history.exploration +=1;
 }
 
-
-/**
- * @brief Launch the discovering of the area
- *
- * @note It blocks the thread until the end of the action
- */
 void discovering(void){
     mod_basicIO_changeRobotState(WIP);
+    mod_com_writeMessage("Will discover the area", 3);
     
     history=  (history_t){0,0,0};
     mod_audio_launchMelodyOnThread(DISCOVERING, REPEAT);
@@ -83,67 +83,36 @@ void discovering(void){
     history.discovering +=1;
 }
 
-/**
- * @brief Launch the sorting on the area
- *
- * @note It blocks the thread until the end of the action
- */
-void sorting(void){
-    mod_basicIO_changeRobotState(WIP);
-
-    mod_audio_launchMelodyOnThread(SORTING, REPEAT);
-    mod_explo_sortTheAreaOnThread();
-    mod_explo_waitUntilEndOfWork();
-    history.sorting +=1;
-}
-
-/**
- * @brief Launch the action that play StarWars song
- *
- * @note It blocks the thread until the end of the action
- */
 void song(void){
     mod_basicIO_changeRobotState(WIP);
+    mod_com_writeMessage("Will launch a melody", 3);
     
     mod_audio_launchMelodyOnThread(MUSIC, SINGLE);
     mod_audio_waitUntilMelodyEnd();
 }
 
-/**
- * @brief Launch the action that send the map to the user
- *
- * @note It blocks the thread until the end of the action
- */
 void sendMap(void){
+    mod_basicIO_changeRobotState(WIP);
+    mod_com_writeMessage("Will send the map", 3);
+    
     mod_explo_sendTheMap();
 }
 
-/**
- * @brief Launch the action to do based on audio feedback
- *
- * @note The robot emit a different audio signal if the action is not possible (dependent on a previous one)
- */
+void calibrateSystem(void){
+    mod_basicIO_changeRobotState(WIP);
+    mod_com_writeMessage("Will calibrate the system", 3);
+    
+    mod_explo_calibration();
+}
+
 void actionChoice(void){
     switch(mod_audio_processedCommand){
         case CMD_DISCOVERING :
-            mod_com_writeDatas("DISCOVER", "TOUOE", 0);
             discovering();
             break;
         
         case CMD_EXPLORATION :
-            mod_com_writeDatas("EXPLO", "TOUOE", 0);
             if(history.discovering > 0) { exploration(); }
-            else{
-                
-                mod_audio_alertInterruption(IMPOSSIBLE);
-                mod_audio_waitUntilMelodyEnd();
-                return;
-            }
-            break;
-        
-        case CMD_SORTING :
-            mod_com_writeDatas("SORT", "TOUOE", 0);
-            if(history.discovering > 0 && history.exploration > 0 && history.sorting == 0){ sorting(); }
             else{
                 mod_audio_alertInterruption(IMPOSSIBLE);
                 mod_audio_waitUntilMelodyEnd();
@@ -152,7 +121,6 @@ void actionChoice(void){
             break;
         
         case CMD_MAPSEND :
-            mod_com_writeDatas("MAPSEND", "TOUOE", 0);
             if(history.discovering > 0){ sendMap(); }
             else{
                 mod_audio_alertInterruption(IMPOSSIBLE);
@@ -162,7 +130,6 @@ void actionChoice(void){
             break;
             
         case CMD_SING :
-            mod_com_writeDatas("SING", "TOUOE", 0);
             song();
             break;
         
@@ -171,63 +138,9 @@ void actionChoice(void){
             mod_audio_waitUntilMelodyEnd();
             return;
     }
-    mod_com_writeDatas("END OF", "TOUOE", 0);
+    
     mod_audio_alertInterruption(LONG);
     mod_audio_waitUntilMelodyEnd();
-}
-
-void initSystem(void){
-    halInit();
-    chSysInit();
-    mod_audio_initModule();
-    mod_com_initConnexion();
-    mod_explo_init();
-}
-
-void calibrateSystem(void){
-    mod_com_writeDatas("Info", "The system is strating the calibration...", 0);
-    mod_mapping_calibrateTheSystem();
-    mod_com_writeDatas("Info", "End of calibration, data saved.", 0);
-}
-
-int main(void)
-{
-    initSystem();
-    //calibrateSystem();
-    chThdSleepMilliseconds(600);
-    //mod_audio_listenForSound();
-    mod_explo_discoverTheAreaOnThread();
-    while (1) {
-        mod_explo_discoverTheAreaOnThread();
-        /*mod_com_writeDatas("Robot is waiting", "TOUOE", 0);
-        needAudio = true;
-        chBSemWait(&mod_audio_sem_commandAvailable);
-        mod_com_writeDatas("Robot have action to do", "TOUOE", 0);
-        actionChoice();
-        mod_audio_processedCommand = NOTHING;*/
-        
-        /*char toSend[100];
-        int table[10];
-        getAllProximityValues(table);
-        char* pointer = toSend;
-        int i;
-        for(i=0; i<8;i++){
-            sprintf(pointer, "%d ",table[i]);
-            pointer= toSend + strlen(toSend);
-        }
-        mod_com_writeDatas(toSend, "TOUOE", 0);
-        
-        if(testSensor() < 50){
-            mod_basicIO_changeRobotState(WIP);
-        }
-        else{
-            mod_basicIO_changeRobotState(WAITING);
-            
-        }*/
-        
-        
-        chThdSleepMilliseconds(1500);
-    }
 }
 
 #define STACK_CHK_GUARD 0xe2dee396
@@ -237,6 +150,30 @@ void __stack_chk_fail(void)
 {
     chSysHalt("Stack smashing detected");
 }
+
+
+int main(void)
+{
+    initSystem();
+    
+    mod_com_writeMessage("Basic init OK", 4);
+    
+    chThdSleepMilliseconds(600);
+    //mod_audio_listenForSound();
+    discovering();
+    while (1) {
+        mod_com_writeMessage("Robot is waiting", 3);
+        needAudio = true;
+        chBSemWait(&mod_audio_sem_commandAvailable);
+        mod_com_writeMessage("Signal was detected", 3);
+        actionChoice();
+        mod_audio_processedCommand = NOTHING;
+        
+        
+        chThdSleepMilliseconds(1500);
+    }
+}
+
 
 
 

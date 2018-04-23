@@ -29,7 +29,12 @@
 #define ROTATION_ELMT_TIME                              50
 #define TOLERATE_ERROR                                  4 // Error in mm
 
+static thread_t * discoverThread;
+static thread_t * explorationThread;
+static thread_t * motorsControlThread;
 
+// Semaphores
+binary_semaphore_t wipEndSignal_sem;
 
 /********************
  *  Private functions
@@ -88,30 +93,39 @@ void goTo(const robotPosition_t * newAbsolutePosition);
 
 /***************/
 
-void changeMotorsState(const wheelSpeed_t order){
+static THD_WORKING_AREA(changeMotorsStateAsync_wa, 1024);
+static THD_FUNCTION(changeMotorsStateAsync, arg){
     
     static bool isMoving = false;
     static systime_t lastOrderTime;
     static wheelSpeed_t lastOrder;
-    
-    if(isMoving){
-        systime_t deltaTime = chVTGetSystemTime() - lastOrderTime;
-        lastOrderTime = chVTGetSystemTime();
-        mod_motors_changeStateWheelSpeedType(order);
-        mod_mapping_updatePositionWheelSpeedType(&lastOrder, MS2ST(deltaTime));
+    while(1){
+        thread_t *tp = chMsgWait();
+        const wheelSpeed_t *order = (const wheelSpeed_t *)chMsgGet(tp);
+        chMsgRelease(tp, MSG_OK);
+        if(isMoving){
+            systime_t deltaTime = chVTGetSystemTime() - lastOrderTime;
+            lastOrderTime = chVTGetSystemTime();
+            mod_motors_changeStateWheelSpeedType(*order);
+            mod_mapping_updatePositionWheelSpeedType(&lastOrder, MS2ST(deltaTime));
+        }
+        else{
+            lastOrderTime = chVTGetSystemTime();
+            mod_motors_changeStateWheelSpeedType(*order);
+        }
+
+        if(order->left == 0 && order->right==0){
+            isMoving = false;
+        }
+        else{
+            isMoving = true;
+            lastOrder = *order;
+        }
     }
-    else{
-        lastOrderTime = chVTGetSystemTime();
-        mod_motors_changeStateWheelSpeedType(order);
-    }
-    
-    if(order.left == 0 && order.right==0){
-        isMoving = false;
-    }
-    else{
-        isMoving = true;
-        lastOrder = order;
-    }
+}
+
+void changeMotorsState(wheelSpeed_t order){
+    (void)chMsgSend(motorsControlThread, (msg_t) &order);
 }
 
 void stopMotors(void){
@@ -163,17 +177,15 @@ void goTo(const robotPosition_t * newAbsolutePosition){
     mod_mapping_getRobotDisplacement(newAbsolutePosition);
 }
 
-/********************
- *  Public functions
- */
-
-
-void mod_explo_init(void){
-    mod_mapping_init();
+static THD_WORKING_AREA(exploration_wa, 1024);
+static THD_FUNCTION(exploration, arg){
+    while(1){
+        
+    }
 }
 
-
-void mod_explo_discoverTheAreaOnThread(void){
+static THD_WORKING_AREA(discover_wa, 1024);
+static THD_FUNCTION(discover, arg){
     // RAZ Robot position
     mod_mapping_resetCoordinates();
     measurement_t measurement[NUMBER_OF_STEPS];
@@ -190,9 +202,54 @@ void mod_explo_discoverTheAreaOnThread(void){
     // Go back to initial position (or stay here)
 }
 
-void mod_explo_explorateTheAreaOnThread(exploration_t type){
+static THD_WORKING_AREA(obstacleCheck_wa, 1024);
+static THD_FUNCTION(obstacleCheck, arg){
+    while(1){
+        int tab[8];
+        chSemWait(&isObstacle_sem);
+        mod_sensors_getAllProximityValues(tab);
+        // Check for the obstacle specificity
+        // if object => Take photo
+        
+        // Change  direction
+    }
     
 }
+
+static THD_WORKING_AREA(robotDirectionBias_wa, 1024);
+static THD_FUNCTION(robotDirectionBias, arg){
+    int tab[8];
+    mod_sensors_getAllProximityValues(tab);
+    speedBias_t speedBias;
+    
+    static const int weight[8] = {0.9659,0.6427,0,-0.8660, -0.8660, 0,0.6427,0.9659};
+    
+    speedBias.BiasLeftSpeed = - weight[0]/tab[0] - weight[1]/tab[1] - weight[3]/tab[3] ;
+    speedBias.BiasRightSpeed = - weight[7]/tab[7] - weight[6]/tab[6] - weight[4]/tab[4];
+    
+    //Msg the bias to speed
+}
+
+void signalEndOfWork(void){
+    chSysLockFromISR();
+    chSemSignalI(&wipEndSignal_sem);
+    chSysUnlockFromISR();
+}
+
+/********************
+ *  Public functions
+ */
+
+
+void mod_explo_initModule(void){
+    mod_sensors_initSensors();
+    mod_motors_init();
+    mod_mapping_init();
+    chBSemObjectInit(&wipEndSignal_sem, false);
+    motorsControlThread = chThdCreateStatic(changeMotorsStateAsync_wa, sizeof(changeMotorsStateAsync_wa), NORMALPRIO+2, changeMotorsStateAsync, NULL);
+    
+}
+
 
 void mod_explo_calibration(void){
     mod_sensors_initCalibration();
@@ -252,42 +309,21 @@ void mod_explo_calibration(void){
     mod_sensors_calibrateIRSensors(mod_sensors_getValueTOF());
 }
 
+void mod_explo_discoverTheAreaOnThread(void){
+    discoverThread = chThdCreateStatic(discover_wa, sizeof(discover_wa), NORMALPRIO+2, discover, NULL);
+
+}
+
+void mod_explo_explorateTheAreaOnThread(exploration_t type){
+    explorationThread = chThdCreateStatic(exploration_wa, sizeof(exploration_wa), NORMALPRIO+2, exploration, NULL);
+}
+
 void mod_explo_sendTheMap(void){
-    mod_com_writeMessage("The map will be send (TO WRITE)",1);
     
 }
 
 void mod_explo_waitUntilEndOfWork(void){
-    
+    chSemWait(&wipEndSignal_sem);
 }
 
 
-
-static THD_WORKING_AREA(obstacleCheck_wa, 1024);
-
-static THD_FUNCTION(obstacleCheck, arg){
-    while(1){
-        int tab[8];
-        chSemWait(&isObstacle_sem);
-        mod_sensors_getAllProximityValues(tab);
-        // Check for the obstacle specificity
-        // if object => Take photo
-        
-        // Change  direction
-    }
-    
-}
-
-static THD_WORKING_AREA(robotDirectionBias_wa, 1024);
-static THD_FUNCTION(robotDirectionBias, arg){
-    int tab[8];
-    mod_sensors_getAllProximityValues(tab);
-    speedBias_t speedBias;
-    
-    static const int weight[8] = {0.9659,0.6427,0,-0.8660, -0.8660, 0,0.6427,0.9659};
-    
-    speedBias.BiasLeftSpeed = - weight[0]/tab[0] - weight[1]/tab[1] - weight[3]/tab[3] ;
-    speedBias.BiasRightSpeed = - weight[7]/tab[7] - weight[6]/tab[6] - weight[4]/tab[4];
-    
-    //Msg the bias to speed
-}

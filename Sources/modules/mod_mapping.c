@@ -73,8 +73,7 @@ point_t measurementToPoint(measurement_t * measurement){
 
 
 void mod_mapping_init(void){
-    mod_sensors_initSensors();
-    mod_motors_init();
+
     mod_mapping_resetCoordinates();
 }
 

@@ -57,7 +57,7 @@ static void serial_start(void)
  *  Public functions (Informations in header)
  */
 
-void mod_com_initConnexion(){
+void mod_com_initModule(){
     
     serial_start();
     

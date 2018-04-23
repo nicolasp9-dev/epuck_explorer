@@ -12,31 +12,42 @@
 #define _MOD_EXPLORATION_
 
 typedef enum{
-    CONTINUE=0,
+    IMPROVE=0,
     NEW
 } exploration_t;
 
 /**
+ * @brief Initialize the exploration module
+ */
+void mod_explo_initModule(void);
+
+/**
+ * @brief Calibration of motors and sensors
+ */
+void mod_explo_calibration(void);
+
+/**
  * @brief Discover the area to find borders, repport it into the mapping
- *
- * param[in] type   Precise if a new exploration needs to be done (or if it's just improvement of the last one)
  */
 void mod_explo_discoverTheAreaOnThread(void);
 
 /**
  * @brief   Explore the area to find objects, send image for processing
  *          and repport everything int the mapping
+ *
+ * param[in] type   Precise if a new exploration needs to be done (or if it's just improvement of the last one)
  */
 void mod_explo_explorateTheAreaOnThread(exploration_t type);
 
 /**
- * @brief   Move object depending of their classification
+ * @brief   Ask for the distant device to send the map to the user
  */
-void mod_explo_sortTheAreaOnThread(void);
-
 void mod_explo_sendTheMap(void);
 
+/**
+ * @brief   Unlock when work is finished
+ */
 void mod_explo_waitUntilEndOfWork(void);
 
-void mod_explo_init(void);
+
 #endif
