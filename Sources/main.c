@@ -72,11 +72,11 @@ void exploration(void){
 }
 
 void discovering(void){
-    mod_basicIO_changeRobotState(WIP);
+    //mod_basicIO_changeRobotState(WIP);
     mod_com_writeMessage("Will discover the area", 3);
     
     history=  (history_t){0,0,0};
-    mod_audio_launchMelodyOnThread(DISCOVERING, REPEAT);
+    //mod_audio_launchMelodyOnThread(DISCOVERING, REPEAT);
     mod_explo_discoverTheAreaOnThread();
     mod_explo_waitUntilEndOfWork();
     
@@ -162,12 +162,12 @@ int main(void)
     //mod_audio_listenForSound();
     discovering();
     while (1) {
-        mod_com_writeMessage("Robot is waiting", 3);
+        /*mod_com_writeMessage("Robot is waiting", 3);
         needAudio = true;
         chBSemWait(&mod_audio_sem_commandAvailable);
         mod_com_writeMessage("Signal was detected", 3);
         actionChoice();
-        mod_audio_processedCommand = NOTHING;
+        mod_audio_processedCommand = NOTHING;*/
         
         
         chThdSleepMilliseconds(1500);

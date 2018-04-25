@@ -18,15 +18,15 @@
 #include "mod_communication.h"
 
 static int angle_const = 1;
-static int straight_const = 31;
+static float straight_const = 15.3;
 
 void mod_motors_init(void){
     motors_init();
 }
 
 wheelSpeed_t mod_motors_convertRobotSpeedToWheelspeed(robotSpeed_t robotSpeedTemp){
-    return (wheelSpeed_t) {robotSpeedTemp.mainSpeed + robotSpeedTemp.angle*ROBOT_RADIUS/2,
-                           robotSpeedTemp.mainSpeed - robotSpeedTemp.angle*ROBOT_RADIUS/2 };
+    return (wheelSpeed_t) {robotSpeedTemp.mainSpeed - robotSpeedTemp.angle*ROBOT_RADIUS,
+                           robotSpeedTemp.mainSpeed + robotSpeedTemp.angle*ROBOT_RADIUS };
 }
 
 robotSpeed_t mod_motors_convertWheelSpeedToMotorspeed(wheelSpeed_t wheelSpeedTemp){
@@ -50,17 +50,13 @@ void mod_motor_distanceCalibration(int distanceWithWall, const wheelSpeed_t disp
 
     if(i == false){
         previousValue = distanceWithWall;
-        char toSend[100];
-        sprintf(toSend, "prev1 : %d", previousValue);
-        mod_com_writeDatas(toSend, "HAHA", 0);
+
     }
     else if(i==true){
         int realSpeed = (previousValue - distanceWithWall)*MS_TO_S/movementTime;
         int sentSpeed = (displacement.right + displacement.left)/2;
         straight_const = sentSpeed / realSpeed;
-        char toSend[100];
-        sprintf(toSend, "Straight const : %d preval : %d distWwall : %d displ : %d", straight_const, previousValue, distanceWithWall, displacement.right);
-        mod_com_writeDatas(toSend, "HAHA", 0);
+
     }
     i = !i;
 }
@@ -68,8 +64,8 @@ void mod_motor_distanceCalibration(int distanceWithWall, const wheelSpeed_t disp
     
 
 void mod_motors_changeStateWheelSpeedType(wheelSpeed_t wheelSpeed){
-    left_motor_set_speed(wheelSpeed.left*straight_const);
-    right_motor_set_speed(wheelSpeed.right*straight_const);
+    left_motor_set_speed((int) (wheelSpeed.left*straight_const));
+    right_motor_set_speed((int) (wheelSpeed.right*straight_const));
 }
 
 void mod_motors_changeStateRobotSpeedType(robotSpeed_t robotSpeed){

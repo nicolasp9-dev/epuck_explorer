@@ -17,24 +17,30 @@
 #include "mod_motors.h"
 #include "mod_sensors.h"
 #include "mod_basicIO.h"
+#include <stdio.h>
+#include "mod_check.h"
 
 #include <ch.h>
 #include "hal.h"
 
 #define ACCELERATION_FACTOR         2
-#define DEFAULT_SPEED               10
+#define DEFAULT_TRANSLATION_SPEED    60 //mm/s
+#define DEFAULT_ROTATION_SPEED      1 //rad/s
 
-#define ARENA_WALL_DISTANCE                             66// Between epuck and wall in the arena (in mm)
+#define ARENA_WALL_DISTANCE                             66  // Between epuck and wall in the arena (in mm)
 #define CALIBRATION_REF_TIME                            4000
 #define ROTATION_ELMT_TIME                              50
-#define TOLERATE_ERROR                                  4 // Error in mm
+#define TOLERATE_ERROR                                  4   // Error in mm
 
 static thread_t * discoverThread;
 static thread_t * explorationThread;
 static thread_t * motorsControlThread;
-
+static thread_t * applyMotorThread;
+static thread_t * robotDirection;
 // Semaphores
 binary_semaphore_t wipEndSignal_sem;
+binary_semaphore_t wipEndMovingSignal_sem;
+binary_semaphore_t isMessage;
 
 /********************
  *  Private functions
@@ -89,25 +95,37 @@ void rotateAndMeasureWallsDistance(measurement_t* measurement, int number);
  */
 void moveInDirection(float theta);
 
+wheelSpeed_t lastOrder;
+
 void goTo(const robotPosition_t * newAbsolutePosition);
 
 /***************/
+
+
+void signalEndOfWork(void){
+    chBSemSignal(&wipEndSignal_sem);
+}
+
+void signalEndMovement(void){
+    chBSemSignal(&wipEndMovingSignal_sem);
+}
 
 static THD_WORKING_AREA(changeMotorsStateAsync_wa, 1024);
 static THD_FUNCTION(changeMotorsStateAsync, arg){
     
     static bool isMoving = false;
     static systime_t lastOrderTime;
-    static wheelSpeed_t lastOrder;
     while(1){
         thread_t *tp = chMsgWait();
         const wheelSpeed_t *order = (const wheelSpeed_t *)chMsgGet(tp);
-        chMsgRelease(tp, MSG_OK);
+        
+        mod_com_writeMessage("Will change motor states", 0);
+
         if(isMoving){
             systime_t deltaTime = chVTGetSystemTime() - lastOrderTime;
             lastOrderTime = chVTGetSystemTime();
             mod_motors_changeStateWheelSpeedType(*order);
-            mod_mapping_updatePositionWheelSpeedType(&lastOrder, MS2ST(deltaTime));
+            mod_mapping_updatePositionWheelSpeedType(&lastOrder, ST2MS(deltaTime));
         }
         else{
             lastOrderTime = chVTGetSystemTime();
@@ -115,13 +133,21 @@ static THD_FUNCTION(changeMotorsStateAsync, arg){
         }
 
         if(order->left == 0 && order->right==0){
+            mod_com_writeMessage("Robot is not moving", 0);
             isMoving = false;
+            signalEndMovement();
         }
         else{
+            mod_com_writeMessage("Robot is moving", 0);
             isMoving = true;
             lastOrder = *order;
         }
+        chMsgRelease(tp, MSG_OK);
     }
+}
+
+void waitForMovementEnd(void){
+    chSemWait(&wipEndMovingSignal_sem);
 }
 
 void changeMotorsState(wheelSpeed_t order){
@@ -144,6 +170,21 @@ void moveAndComputePositionRobotSpeedType(const robotSpeed_t* robotSpeed, int de
     moveAndComputePositionWheelSpeedType(&wheelSpeed, deltaTime);
 }
 
+void moveAndComputePositionDistanceType(const robotDistance_t* robotDistance){
+    char toSend[100];
+    sprintf(toSend, "Rot : %f Trans : %d Rot : %f", 1000*robotDistance->rotation[0]/DEFAULT_ROTATION_SPEED, 1000*robotDistance->translation/DEFAULT_TRANSLATION_SPEED,1000*robotDistance->rotation[1]/DEFAULT_ROTATION_SPEED);
+    mod_com_writeMessage(toSend, 10);
+    
+    moveAndComputePositionRobotSpeedType(&((robotSpeed_t){0, DEFAULT_ROTATION_SPEED}), 1000*robotDistance->rotation[0]/DEFAULT_ROTATION_SPEED);
+    waitForMovementEnd();
+    moveAndComputePositionRobotSpeedType(&((robotSpeed_t){DEFAULT_TRANSLATION_SPEED, 0}), 1000*robotDistance->translation/DEFAULT_TRANSLATION_SPEED);
+    waitForMovementEnd();
+    moveAndComputePositionRobotSpeedType(&((robotSpeed_t){0, DEFAULT_ROTATION_SPEED}), 1000*robotDistance->rotation[1]/DEFAULT_ROTATION_SPEED);
+    waitForMovementEnd();
+}
+
+
+
 void moveWheelSpeedType(const wheelSpeed_t* wheelSpeed, int deltaTime){
     mod_motors_changeStateWheelSpeedType(*wheelSpeed);
     systime_t time = chVTGetSystemTime();
@@ -161,37 +202,61 @@ void storeFrontDistanceSensorValue(measurement_t* measurement){
     *measurement = (measurement_t) {mod_mapping_getActualPosition(), value};
 }
 
+
+
 void rotateAndMeasureWallsDistance(measurement_t* measurement, int number){
+    assert(measurement);
     int i;
     for(i=0; i < number; i++){
-        storeFrontDistanceSensorValue(&(measurement[i]));
+        chThdSleepMilliseconds(250);
+        storeFrontDistanceSensorValue(&measurement[i]);
         moveAndComputePositionRobotSpeedType(&( (robotSpeed_t) {0,ANGLE_ELEMENT*ACCELERATION_FACTOR } ), MS_TO_S/ACCELERATION_FACTOR);
     }
 }
 
-void moveInDirection(float theta){
-    
+void moveInDirection(float absoluteAngle){
+    float relativeAngle = mod_mapping_getAngleForTranslation(absoluteAngle);
+    moveAndComputePositionRobotSpeedType(&((robotSpeed_t){0, DEFAULT_ROTATION_SPEED}), 1000*relativeAngle/DEFAULT_ROTATION_SPEED);
+    waitForMovementEnd();
+    changeMotorsState(mod_motors_convertRobotSpeedToWheelspeed((robotSpeed_t){DEFAULT_TRANSLATION_SPEED, 0}));
+    mod_sensors_waitForObstacle();
+    stopMotors();
 }
 
 void goTo(const robotPosition_t * newAbsolutePosition){
-    mod_mapping_getRobotDisplacement(newAbsolutePosition);
+    robotDistance_t toDo = mod_mapping_getRobotDisplacement(newAbsolutePosition);
+    moveAndComputePositionDistanceType(&toDo);
 }
 
 static THD_WORKING_AREA(exploration_wa, 1024);
 static THD_FUNCTION(exploration, arg){
+    (void) arg;
     while(1){
-        
+        break;
     }
+    signalEndOfWork();
 }
 
 static THD_WORKING_AREA(discover_wa, 1024);
 static THD_FUNCTION(discover, arg){
+    (void) arg;
+    
     // RAZ Robot position
+    mod_com_writeMessage("Entering discover thread", 3);
+    
     mod_mapping_resetCoordinates();
-    measurement_t measurement[NUMBER_OF_STEPS];
+    
+    measurement_t * measurement = malloc(NUMBER_OF_STEPS*sizeof(measurement_t));
     
     rotateAndMeasureWallsDistance(measurement, NUMBER_OF_STEPS);
+    mod_com_writeMessage("Finished rotation", 3);
     mod_mapping_computeWallLocation(measurement,2);
+    free(measurement);
+    measurement = NULL;
+    
+    mod_sensors_initObjectDetection();
+    moveInDirection(.0);
+    
     
     // Adapt the coordinate system with results
     
@@ -200,41 +265,61 @@ static THD_FUNCTION(discover, arg){
     // Turn the robot and found the last wall
     
     // Go back to initial position (or stay here)
+    signalEndOfWork();
+    
 }
 
+// A mettre en route pour l'exploration
 static THD_WORKING_AREA(obstacleCheck_wa, 1024);
 static THD_FUNCTION(obstacleCheck, arg){
+    (void) arg;
     while(1){
+        //mod_com_writeMessage("Computation of obstacles", 3);
         int tab[8];
-        chSemWait(&isObstacle_sem);
+        mod_sensors_waitForObstacle();
         mod_sensors_getAllProximityValues(tab);
         // Check for the obstacle specificity
         // if object => Take photo
         
         // Change  direction
+        chThdSleepMilliseconds(100);
     }
+    
     
 }
 
 static THD_WORKING_AREA(robotDirectionBias_wa, 1024);
 static THD_FUNCTION(robotDirectionBias, arg){
-    int tab[8];
-    mod_sensors_getAllProximityValues(tab);
-    speedBias_t speedBias;
+    (void) arg;
+    while(1){
+        //mod_com_writeMessage("Computation of direction bias", 3);
+        int tab[8];
+        mod_sensors_getAllProximityValues(tab);
+        speedBias_t speedBias;
     
-    static const int weight[8] = {0.9659,0.6427,0,-0.8660, -0.8660, 0,0.6427,0.9659};
+        static const int weight[8] = {0.9659,0.6427,0,-0.8660, -0.8660, 0,0.6427,0.9659};
     
-    speedBias.BiasLeftSpeed = - weight[0]/tab[0] - weight[1]/tab[1] - weight[3]/tab[3] ;
-    speedBias.BiasRightSpeed = - weight[7]/tab[7] - weight[6]/tab[6] - weight[4]/tab[4];
+        speedBias.BiasLeftSpeed = - weight[0]/tab[0] - weight[1]/tab[1] - weight[3]/tab[3] ;
+        speedBias.BiasRightSpeed = - weight[7]/tab[7] - weight[6]/tab[6] - weight[4]/tab[4];
     
+        (void)chMsgSend(applyMotorThread, (msg_t) &speedBias);
+    
+        chThdSleepMilliseconds(100);
+    }
     //Msg the bias to speed
 }
 
-void signalEndOfWork(void){
-    chSysLockFromISR();
-    chSemSignalI(&wipEndSignal_sem);
-    chSysUnlockFromISR();
+static THD_WORKING_AREA(applyMotorBias_wa, 1024);
+static THD_FUNCTION(applyMotorBias, arg){
+    while(1){
+        thread_t *tp = chMsgWait();
+        const speedBias_t * order = (const speedBias_t *)chMsgGet(tp);
+        chMsgRelease(tp, MSG_OK);
+        //changeMotorsState((wheelSpeed_t){(lastOrder.left+order->BiasLeftSpeed), (lastOrder.right+order->BiasRightSpeed)});
+    }
 }
+
+
 
 /********************
  *  Public functions
@@ -246,7 +331,11 @@ void mod_explo_initModule(void){
     mod_motors_init();
     mod_mapping_init();
     chBSemObjectInit(&wipEndSignal_sem, false);
-    motorsControlThread = chThdCreateStatic(changeMotorsStateAsync_wa, sizeof(changeMotorsStateAsync_wa), NORMALPRIO+2, changeMotorsStateAsync, NULL);
+    chBSemObjectInit(&isMessage, false);
+    chBSemObjectInit(&wipEndMovingSignal_sem, false);
+    motorsControlThread = chThdCreateStatic(changeMotorsStateAsync_wa, sizeof(changeMotorsStateAsync_wa), NORMALPRIO+3, changeMotorsStateAsync, NULL);
+    //applyMotorThread = chThdCreateStatic(applyMotorBias_wa, sizeof(applyMotorBias_wa), NORMALPRIO+2, applyMotorBias, NULL);
+    //robotDirection = chThdCreateStatic(robotDirectionBias_wa, sizeof(robotDirectionBias_wa), NORMALPRIO+2, robotDirectionBias, NULL);
     
 }
 
@@ -323,7 +412,7 @@ void mod_explo_sendTheMap(void){
 }
 
 void mod_explo_waitUntilEndOfWork(void){
-    chSemWait(&wipEndSignal_sem);
+    chBSemWait(&wipEndSignal_sem);
 }
 
 

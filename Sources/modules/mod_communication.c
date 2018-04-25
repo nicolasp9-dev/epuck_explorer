@@ -31,7 +31,7 @@
 #define NULL_CHAR_SIZE              1
 #define SERIAL_BIT_RATE             115200
 
-#define DISPLAY_LEVEL               0
+#define DISPLAY_LEVEL               1
 
 /********************
  *  Private functions
@@ -187,7 +187,6 @@ void mod_com_writeCommand(cmd_t order){
     // Write the header first
     for(i=0; i<totalSize;i++)
         chprintf((BaseSequentialStream *)&SD3, "%c",((uint8_t*) toSend)[i]);
-    
     free(toSend);
     toSend = NULL;
 }

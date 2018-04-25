@@ -23,8 +23,6 @@ typedef enum {
     IGNORE_NOTHING,
 } ignore_t;
 
-extern binary_semaphore_t isObstacle_sem;
-
 /**
  * @brief Initialize proximity and TOF sensors, to be ready for use
  */
@@ -76,7 +74,7 @@ void mod_sensors_calibrateIRSensors(int currentValue);
 
 
 
-
+void mod_sensors_waitForObstacle(void);
 
 
 #endif

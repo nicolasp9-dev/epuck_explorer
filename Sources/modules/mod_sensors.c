@@ -21,8 +21,8 @@
 // Our headers
 #include "mod_communication.h"
 
-#define OBJECT_DECTECTION_FREQUENCY         400
-#define OBSTACLE_DISTANCE                   20
+#define OBJECT_DECTECTION_FREQUENCY         1000
+#define OBSTACLE_DISTANCE                   10
 
 
 // Msg bus multi-threading tools
@@ -30,7 +30,7 @@ MUTEX_DECL(bus_lock);
 CONDVAR_DECL(bus_condvar);
 
 // Calibrated values of the system
-static int tof_bias = 3;
+static int tof_bias = 0;
 static int proximity_bias = 0;
 static int proximity_multiplier = 1;
 
@@ -52,15 +52,17 @@ void getIRSensorsValues(proximity_msg_t* prox_values){
 static THD_WORKING_AREA(objectDetectionSensor_wa, 1024);
 static THD_FUNCTION(objectDetectionSensor, arg){
     (void) arg;
-    int tab[8];
-    mod_sensors_getAllProximityValues(tab);
-    int i;
     while(1){
+        int i;
+        int tab[8];
+        mod_sensors_getAllProximityValues(tab);
         for(i=0;i < 8;i++){
-            if(tab[i] < OBSTACLE_DISTANCE){
-                chSysLockFromISR();
-                chSemSignalI(&isObstacle_sem);
-                chSysUnlockFromISR();
+            
+            if(tab[i] == 6786){
+                char toSend[30];
+                sprintf(toSend, "Value of IR %d : %d", i, tab[i]);
+                mod_com_writeMessage(toSend, 3);
+                chBSemSignal(&isObstacle_sem);
             }
         }
         chThdSleepMilliseconds(OBJECT_DECTECTION_FREQUENCY);
@@ -83,6 +85,7 @@ void mod_sensors_initSensors(void){
     // Proximity sensors
     messagebus_init(&bus, &bus_lock, &bus_condvar);
     proximity_start();
+    calibrate_ir();
     chThdSleepMilliseconds(500);
 }
 
@@ -114,7 +117,7 @@ void mod_sensors_stopTOF(void){
  */
 
 void mod_sensors_initObjectDetection(void){
-    obstacleThread = chThdCreateStatic(objectDetectionSensor_wa, sizeof(objectDetectionSensor_wa), NORMALPRIO+2, objectDetectionSensor, NULL);
+    obstacleThread = chThdCreateStatic(objectDetectionSensor_wa, sizeof(objectDetectionSensor_wa), NORMALPRIO+5, objectDetectionSensor, NULL);
 }
 
 void mod_sensors_getAllProximityValues(int* table){
@@ -144,14 +147,14 @@ void mod_sensors_calibrateIRSensors(int currentValue){
     else if(i==true){
         proximity_multiplier = (currentValue - previousValue[0])/ (prox_values.delta[0] - previousValue[1]);
         proximity_bias = previousValue[0]-previousValue[1]/proximity_multiplier;
-        char toSend[100];
-        sprintf(toSend, "tof_bias %d \n", tof_bias);
-        mod_com_writeDatas(toSend, "0", 0);
-        sprintf(toSend, "proximity_bias %d \n", proximity_bias);
-        mod_com_writeDatas(toSend, "0", 0);
-        sprintf(toSend, "proximity_divider %d \n", proximity_multiplier);
-        mod_com_writeDatas(toSend, "0", 0);
+
     }
     i = !i;
     
 }
+
+void mod_sensors_waitForObstacle(void){
+    chBSemWait(&isObstacle_sem);
+    mod_com_writeMessage("Obstacle found", 3);
+}
+

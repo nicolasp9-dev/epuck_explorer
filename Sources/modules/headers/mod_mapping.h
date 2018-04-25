@@ -11,9 +11,12 @@
 #ifndef _MOD_MAPPING_
 #define _MOD_MAPPING_
 
-#define ANGLE_ELEMENT               20
-#define COMPLETE_ANGLE              360
-#define NUMBER_OF_STEPS             (COMPLETE_ANGLE/ANGLE_ELEMENT)
+#include "math.h"
+
+#define NUMBER_OF_STEPS             30
+#define ANGLE_ELEMENT               2*M_PI/NUMBER_OF_STEPS
+#define COMPLETE_ANGLE              2*M_PI
+
 #include "structs.h"
 
 typedef struct {
@@ -63,9 +66,11 @@ void mod_mapping_updatePositionWheelSpeedType(const wheelSpeed_t *wheelSpeed, in
 /**
  * @brief Compute the wall location based on measurements and store information in the mapping area
  */
-void mod_mapping_computeWallLocation(measurement_t* measurement, int number);
+_Bool mod_mapping_computeWallLocation(measurement_t* measurement, int number);
 
 robotDistance_t mod_mapping_getRobotDisplacement(const robotPosition_t * newAbsolutePosition);
 
 robotPosition_t mod_mapping_getActualPosition(void);
+
+float mod_mapping_getAngleForTranslation(const float angle);
 #endif
