@@ -23,6 +23,8 @@ typedef enum {
     IGNORE_NOTHING,
 } ignore_t;
 
+extern bool mod_sensors_need_objectDetection;
+
 /**
  * @brief Initialize proximity and TOF sensors, to be ready for use
  */
@@ -70,7 +72,7 @@ void mod_sensors_getAllProximityValues(int* table);
  *
  * @param[in] currentValue The distance between the robot and the wall in front of the robot
  */
-void mod_sensors_calibrateIRSensors(int currentValue);
+void mod_sensors_calibrateIRSensors(void);
 
 
 

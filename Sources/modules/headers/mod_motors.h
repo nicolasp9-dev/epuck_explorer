@@ -12,7 +12,6 @@
 #ifndef _MOD_MOTORS_
 #define _MOD_MOTORS_
 
-#define PI1000          3141
 #define ROBOT_RADIUS    27
 #define MS_TO_S         1000
 #include "structs.h"

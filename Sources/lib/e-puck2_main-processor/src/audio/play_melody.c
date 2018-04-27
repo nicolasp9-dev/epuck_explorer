@@ -18,6 +18,7 @@ taken at https://www.princetronics.com/supermariothemesong/
 
 #include "play_melody.h"
 #include "audio_thread.h"
+#include <ch.h>
 
 typedef struct{
 	uint16_t* notes;
@@ -27,7 +28,7 @@ typedef struct{
 
 static thread_reference_t play_melody_ref = NULL;
 static bool play = true;
-BSEMAPHORE_DECL(mod_audio_sem_playing, TRUE);
+BSEMAPHORE_DECL(endPlaying_sem, true);
 
 //Mario main theme melody
 static uint16_t mario_melody[] = {
@@ -212,7 +213,6 @@ static THD_FUNCTION(PlayMelodyThd, arg) {
         chSysLock();
         song = (melody_t*) chThdSuspendS(&play_melody_ref);
         chSysUnlock();
-        //chBSemReset(&mod_audio_sem_playing, false);
         play=true;
         for (int thisNote = 0; thisNote < song->length; thisNote++) {
 
@@ -229,17 +229,13 @@ static THD_FUNCTION(PlayMelodyThd, arg) {
             
             chThdSleepMilliseconds(pauseBetweenNotes);
         }
-        chSysLock();
-        //chBSemSignal(&mod_audio_sem_playing);
-        chSysUnlock();
+        chBSemSignal(&endPlaying_sem);
         play=false;
     }
 }
 
 
 void play_melody_start(void){
-
-	//create the thread
 	chThdCreateStatic(waPlayMelodyThd, sizeof(waPlayMelodyThd), NORMALPRIO, PlayMelodyThd, NULL);
 }
 
@@ -247,7 +243,10 @@ void play_melody(song_selection_t choice){
 
 
 	melody_t* song = &melody[choice];
-
+    if(play==true){
+        play=false;
+        chBSemWait(&endPlaying_sem);
+    }
 	//if the refercence is NULL, then the thread is already running
 	//when the refercence becomes not NULL, it means the thread is waiting
 	if(play_melody_ref != NULL){
@@ -257,16 +256,13 @@ void play_melody(song_selection_t choice){
 }
 
 void wait_until_melody_end(void){
-    chSysLock();
-    if(chBSemGetStateI(&mod_audio_sem_playing) == false){
-        chSysUnlock();
-        chBSemWait(&mod_audio_sem_playing);
+    if(play == true){
+        chBSemWait(&endPlaying_sem);
     }
-    chSysUnlock();
 }
 
 void stop_current_melody(void){
     play = false;
-    //wait_until_melody_end();
+    
 }
 

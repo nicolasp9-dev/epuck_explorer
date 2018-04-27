@@ -49,6 +49,7 @@ static THD_FUNCTION(VL53L0XThd, arg) {
    			dist_mm = device.Data.LastRangeMeasure.RangeMilliMeter;
     	}
 		chThdSleepMilliseconds(100);
+    
     }
 }
 

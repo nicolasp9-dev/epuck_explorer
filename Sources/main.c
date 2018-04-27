@@ -32,15 +32,14 @@
 #include "mod_mapping.h"
 
 // Semaphores
-BSEMAPHORE_DECL(sem_wip, FALSE);
+BSEMAPHORE_DECL(sem_wip, true);
 
 typedef struct{
-    int discovering;
-    int exploration;
-    int sorting;
+    bool discovering;
+    bool exploration;
 } history_t;
 
-history_t history = {0,0,0};
+history_t history = {false , false};
 
 
 void initSystem(void){
@@ -56,18 +55,11 @@ void exploration(void){
     mod_basicIO_changeRobotState(WIP);
     mod_com_writeMessage("Will explore the area", 3);
     
-    if(history.exploration > 0){
-        mod_audio_launchMelodyOnThread(EXPLORATION_FAST, REPEAT);
-        mod_explo_explorateTheAreaOnThread(IMPROVE);
-        mod_explo_waitUntilEndOfWork();
-        
-    }
-    else{
-        mod_audio_launchMelodyOnThread(EXPLORATION, REPEAT);
-        mod_explo_explorateTheAreaOnThread(NEW);
-        mod_explo_waitUntilEndOfWork();
-    }
+    mod_audio_launchMelodyOnThread(MUS_EXPLORATION, REPEAT);
+
+    mod_explo_explorateTheAreaOnThread();
     
+    mod_explo_waitUntilEndOfWork();
     history.exploration +=1;
 }
 
@@ -75,11 +67,10 @@ void discovering(void){
     //mod_basicIO_changeRobotState(WIP);
     mod_com_writeMessage("Will discover the area", 3);
     
-    history=  (history_t){0,0,0};
-    //mod_audio_launchMelodyOnThread(DISCOVERING, REPEAT);
+    history=  (history_t){false , false};
+    mod_audio_launchMelodyOnThread(MUS_DISCOVERING, REPEAT);
     mod_explo_discoverTheAreaOnThread();
     mod_explo_waitUntilEndOfWork();
-    
     history.discovering +=1;
 }
 
@@ -87,7 +78,7 @@ void song(void){
     mod_basicIO_changeRobotState(WIP);
     mod_com_writeMessage("Will launch a melody", 3);
     
-    mod_audio_launchMelodyOnThread(MUSIC, SINGLE);
+    mod_audio_launchMelodyOnThread(MUS_SONG, SINGLE);
     mod_audio_waitUntilMelodyEnd();
 }
 
@@ -112,7 +103,7 @@ void actionChoice(void){
             break;
         
         case CMD_EXPLORATION :
-            if(history.discovering > 0) { exploration(); }
+            if(history.discovering) { exploration(); }
             else{
                 mod_audio_alertInterruption(IMPOSSIBLE);
                 mod_audio_waitUntilMelodyEnd();
@@ -121,7 +112,7 @@ void actionChoice(void){
             break;
         
         case CMD_MAPSEND :
-            if(history.discovering > 0){ sendMap(); }
+            if(history.exploration){ sendMap(); }
             else{
                 mod_audio_alertInterruption(IMPOSSIBLE);
                 mod_audio_waitUntilMelodyEnd();
@@ -131,6 +122,10 @@ void actionChoice(void){
             
         case CMD_SING :
             song();
+            break;
+            
+        case CMD_CALIBRATION :
+            calibrateSystem();
             break;
         
         default :
@@ -159,18 +154,21 @@ int main(void)
     mod_com_writeMessage("Basic init OK", 4);
     
     chThdSleepMilliseconds(600);
-    //mod_audio_listenForSound();
-    discovering();
+    
+    mod_audio_listenForSound();
+    
     while (1) {
-        /*mod_com_writeMessage("Robot is waiting", 3);
+
+        mod_basicIO_changeRobotState(WAITING);
+        mod_com_writeMessage("Robot is waiting", 3);
         needAudio = true;
         chBSemWait(&mod_audio_sem_commandAvailable);
-        mod_com_writeMessage("Signal was detected", 3);
+        mod_com_writeMessage("Action was detected", 3);
         actionChoice();
-        mod_audio_processedCommand = NOTHING;*/
         
+        mod_audio_processedCommand = NOTHING;
+        chThdSleepMilliseconds(1000);
         
-        chThdSleepMilliseconds(1500);
     }
 }
 

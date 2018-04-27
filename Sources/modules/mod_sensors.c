@@ -21,8 +21,8 @@
 // Our headers
 #include "mod_communication.h"
 
-#define OBJECT_DECTECTION_FREQUENCY         1000
-#define OBSTACLE_DISTANCE                   10
+#define OBJECT_DECTECTION_FREQUENCY         130
+#define OBSTACLE_DISTANCE                   90
 
 
 // Msg bus multi-threading tools
@@ -33,12 +33,12 @@ CONDVAR_DECL(bus_condvar);
 static int tof_bias = 0;
 static int proximity_bias = 0;
 static int proximity_multiplier = 1;
-
+bool mod_sensors_need_objectDetection = false;
 // Threads objects
 static thread_t * obstacleThread;
 
 // Semaphores
-binary_semaphore_t isObstacle_sem;
+BSEMAPHORE_DECL(isObstacle_sem, true);
 
 /**************
  * Private  functions
@@ -53,17 +53,9 @@ static THD_WORKING_AREA(objectDetectionSensor_wa, 1024);
 static THD_FUNCTION(objectDetectionSensor, arg){
     (void) arg;
     while(1){
-        int i;
-        int tab[8];
-        mod_sensors_getAllProximityValues(tab);
-        for(i=0;i < 8;i++){
-            
-            if(tab[i] == 6786){
-                char toSend[30];
-                sprintf(toSend, "Value of IR %d : %d", i, tab[i]);
-                mod_com_writeMessage(toSend, 3);
-                chBSemSignal(&isObstacle_sem);
-            }
+        if(!mod_sensors_need_objectDetection) return;
+        else if(mod_sensors_getValueTOF() < OBSTACLE_DISTANCE){
+            chBSemSignal(&isObstacle_sem);
         }
         chThdSleepMilliseconds(OBJECT_DECTECTION_FREQUENCY);
     }
@@ -77,15 +69,12 @@ static THD_FUNCTION(objectDetectionSensor, arg){
 
 void mod_sensors_initSensors(void){
     
-    chBSemObjectInit(&isObstacle_sem, false);
-    
     // TOF sensor
     VL53L0X_start();
     
     // Proximity sensors
     messagebus_init(&bus, &bus_lock, &bus_condvar);
     proximity_start();
-    calibrate_ir();
     chThdSleepMilliseconds(500);
 }
 
@@ -131,9 +120,10 @@ void mod_sensors_getAllProximityValues(int* table){
     }
 }
 
-void mod_sensors_calibrateIRSensors(int currentValue){
-    
-    static bool i=false;
+void mod_sensors_calibrateIRSensors(void){
+    calibrate_ir();
+
+    /*static bool i=false;
     static int previousValue[2];
     
     proximity_msg_t prox_values;
@@ -149,12 +139,29 @@ void mod_sensors_calibrateIRSensors(int currentValue){
         proximity_bias = previousValue[0]-previousValue[1]/proximity_multiplier;
 
     }
-    i = !i;
+    i = !i;*/
     
 }
 
+void printSemState(msg_t message){
+    switch(message){
+        case MSG_OK :
+            mod_com_writeMessage("MSG_OK", 3);
+            break;
+        case MSG_RESET :
+            mod_com_writeMessage("MSG_RESET", 3);
+            break;
+        case MSG_TIMEOUT :
+            mod_com_writeMessage("MSG_TIMEOUT", 3);
+            break;
+        default :
+            break;
+    }
+}
+
 void mod_sensors_waitForObstacle(void){
+    mod_sensors_need_objectDetection = true;
     chBSemWait(&isObstacle_sem);
-    mod_com_writeMessage("Obstacle found", 3);
+    mod_sensors_need_objectDetection = false;
 }
 

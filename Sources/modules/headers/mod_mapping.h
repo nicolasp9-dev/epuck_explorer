@@ -12,17 +12,20 @@
 #define _MOD_MAPPING_
 
 #include "math.h"
-
-#define NUMBER_OF_STEPS             30
+#include "stdbool.h"
+#define NUMBER_OF_STEPS             32
 #define ANGLE_ELEMENT               2*M_PI/NUMBER_OF_STEPS
 #define COMPLETE_ANGLE              2*M_PI
+
+#define NUMBER_OF_STEPS_FRONT       20
+#define ANGLE_ELEMENT_FRONT         M_PI/2*NUMBER_OF_STEPS_FRONT
 
 #include "structs.h"
 
 typedef struct {
     int x;
     int y;
-    float theta;
+    double theta;
 }robotPosition_t;
 
 typedef struct {
@@ -37,8 +40,18 @@ typedef struct  {
 
 typedef struct  {
     int translation;
-    float rotation[2];
+    double rotation[2];
 }robotDistance_t;
+
+
+typedef struct{
+    bool nearWall[4];
+    int numberOfnewObjects;
+    int numberOfknownObjects;
+    point_t newObjectsLocation[3];
+    point_t knownObjectsLocation[3];
+} actualEnvironement_t;
+
 
 /**
  * @brief Init needed libraries by mapping + Change position of the robot to the origin
@@ -72,5 +85,9 @@ robotDistance_t mod_mapping_getRobotDisplacement(const robotPosition_t * newAbso
 
 robotPosition_t mod_mapping_getActualPosition(void);
 
-float mod_mapping_getAngleForTranslation(const float angle);
+double mod_mapping_getAngleForTranslation(const double angle);
+
+void mod_map_saveWall(measurement_t value, int wallNum);
+
+void mod_mapping_checkEnvironment(measurement_t * measurement, int numberOfMeasurements, actualEnvironement_t * environmentObstacles);
 #endif

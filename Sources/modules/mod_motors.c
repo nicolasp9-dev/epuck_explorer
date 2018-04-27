@@ -41,7 +41,7 @@ void mod_motors_initCalibration(void){
     straight_const = 1;
 }
 void mod_motor_angleCalibration(const wheelSpeed_t displacement, const int movementTime){
-    angle_const = (displacement.left - displacement.right)*movementTime/(2*PI1000*ROBOT_RADIUS);
+    //angle_const = (displacement.left - displacement.right)*movementTime/(2*PI1000*ROBOT_RADIUS);
 }
 
 void mod_motor_distanceCalibration(int distanceWithWall, const wheelSpeed_t displacement, const int movementTime){

@@ -15,6 +15,7 @@ build/obj/mod_mapping.o: modules/mod_mapping.c \
  /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/lock.h \
  /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/cdefs.h \
  /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/_ansi.h \
+ /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/lib/gcc/arm-none-eabi/7.2.1/include/stdbool.h \
  modules/headers/structs.h \
  lib/e-puck2_main-processor/ChibiOS//os/rt/include/ch.h \
  lib/e-puck2_main-processor/ChibiOS//os/rt/ports/ARMCMx/compilers/GCC/chtypes.h \
@@ -22,7 +23,6 @@ build/obj/mod_mapping.o: modules/mod_mapping.c \
  /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/stdint.h \
  /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/_intsup.h \
  /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/_stdint.h \
- /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/lib/gcc/arm-none-eabi/7.2.1/include/stdbool.h \
  lib/e-puck2_main-processor/src/chconf.h \
  lib/e-puck2_main-processor/ChibiOS//os/rt/include/chlicense.h \
  lib/e-puck2_main-processor/ChibiOS//os/rt/include/chsystypes.h \
@@ -165,6 +165,8 @@ modules/headers/mod_mapping.h:
 
 /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/_ansi.h:
 
+/Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/lib/gcc/arm-none-eabi/7.2.1/include/stdbool.h:
+
 modules/headers/structs.h:
 
 lib/e-puck2_main-processor/ChibiOS//os/rt/include/ch.h:
@@ -178,8 +180,6 @@ lib/e-puck2_main-processor/ChibiOS//os/rt/ports/ARMCMx/compilers/GCC/chtypes.h:
 /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/_intsup.h:
 
 /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/_stdint.h:
-
-/Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/lib/gcc/arm-none-eabi/7.2.1/include/stdbool.h:
 
 lib/e-puck2_main-processor/src/chconf.h:
 

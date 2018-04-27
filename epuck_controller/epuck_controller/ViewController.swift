@@ -17,33 +17,28 @@ class ViewController: UIViewController {
     var playing:Bool = false
     @IBAction func discoverClicked(_ sender: Any) {
         if playing{return}
-        oscillator.frequency = 250
+        oscillator.frequency = 500
         playSong(oscillator)
     }
     
     @IBAction func exploreClicked(_ sender: Any) {
         if playing{return}
-        oscillator.frequency = 296
+        oscillator.frequency = 600
         playSong(oscillator)
     }
     @IBAction func sendMapClicked(_ sender: Any) {
         if playing{return}
-        oscillator.frequency = 406
-        playSong(oscillator)
-    }
-    @IBAction func sortClicked(_ sender: Any) {
-        if playing{return}
-        oscillator.frequency = 359
+        oscillator.frequency = 700
         playSong(oscillator)
     }
     @IBAction func singClicked(_ sender: Any) {
         if playing{return}
-        oscillator.frequency = 452
+        oscillator.frequency = 800
         playSong(oscillator)
     }
     @IBAction func calibrateClicked(_ sender: Any) {
         if playing{return}
-        oscillator.frequency = 500
+        oscillator.frequency = 900
         playSong(oscillator)
     }
     override func viewDidLoad() {
@@ -70,7 +65,7 @@ class ViewController: UIViewController {
     func playSong(_ oscillator:AKOscillator){
         playing = true
         oscillator.start()
-        sleep(3)
+        sleep(2)
         oscillator.stop()
 //        AudioKit.output = oscillator
 //        do {

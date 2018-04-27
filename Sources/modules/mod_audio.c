@@ -22,32 +22,32 @@
 // Our headers
 #include "mod_errors.h"
 #include "mod_communication.h"
-
+#include "mod_check.h"
 
 
 // Frequences for sound detection after FFT
 #define FFT_SIZE                1024
 
-#define MIN_VALUE_THRESHOLD     7000
+#define MIN_VALUE_THRESHOLD     150000
 
-#define MIN_FREQ                10    
-#define FREQ_CMD_DISCOVERING    16    //250Hz
-#define FREQ_CMD_EXPLORATION    19    //296Hz
-#define FREQ_CMD_SORTING        23    //359HZ
-#define FREQ_CMD_MAPSEND        26    //406HZ
-#define FREQ_CMD_SING           29    //452HZ
-#define MAX_FREQ                32
+#define MIN_FREQ                30
+#define FREQ_CMD_DISCOVERING    33    //400Hz
+#define FREQ_CMD_EXPLORATION    39    //500Hz
+#define FREQ_CMD_MAPSEND        46    //600HZ
+#define FREQ_CMD_SING           52    //700HZ
+#define FREQ_CMD_CALIBRATION    59    //800HZ
+#define MAX_FREQ                62
 
 #define FREQ_CMD_DISCOVERING_L  (FREQ_CMD_DISCOVERING-1)
 #define FREQ_CMD_DISCOVERING_H  (FREQ_CMD_DISCOVERING+1)
 #define FREQ_CMD_EXPLORATION_L  (FREQ_CMD_EXPLORATION-1)
 #define FREQ_CMD_EXPLORATION_H  (FREQ_CMD_EXPLORATION+1)
-#define FREQ_CMD_SORTING_L      (FREQ_CMD_SORTING-1)
-#define FREQ_CMD_SORTING_H      (FREQ_CMD_SORTING+1)
 #define FREQ_CMD_MAPSEND_L      (FREQ_CMD_MAPSEND-1)
 #define FREQ_CMD_MAPSEND_H      (FREQ_CMD_MAPSEND+1)
 #define FREQ_CMD_SING_L         (FREQ_CMD_SING-1)
 #define FREQ_CMD_SING_H         (FREQ_CMD_SING+1)
+#define FREQ_CMD_CALIBRATION_L  (FREQ_CMD_CALIBRATION-1)
+#define FREQ_CMD_CALIBRATION_H  (FREQ_CMD_CALIBRATION+1)
 
 /********************
  *  Public variables
@@ -62,9 +62,9 @@ command_t mod_audio_processedCommand;
  *  Private variables
  */
 
-float micFront_cmplx_input[2 * FFT_SIZE];
-float micFront_output[FFT_SIZE];
-
+static float * micFront_cmplx_input;
+static float * micFront_output;
+//static int measureNumber;
 
 /********************
  *  Private functions
@@ -76,6 +76,8 @@ float micFront_output[FFT_SIZE];
  */
 
 void mod_audio_initModule(void){
+    micFront_cmplx_input = malloc(sizeof(float)*2 * FFT_SIZE);
+    micFront_output = malloc(sizeof(float) * FFT_SIZE);
     needAudio = false;
     play_melody_start();
 }
@@ -97,8 +99,10 @@ void action_detection(float* data){
         if(data[i] > max_norm){
             max_norm = data[i];
             max_norm_index = i;
+            
         }
     }
+
     if(max_norm_index >= FREQ_CMD_DISCOVERING_L && max_norm_index <= FREQ_CMD_DISCOVERING_H){
         mod_audio_processedCommand = CMD_DISCOVERING;
     }
@@ -106,15 +110,14 @@ void action_detection(float* data){
     else if(max_norm_index >= FREQ_CMD_EXPLORATION_L && max_norm_index <= FREQ_CMD_EXPLORATION_H){
         mod_audio_processedCommand = CMD_EXPLORATION;
     }
-
-    else if(max_norm_index >= FREQ_CMD_SORTING_L && max_norm_index <= FREQ_CMD_SORTING_H){
-        mod_audio_processedCommand = CMD_SORTING;
-    }
     else if(max_norm_index >= FREQ_CMD_MAPSEND_L && max_norm_index <= FREQ_CMD_MAPSEND_H){
         mod_audio_processedCommand = CMD_MAPSEND;
     }
     else if(max_norm_index >= FREQ_CMD_SING_L && max_norm_index <= FREQ_CMD_SING_H){
         mod_audio_processedCommand = CMD_SING;
+    }
+    else if(max_norm_index >= FREQ_CMD_CALIBRATION_L && max_norm_index <= FREQ_CMD_CALIBRATION_H){
+        mod_audio_processedCommand = CMD_CALIBRATION;
     }
     else{
         mod_audio_processedCommand = NOTHING;
@@ -131,9 +134,10 @@ void processDatas(int16_t *data, uint16_t num_samples){
     if(needAudio == false){
         return;
     }
+    
     static uint16_t nb_samples = 0;
     static uint8_t process = 0;
-
+    assert(micFront_cmplx_input);
     // Get samples in a complex array
     for(uint16_t i = 0 ; i < num_samples ; i+=4){
         micFront_cmplx_input[nb_samples] = (float)data[i+3];
@@ -147,8 +151,7 @@ void processDatas(int16_t *data, uint16_t num_samples){
             break;
         }
     }
-    chThdSleepMilliseconds(10);
-    
+    assert(micFront_output);
     // Process when buffer is full
     if(nb_samples >= (2 * FFT_SIZE)){
         // FFT Processing
@@ -163,7 +166,6 @@ void processDatas(int16_t *data, uint16_t num_samples){
                 needAudio = false;
                 nb_samples = 0;
                 chBSemSignal(&mod_audio_sem_commandAvailable);
-                mod_com_writeDatas("Action processed", "TOUOE", 0);
                 return;
             }
             
@@ -176,39 +178,26 @@ void processDatas(int16_t *data, uint16_t num_samples){
 
 
 void mod_audio_launchMelodyOnThread(music_t musicName, playMode_t playMode){
-    mod_com_writeDatas("mod_audio_launchMelodyOnThread before stop", "TOUOE", 0);
     stop_current_melody();
-    mod_com_writeDatas("mod_audio_launchMelodyOnThread after stop", "TOUOE", 0);
-
+    return;
     // New area
     switch(musicName){
-        case DISCOVERING:
+        case MUS_DISCOVERING:
             play_melody(MARIO);
             break;
-            
-        case EXPLORATION:
+        case MUS_EXPLORATION:
             play_melody(UNDERWORLD);
             break;
-            
-        case EXPLORATION_FAST:
-            play_melody(MARIO);
-            break;
-            
-        case MUSIC:
+        case MUS_SONG:
             play_melody(STARWARS);
             break;
-            
-        case SORTING:
-            play_melody(MARIO);
-            break;
+
     }
 }
 
 
 void mod_audio_alertInterruption(alert_t alertName){
-    mod_com_writeDatas("mod_audio_alertInterruption before stop", "TOUOE", 0);
     stop_current_melody();
-    mod_com_writeDatas("mod_audio_alertInterruption after stop", "TOUOE", 0);
     switch(alertName){
         case SHORT:
             play_melody(ALERT);

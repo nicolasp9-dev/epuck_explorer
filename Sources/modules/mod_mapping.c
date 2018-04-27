@@ -23,9 +23,13 @@
 #define CALIBRATION_REF_TIME                            4000
 #define ROTATION_ELMT_TIME                              50
 #define TOLERATE_ERROR                                  4 // Error in mm
+#define TOLERANCE_WALL                                  40
+#define TOLERANCE_OBJECT                                25
+#define PICTURE_DISTANCE                                80
 
-#define ROBOT_RADIUS    26.8f
+#define ROBOT_RADIUS    27
 #define TOF_RADIUS      33
+#define NUMBER_OF_WALLS 4
 
 static robotPosition_t robotActualPosition;
 
@@ -45,17 +49,23 @@ static robotPosition_t robotActualPosition;
 robotPosition_t PositionWheelSpeedType(robotPosition_t* lastPosition,
                                                   const wheelSpeed_t* wheelSpeed, int time);
 
+typedef struct {
+    int x0;
+    int x2;
+    int y1;
+    int y3;
+} wall_t;
+
+wall_t wall;
+
+point_t *objectList;
+int objectListSize=0;
 
 /***************/
 
-void checkAngle(float *angle){
-    if(*angle >= 2*M_PI){
-        int nb = *angle/(2*M_PI);
-        *angle -=  nb*2*M_PI;
-    }
-    while(*angle < 0){
-        *angle += 2*M_PI;
-    }
+void checkAngle(double *angle){
+    while(*angle >= 2*M_PI) *angle -= 2*M_PI;
+    while(*angle < 0) *angle += 2*M_PI;
 }
 
 robotPosition_t newAbsolutePositionWheelSpeedType(robotPosition_t* lastPosition,
@@ -63,8 +73,13 @@ robotPosition_t newAbsolutePositionWheelSpeedType(robotPosition_t* lastPosition,
     robotPosition_t newPosition;
     newPosition.x = lastPosition->x +   time*(wheelSpeed->right+wheelSpeed->left)*cos(lastPosition->theta)/(2*1000);
     newPosition.y = lastPosition->y +   time*(wheelSpeed->right+wheelSpeed->left)*sin(lastPosition->theta)/(2*1000);
-    newPosition.theta = lastPosition->theta +   (wheelSpeed->right-wheelSpeed->left)*time/(ROBOT_RADIUS*2*1020);
+    newPosition.theta = lastPosition->theta +   (wheelSpeed->right-wheelSpeed->left)*time/(ROBOT_RADIUS*2*1010);
     checkAngle(&newPosition.theta);
+    
+    char toSend[100];
+    sprintf(toSend, "Robot new position : %d, %d, %f", newPosition.x, newPosition.y, newPosition.theta);
+    mod_com_writeMessage(toSend,3);
+    
     return newPosition;
 }
 
@@ -72,13 +87,18 @@ point_t measurementToPoint(measurement_t * measurement){
     point_t point;
     point.x = -(measurement->value+TOF_RADIUS)*sin(measurement->position.theta)+measurement->position.x;
     point.y = (measurement->value+TOF_RADIUS)*cos(measurement->position.theta)+measurement->position.y;
+    
+    char toSend[100];
+    sprintf(toSend, "Point location : %d, %d", point.x, point.y);
+    mod_com_writeMessage(toSend,3);
+    
     return point;
 }
 
-void moveOrigin(point_t intersection, float thetaWall){
+void moveOrigin(point_t intersection, double thetaWall){
     robotActualPosition.x -= cos(thetaWall)*intersection.x - sin(thetaWall)*intersection.y;
     robotActualPosition.y -= sin(thetaWall)*intersection.x + cos(thetaWall)*intersection.y;
-    robotActualPosition.theta -= thetaWall;
+    robotActualPosition.theta -= thetaWall + M_PI/2;
     if(robotActualPosition.theta >= 2*M_PI){
         int nb = robotActualPosition.theta/(2*M_PI);
         robotActualPosition.theta -=  nb*2*M_PI;
@@ -86,14 +106,18 @@ void moveOrigin(point_t intersection, float thetaWall){
     while(robotActualPosition.theta < 0){
         robotActualPosition.theta += 2*M_PI;
     }
+    
+    char toSend[100];
+    sprintf(toSend, "RMoved origin : %d, %d, %f", robotActualPosition.x, robotActualPosition.y, robotActualPosition.theta);
+    mod_com_writeMessage(toSend,3);
 }
 
-void computeCoefDirecteur(point_t * point, int nbPoints, float * tot){
-    float m, p, mtot = .0, ptot = .0;
+void computeCoefDirecteur(point_t * point, int nbPoints, double * tot){
+    double m, p, mtot = .0, ptot = .0;
     int i;
-    for(i=0;i <(nbPoints-2);i++){
-        m =  (float) (point[i].y-point[i+2].y) / (float) (point[i].x-point[i+2].x);
-        p = (float) point[i].y - m * point[i].x;
+    for(i=0;i <(nbPoints-3);i++){
+        m =  (double) (point[i].y-point[i+3].y) / (double) (point[i].x-point[i+3].x);
+        p = (double) point[i].y - m * point[i].x;
         
         mtot += m;
         ptot += p;
@@ -111,6 +135,9 @@ void computeCoefDirecteur(point_t * point, int nbPoints, float * tot){
 void mod_mapping_init(void){
 
     mod_mapping_resetCoordinates();
+    
+    objectList = malloc(sizeof(point_t));
+    assert(objectList);
 }
 
 void mod_mapping_resetCoordinates(void){
@@ -118,7 +145,7 @@ void mod_mapping_resetCoordinates(void){
 }
 
 void mod_mapping_adaptCoordinatesToOrigin(int x, int y, int theta){
-    robotActualPosition = (robotPosition_t) {robotActualPosition.x,robotActualPosition.x,robotActualPosition.theta};
+    robotActualPosition = (robotPosition_t) {x,x,theta};
 }
 
 void mod_mapping_updatePositionWheelSpeedType(const wheelSpeed_t *wheelSpeed, int time){
@@ -233,7 +260,7 @@ bool mod_mapping_computeWallLocation(measurement_t* measurement, int number){
     free(table);
     table = NULL;
     
-    float coefsWall1[2], coefsWall2[2];
+    double coefsWall1[2], coefsWall2[2];
     
     computeCoefDirecteur(wall1, k, coefsWall1);
     computeCoefDirecteur(wall2, l, coefsWall2);
@@ -248,11 +275,25 @@ bool mod_mapping_computeWallLocation(measurement_t* measurement, int number){
     intersection.x = (coefsWall2[1] - coefsWall1[1]) /(coefsWall1[0] - coefsWall2[0]);
     intersection.y =  coefsWall2[0] * intersection.x + coefsWall2[1];
     
-    float thetaWall = -atan(coefsWall2[0]);
-    
+    double thetaWall = (-atan(coefsWall2[0]) + atan(1/coefsWall1[0]))/2;
+
     moveOrigin(intersection, thetaWall);
     
+    wall.x0 = 0;
+    wall.y1 = 0;
+    
     return true;
+    
+}
+
+void mod_map_saveWall(measurement_t value, int wallNum){
+    if(wallNum == 2){
+        wall.x2 = measurementToPoint(&value).x;
+    }
+    if(wallNum == 3){
+        wall.y3 = measurementToPoint(&value).y;
+    }
+
     
 }
 
@@ -261,7 +302,7 @@ robotDistance_t mod_mapping_getRobotDisplacement(const robotPosition_t * newAbso
     
     int deltaX = newAbsolutePosition->x - robotActualPosition.x;
     int deltaY = newAbsolutePosition->y - robotActualPosition.y;
-    float movementAngle = atan(deltaY/deltaX);
+    double movementAngle = atan(deltaY/deltaX);
     
     displacement.rotation[0] = movementAngle - robotActualPosition.theta - M_PI/2;
     displacement.rotation[1] = newAbsolutePosition->theta - movementAngle+ M_PI/2;
@@ -269,12 +310,23 @@ robotDistance_t mod_mapping_getRobotDisplacement(const robotPosition_t * newAbso
     checkAngle(&displacement.rotation[0]);
     checkAngle(&displacement.rotation[1]);
     
+    char toSend[100];
+    sprintf(toSend, "Displacement to do : %f, %d, %f", displacement.rotation[0], displacement.translation, displacement.rotation[1]);
+    mod_com_writeMessage(toSend,3);
+    
     return displacement;
 }
 
-float mod_mapping_getAngleForTranslation(const float angle){
-    float newAngle = angle - robotActualPosition.theta - M_PI/2;
-    checkAngle(&newAngle);
+double mod_mapping_getAngleForTranslation(const double angle){
+    double newAngle = angle - robotActualPosition.theta - M_PI/2;
+    
+    while(newAngle > M_PI) newAngle -= 2*M_PI;
+    while(newAngle < -M_PI) newAngle += 2*M_PI;
+    
+    char toSend[50];
+    sprintf(toSend, "Angle to take : %f", newAngle);
+    mod_com_writeMessage(toSend,3);
+    
     return newAngle;
 }
 
@@ -282,6 +334,83 @@ robotPosition_t mod_mapping_getActualPosition(void){
     return robotActualPosition;
 }
 
+int computeObjectDistance(point_t point1, point_t point2){
+    return sqrt((point1.x-point2.x)*(point1.x-point2.x) + (point1.y-point2.y)*(point1.y-point2.y));
+}
+
+void computeObjectRelativeDirection(point_t point1, point_t point2){
+    
+}
+
+bool isNear(point_t point){
+    if(computeObjectDistance(point, (point_t) {robotActualPosition.x, robotActualPosition.y}) < TOF_RADIUS + TOLERANCE_WALL*2){
+        return true;
+    }
+    return false;
+}
+
+bool checkIfPointInCircle(point_t point, point_t circle){
+    if(((point.x-circle.x)*(point.x-circle.x) + (point.y-circle.y)*(point.y-circle.y)) < TOLERANCE_OBJECT) return true;
+    else return false;
+    
+}
+
+bool checkIfObjectExists(point_t object){
+    for(int i = 0; i < objectListSize; i++)
+        if(checkIfPointInCircle(object, objectList[i]))
+            return true;
+    return false;
+}
 
 
+void mod_mapping_checkEnvironment(measurement_t * measurement, int numberOfMeasurements, actualEnvironement_t * environmentObstacles){
+    point_t * point = malloc(numberOfMeasurements*sizeof(point_t));
+    assert(point);
+    environmentObstacles->numberOfknownObjects = 0;
+    environmentObstacles->numberOfnewObjects = 0;
+    
+    for(int i=0; i< NUMBER_OF_WALLS; i++){
+        environmentObstacles->nearWall[i] = false;
+    }
+    
+    for(int i=0; i< numberOfMeasurements; i++){
+        
+        point[i] = measurementToPoint(&measurement[i]);
+        
+        if(!isNear(point[i])) continue;
+            
+             if(point[i].x < wall.x0 + TOLERANCE_WALL) environmentObstacles->nearWall[0] = true;
+        else if(point[i].x > wall.x2 - TOLERANCE_WALL) environmentObstacles->nearWall[1] = true;
+        else if(point[i].y < wall.y1 + TOLERANCE_WALL) environmentObstacles->nearWall[2] = true;
+        else if(point[i].y > wall.y3 - TOLERANCE_WALL) environmentObstacles->nearWall[3] = true;
+        
+        else{
+            if(checkIfObjectExists(point[i])){
+                environmentObstacles->knownObjectsLocation[environmentObstacles->numberOfknownObjects] = point[i];
+                environmentObstacles->numberOfknownObjects++;
+            }
+            else{
+                environmentObstacles->newObjectsLocation[environmentObstacles->numberOfnewObjects] = point[i];
+                environmentObstacles->numberOfnewObjects++;
+            }
+            if((environmentObstacles->numberOfnewObjects == 3) || (environmentObstacles->numberOfknownObjects == 3)){
+                break;
+            }
+        }
+           
+    }
+    
+    free(point);
+    point = NULL;
+    
+}
+
+point_t getEmplacementForPicture(point_t point){
+
+    
+}
+
+void getPathTo(){
+    
+}
 

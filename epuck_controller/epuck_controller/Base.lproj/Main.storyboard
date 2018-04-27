@@ -42,14 +42,6 @@
                                     <action selector="sendMapClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="00Z-KZ-nCT"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6iI-D0-d9e">
-                                <rect key="frame" x="49" y="562" width="277" height="40"/>
-                                <fontDescription key="fontDescription" type="system" weight="thin" pointSize="23"/>
-                                <state key="normal" title="Put this world in order, please."/>
-                                <connections>
-                                    <action selector="sortClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="bps-RK-W41"/>
-                                </connections>
-                            </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Hi." textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jdv-r6-wxu">
                                 <rect key="frame" x="148" y="109" width="79" height="84"/>
                                 <fontDescription key="fontDescription" type="system" weight="light" pointSize="70"/>
@@ -63,7 +55,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dNp-Mr-82g">
-                                <rect key="frame" x="98.666666666666686" y="632" width="178" height="40"/>
+                                <rect key="frame" x="98.666666666666686" y="562" width="178" height="40"/>
                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="23"/>
                                 <state key="normal" title="Sing a cool melody">
                                     <color key="titleColor" red="0.0" green="0.63012062823834203" blue="0.0063684929943814538" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -73,7 +65,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EEX-Xn-AH4">
-                                <rect key="frame" x="26" y="702" width="324" height="40"/>
+                                <rect key="frame" x="26" y="632" width="324" height="40"/>
                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="23"/>
                                 <state key="normal" title="Calibrate your sensors in the arena">
                                     <color key="titleColor" red="1" green="0.0" blue="0.058155415096606156" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -91,15 +83,13 @@
                             <constraint firstItem="p0a-KK-yiE" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Dsi-AT-j5L"/>
                             <constraint firstItem="p0a-KK-yiE" firstAttribute="top" secondItem="zTu-rn-pSx" secondAttribute="bottom" constant="30" id="LNJ-xP-djp"/>
                             <constraint firstItem="UEl-zP-KSa" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="LQG-Wk-ZNm"/>
+                            <constraint firstItem="dNp-Mr-82g" firstAttribute="top" secondItem="p0a-KK-yiE" secondAttribute="bottom" constant="30" id="LT0-RD-XQu"/>
                             <constraint firstItem="dNp-Mr-82g" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="Lf4-et-QjC"/>
                             <constraint firstItem="zTu-rn-pSx" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="TmJ-Aj-cXv"/>
-                            <constraint firstItem="dNp-Mr-82g" firstAttribute="top" secondItem="6iI-D0-d9e" secondAttribute="bottom" constant="30" id="bRR-4z-XRy"/>
                             <constraint firstItem="UEl-zP-KSa" firstAttribute="top" secondItem="jdv-r6-wxu" secondAttribute="bottom" constant="70" id="jRo-Sg-BfD"/>
                             <constraint firstItem="EEX-Xn-AH4" firstAttribute="top" secondItem="dNp-Mr-82g" secondAttribute="bottom" constant="30" id="nKE-2j-zzN"/>
-                            <constraint firstItem="6iI-D0-d9e" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="njt-mU-Zcm"/>
                             <constraint firstItem="hff-jx-AXA" firstAttribute="top" secondItem="UEl-zP-KSa" secondAttribute="bottom" constant="60" id="rMm-ej-h6O"/>
                             <constraint firstItem="hff-jx-AXA" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="scG-TB-kzR"/>
-                            <constraint firstItem="6iI-D0-d9e" firstAttribute="top" secondItem="p0a-KK-yiE" secondAttribute="bottom" constant="30" id="xQG-U5-Gl3"/>
                             <constraint firstItem="EEX-Xn-AH4" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="zg4-4Z-Yam"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>

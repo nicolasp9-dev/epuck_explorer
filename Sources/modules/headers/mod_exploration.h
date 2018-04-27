@@ -11,10 +11,6 @@
 #ifndef _MOD_EXPLORATION_
 #define _MOD_EXPLORATION_
 
-typedef enum{
-    IMPROVE=0,
-    NEW
-} exploration_t;
 
 /**
  * @brief Initialize the exploration module
@@ -37,7 +33,7 @@ void mod_explo_discoverTheAreaOnThread(void);
  *
  * param[in] type   Precise if a new exploration needs to be done (or if it's just improvement of the last one)
  */
-void mod_explo_explorateTheAreaOnThread(exploration_t type);
+void mod_explo_explorateTheAreaOnThread(void);
 
 /**
  * @brief   Ask for the distant device to send the map to the user

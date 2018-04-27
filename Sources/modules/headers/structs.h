@@ -13,13 +13,13 @@
 
 
 typedef struct  {
-    float left;
-    float right;
+    double left;
+    double right;
 }wheelSpeed_t;
 
 typedef struct  {
     int mainSpeed;
-    float angle;
+    double angle;
 }robotSpeed_t;
 
 

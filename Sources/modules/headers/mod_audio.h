@@ -16,11 +16,9 @@
  * @brief Melodies names
  */
 typedef enum{
-    DISCOVERING=0,
-    EXPLORATION,
-    EXPLORATION_FAST,
-    SORTING,
-    MUSIC
+    MUS_DISCOVERING=0,
+    MUS_EXPLORATION,
+    MUS_SONG
 } music_t;
 
 /**
@@ -47,7 +45,7 @@ typedef enum{
     NOTHING=0,
     CMD_DISCOVERING,
     CMD_EXPLORATION,
-    CMD_SORTING,
+    CMD_CALIBRATION,
     CMD_MAPSEND,
     CMD_SING
 } command_t;
