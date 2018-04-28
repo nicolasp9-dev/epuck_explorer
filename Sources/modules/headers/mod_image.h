@@ -20,5 +20,9 @@ void mod_img_init(void);
  * @brief 
  */
 void mod_image_capture(void);
+
+void mod_image_sendPicture(int x, int y);
+
 #endif
+
 

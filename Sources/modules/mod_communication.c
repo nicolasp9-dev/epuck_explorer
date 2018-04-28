@@ -94,15 +94,22 @@ void mod_com_writeDatas(char* type, char* toWrite, size_t toWriteSize){
     memcpy(toSendPointer, separator, (size_t) SEPARATOR_SIZE);
     
     size_t i;
-    
+    chSequentialStreamWrite((BaseSequentialStream *)&SD3, (uint8_t*)"START", 5);
     // Write the header first
     for(i=0; i<headerSize;i++)
         chprintf((BaseSequentialStream *)&SD3, "%c",((uint8_t*) toSend)[i]);
     
     // Write content of the message
-    for(i=0; i<toWriteSize;i++)
-        chprintf((BaseSequentialStream *)&SD3, "%02x",toWrite[i]);
-    
+    chSequentialStreamWrite((BaseSequentialStream *)&SD3, (uint8_t*)toWrite, toWriteSize);
+    chThdSleepMilliseconds(300);
+    chSequentialStreamWrite((BaseSequentialStream *)&SD3, (uint8_t*)toWrite+4000, toWriteSize-4000);
+    chThdSleepMilliseconds(300);
+    chSequentialStreamWrite((BaseSequentialStream *)&SD3, (uint8_t*)toWrite+8000, toWriteSize-8000);
+    chThdSleepMilliseconds(300);
+    chSequentialStreamWrite((BaseSequentialStream *)&SD3, (uint8_t*)toWrite+12000, toWriteSize-12000);
+    chThdSleepMilliseconds(300);
+    chSequentialStreamWrite((BaseSequentialStream *)&SD3, (uint8_t*)toWrite+16000, toWriteSize-16000);
+    chThdSleepMilliseconds(300);
     free(toSend);
     toSend = NULL;
 }
@@ -145,6 +152,7 @@ void mod_com_writeMessage(char* message, int level){
     
     size_t i;
     
+    chSequentialStreamWrite((BaseSequentialStream *)&SD3, (uint8_t*)"START", 5);
     // Write the header first
     for(i=0; i<totalSize;i++)
         chprintf((BaseSequentialStream *)&SD3, "%c",((uint8_t*) toSend)[i]);
@@ -184,6 +192,7 @@ void mod_com_writeCommand(cmd_t order){
     
     size_t i;
     
+    chSequentialStreamWrite((BaseSequentialStream *)&SD3, (uint8_t*)"START", 5);
     // Write the header first
     for(i=0; i<totalSize;i++)
         chprintf((BaseSequentialStream *)&SD3, "%c",((uint8_t*) toSend)[i]);

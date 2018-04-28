@@ -1,7 +1,7 @@
 /*
  * File : mod_structs.h
  * Project : e_puck_project
- * Description : Module in charge of check for coherency in datas (asserts...)
+ * Description : Shared structs definition for multiples files access
  *
  * Written by Maxime Marchionno and Nicolas Peslerbe, April 2018
  * MICRO-315 | École Polytechnique Fédérale de Lausanne
@@ -13,13 +13,13 @@
 
 
 typedef struct  {
-    double left;
-    double right;
+    float left;
+    float right;
 }wheelSpeed_t;
 
 typedef struct  {
     int mainSpeed;
-    double angle;
+    float angle;
 }robotSpeed_t;
 
 

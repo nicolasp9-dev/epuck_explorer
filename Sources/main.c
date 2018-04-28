@@ -34,12 +34,7 @@
 // Semaphores
 BSEMAPHORE_DECL(sem_wip, true);
 
-typedef struct{
-    bool discovering;
-    bool exploration;
-} history_t;
 
-history_t history = {false , false};
 
 
 void initSystem(void){
@@ -64,7 +59,7 @@ void exploration(void){
 }
 
 void discovering(void){
-    //mod_basicIO_changeRobotState(WIP);
+    mod_basicIO_changeRobotState(WIP);
     mod_com_writeMessage("Will discover the area", 3);
     
     history=  (history_t){false , false};
@@ -91,24 +86,30 @@ void sendMap(void){
 
 void calibrateSystem(void){
     mod_basicIO_changeRobotState(WIP);
-    mod_com_writeMessage("Will calibrate the system", 3);
+    mod_com_writeMessage("NOT AVAILABLE", 3);
     
-    mod_explo_calibration();
+    //mod_explo_calibration();
 }
 
 void actionChoice(void){
     switch(mod_audio_processedCommand){
         case CMD_DISCOVERING :
-            discovering();
-            break;
-        
-        case CMD_EXPLORATION :
-            if(history.discovering) { exploration(); }
+            if(!history.discovering) { discovering(); }
             else{
                 mod_audio_alertInterruption(IMPOSSIBLE);
                 mod_audio_waitUntilMelodyEnd();
                 return;
             }
+            break;
+        
+        case CMD_EXPLORATION :
+            exploration();
+            /*if(history.discovering) { exploration(); }
+            else{
+                mod_audio_alertInterruption(IMPOSSIBLE);
+                mod_audio_waitUntilMelodyEnd();
+                return;
+            }*/
             break;
         
         case CMD_MAPSEND :

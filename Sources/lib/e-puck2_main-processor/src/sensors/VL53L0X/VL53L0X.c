@@ -17,6 +17,7 @@
 static uint16_t dist_mm = 0;
 static thread_t *distThd;
 static bool VL53L0X_configured = false;
+BSEMAPHORE_DECL(tofNewDatas, TRUE);
 
 //////////////////// PUBLIC FUNCTIONS /////////////////////////
 static THD_WORKING_AREA(waVL53L0XThd, 2048);
@@ -47,6 +48,7 @@ static THD_FUNCTION(VL53L0XThd, arg) {
     	if(VL53L0X_configured){
     		VL53L0X_getLastMeasure(&device);
    			dist_mm = device.Data.LastRangeMeasure.RangeMilliMeter;
+            chBSemSignal(&tofNewDatas);
     	}
 		chThdSleepMilliseconds(100);
     

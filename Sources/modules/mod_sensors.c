@@ -164,4 +164,3 @@ void mod_sensors_waitForObstacle(void){
     chBSemWait(&isObstacle_sem);
     mod_sensors_need_objectDetection = false;
 }
-

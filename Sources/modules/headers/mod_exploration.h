@@ -8,19 +8,25 @@
  */
 
 
+
 #ifndef _MOD_EXPLORATION_
 #define _MOD_EXPLORATION_
 
+#include <stdbool.h>
+
+typedef struct{
+    bool discovering;
+    bool exploration;
+} history_t;
+
+
+extern history_t history;
 
 /**
- * @brief Initialize the exploration module
+ * @brief Initialize the exploration module (and sub-modules)
  */
 void mod_explo_initModule(void);
 
-/**
- * @brief Calibration of motors and sensors
- */
-void mod_explo_calibration(void);
 
 /**
  * @brief Discover the area to find borders, repport it into the mapping
@@ -30,9 +36,7 @@ void mod_explo_discoverTheAreaOnThread(void);
 /**
  * @brief   Explore the area to find objects, send image for processing
  *          and repport everything int the mapping
- *
- * param[in] type   Precise if a new exploration needs to be done (or if it's just improvement of the last one)
- */
+*/
 void mod_explo_explorateTheAreaOnThread(void);
 
 /**

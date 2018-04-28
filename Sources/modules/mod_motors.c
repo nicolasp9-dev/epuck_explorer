@@ -25,6 +25,9 @@ void mod_motors_init(void){
 }
 
 wheelSpeed_t mod_motors_convertRobotSpeedToWheelspeed(robotSpeed_t robotSpeedTemp){
+    char toSend[50];
+    sprintf(toSend, "Speed of wheels: %f %f", robotSpeedTemp.mainSpeed - robotSpeedTemp.angle*ROBOT_RADIUS, robotSpeedTemp.mainSpeed + robotSpeedTemp.angle*ROBOT_RADIUS);
+    mod_com_writeMessage(toSend, 3);
     return (wheelSpeed_t) {robotSpeedTemp.mainSpeed - robotSpeedTemp.angle*ROBOT_RADIUS,
                            robotSpeedTemp.mainSpeed + robotSpeedTemp.angle*ROBOT_RADIUS };
 }
@@ -41,7 +44,7 @@ void mod_motors_initCalibration(void){
     straight_const = 1;
 }
 void mod_motor_angleCalibration(const wheelSpeed_t displacement, const int movementTime){
-    //angle_const = (displacement.left - displacement.right)*movementTime/(2*PI1000*ROBOT_RADIUS);
+    angle_const = (displacement.left - displacement.right)*movementTime/(2*PI*1000*ROBOT_RADIUS);
 }
 
 void mod_motor_distanceCalibration(int distanceWithWall, const wheelSpeed_t displacement, const int movementTime){
