@@ -100,16 +100,20 @@ void mod_com_writeDatas(char* type, char* toWrite, size_t toWriteSize){
         chprintf((BaseSequentialStream *)&SD3, "%c",((uint8_t*) toSend)[i]);
     
     // Write content of the message
-    chSequentialStreamWrite((BaseSequentialStream *)&SD3, (uint8_t*)toWrite, toWriteSize);
-    chThdSleepMilliseconds(300);
-    chSequentialStreamWrite((BaseSequentialStream *)&SD3, (uint8_t*)toWrite+4000, toWriteSize-4000);
-    chThdSleepMilliseconds(300);
-    chSequentialStreamWrite((BaseSequentialStream *)&SD3, (uint8_t*)toWrite+8000, toWriteSize-8000);
-    chThdSleepMilliseconds(300);
-    chSequentialStreamWrite((BaseSequentialStream *)&SD3, (uint8_t*)toWrite+12000, toWriteSize-12000);
-    chThdSleepMilliseconds(300);
-    chSequentialStreamWrite((BaseSequentialStream *)&SD3, (uint8_t*)toWrite+16000, toWriteSize-16000);
-    chThdSleepMilliseconds(300);
+    int written = 0;
+    while(toWriteSize > 0){
+        if(toWriteSize > 4000){
+            chSequentialStreamWrite((BaseSequentialStream *)&SD3, (uint8_t*)toWrite+written, 4000);
+            chThdSleepMilliseconds(400);
+            written+=4000;
+            toWriteSize -= 4000;
+        }
+        else{
+            chSequentialStreamWrite((BaseSequentialStream *)&SD3, (uint8_t*)toWrite+written, toWriteSize);
+            toWriteSize = 0;
+        }
+        
+    }
     free(toSend);
     toSend = NULL;
 }
@@ -162,22 +166,23 @@ void mod_com_writeMessage(char* message, int level){
 }
 
 void mod_com_writeCommand(cmd_t order){
-    
     void* toSend = NULL;
     char orderString[30];
-    char sizeText[sizeof(char)*(UNSIGNED_INT_IN_CHAR_SIZE + NULL_CHAR_SIZE)];
-    sprintf(sizeText, "%5d", 0);
     switch (order) {
         case SEND_MAP:
             strcpy(orderString, "Send map\n");
             break;
     }
+    // Prepare the size of datas to introduce it in the header
+    size_t toWriteSize = strlen(orderString);
+    char sizeText[sizeof(char)*(UNSIGNED_INT_IN_CHAR_SIZE + NULL_CHAR_SIZE)];
+    sprintf(sizeText, "%5d", size_t2int(toWriteSize));
     
-    size_t sizeOfType = strlen(orderString);
+    size_t sizeOfType = strlen("Command");
     const char separator[SEPARATOR_SIZE] = "||";
     
     size_t totalSize =  strlen(sizeText) + SEPARATOR_SIZE +
-    sizeOfType;
+    sizeOfType + SEPARATOR_SIZE + strlen(orderString) ;
     
     toSend = malloc(totalSize*sizeof(char));
     assert (toSend != NULL);
@@ -188,7 +193,11 @@ void mod_com_writeCommand(cmd_t order){
     toSendPointer += strlen(sizeText);
     memcpy(toSendPointer, separator, (size_t) SEPARATOR_SIZE);
     toSendPointer += SEPARATOR_SIZE;
-    memcpy(toSendPointer, orderString, sizeOfType);
+    memcpy(toSendPointer, "Command", sizeOfType);
+    toSendPointer += sizeOfType;
+    memcpy(toSendPointer, separator, (size_t) SEPARATOR_SIZE);
+    toSendPointer += SEPARATOR_SIZE;
+    memcpy(toSendPointer, orderString, (size_t) strlen(orderString));
     
     size_t i;
     
@@ -196,6 +205,7 @@ void mod_com_writeCommand(cmd_t order){
     // Write the header first
     for(i=0; i<totalSize;i++)
         chprintf((BaseSequentialStream *)&SD3, "%c",((uint8_t*) toSend)[i]);
+    
     free(toSend);
     toSend = NULL;
 }

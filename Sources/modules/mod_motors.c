@@ -25,9 +25,6 @@ void mod_motors_init(void){
 }
 
 wheelSpeed_t mod_motors_convertRobotSpeedToWheelspeed(robotSpeed_t robotSpeedTemp){
-    char toSend[50];
-    sprintf(toSend, "Speed of wheels: %f %f", robotSpeedTemp.mainSpeed - robotSpeedTemp.angle*ROBOT_RADIUS, robotSpeedTemp.mainSpeed + robotSpeedTemp.angle*ROBOT_RADIUS);
-    mod_com_writeMessage(toSend, 3);
     return (wheelSpeed_t) {robotSpeedTemp.mainSpeed - robotSpeedTemp.angle*ROBOT_RADIUS,
                            robotSpeedTemp.mainSpeed + robotSpeedTemp.angle*ROBOT_RADIUS };
 }

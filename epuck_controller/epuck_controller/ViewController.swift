@@ -3,7 +3,7 @@
 //  epuck_controller
 //
 //  Created by Nicolas Peslerbe on 09.04.18.
-//  Copyright © 2018 Nicolas Peslerbe. All rights reserved.
+//  Copyright  2018 Nicolas Peslerbe. All rights reserved.
 //
 
 import UIKit

@@ -15,7 +15,8 @@
  */
 typedef enum{
     WIP = 0,
-    WAITING
+    WAITING,
+    ALL_OFF
 }state_t;
 
 /**

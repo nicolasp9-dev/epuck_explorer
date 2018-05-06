@@ -74,9 +74,4 @@ void mod_sensors_getAllProximityValues(int* table);
  */
 void mod_sensors_calibrateIRSensors(void);
 
-void mod_sensor_waitForNewDatasOnTOF(void);
-
-void mod_sensors_waitForObstacle(void);
-
-
 #endif

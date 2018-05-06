@@ -13,15 +13,18 @@
 
 #include "math.h"
 #include "stdbool.h"
-#define NUMBER_OF_STEPS             40
+#define NUMBER_OF_STEPS             30
 #define ANGLE_ELEMENT               2*M_PI/NUMBER_OF_STEPS
 #define COMPLETE_ANGLE              2*M_PI
 
 #define NUMBER_OF_STEPS_SCAN360     50
 #define ANGLE_ELEMENT_SCAN360       2*M_PI/NUMBER_OF_STEPS_SCAN360
 
-#define NUMBER_OF_STEPS_FRONT       12
-#define ANGLE_ELEMENT_FRONT         M_PI/(4*NUMBER_OF_STEPS_FRONT)
+#define NUMBER_OF_STEPS_FRONT       10
+#define ANGLE_ELEMENT_FRONT         2*M_PI/(16*NUMBER_OF_STEPS_FRONT)
+#define SIZE_FRONT_SCAN             2*M_PI/16
+
+#define NUMBER_OF_SCANS_MIN         NUMBER_OF_STEPS_SCAN360
 
 #include "structs.h"
 
@@ -145,6 +148,7 @@ point_t mod_mapping_getAreaCenter(void);
 
 point_t mod_mapping_checkEnvironmentRobotReferencial(measurement_t * measurement, bool considerWalls);
 
+bool mod_mapping_checkEnvironmentLimitsRobotReferencial(measurement_t * measurement, bool considerWalls);
 
 /**
  * @brief Returns the path to do to take the picture, without using the referencial but only distance datas in the mesaurement
@@ -154,5 +158,17 @@ point_t mod_mapping_checkEnvironmentRobotReferencial(measurement_t * measurement
  * @param[out]      The path to do (No angle, straight line)
  */
 int mod_mapping_computeDistanceForPictureRobotReferencial(measurement_t * measurement);
+
+/**
+ * @brief Find the best position where to move to have the center of the object
+ *
+ * @param[in] measurement     The list of measruements
+ * @param[in] considerWalls   True if discovering have been done, so it will use points
+ * @param[in] newPoint        The closest point
+ *
+ * @param[out]      The distance to do to take the picture
+ */
+robotDistance_t mod_mapping_findObjectBestPosition(measurement_t* measurement, point_t* newPoint, bool considerWalls);
+
 
 #endif

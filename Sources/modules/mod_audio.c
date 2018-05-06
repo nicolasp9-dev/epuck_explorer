@@ -70,20 +70,6 @@ static float * micFront_output;
  *  Private functions
  */
 
-
-/********************
- *  Public functions (Informations in header)
- */
-
-void mod_audio_initModule(void){
-    micFront_cmplx_input = malloc(sizeof(float)*2 * FFT_SIZE);
-    micFront_output = malloc(sizeof(float) * FFT_SIZE);
-    needAudio = false;
-    play_melody_start();
-}
-
-
-
 /**
  * @brief Function used to detect the highest value
  *
@@ -102,11 +88,11 @@ void action_detection(float* data){
             
         }
     }
-
+    
     if(max_norm_index >= FREQ_CMD_DISCOVERING_L && max_norm_index <= FREQ_CMD_DISCOVERING_H){
         mod_audio_processedCommand = CMD_DISCOVERING;
     }
-
+    
     else if(max_norm_index >= FREQ_CMD_EXPLORATION_L && max_norm_index <= FREQ_CMD_EXPLORATION_H){
         mod_audio_processedCommand = CMD_EXPLORATION;
     }
@@ -156,7 +142,7 @@ void processDatas(int16_t *data, uint16_t num_samples){
     if(nb_samples >= (2 * FFT_SIZE)){
         // FFT Processing
         doFFT_optimized(FFT_SIZE, micFront_cmplx_input);
-
+        
         // Magnitude processing
         arm_cmplx_mag_f32(micFront_cmplx_input, micFront_output, FFT_SIZE);
         if(process > 8){
@@ -177,20 +163,28 @@ void processDatas(int16_t *data, uint16_t num_samples){
 
 
 
+/********************
+ *  Public functions (Informations in header)
+ */
+
+void mod_audio_initModule(void){
+    micFront_cmplx_input = malloc(sizeof(float)*2 * FFT_SIZE);
+    micFront_output = malloc(sizeof(float) * FFT_SIZE);
+    needAudio = false;
+    play_melody_start();
+}
+
+
+
 void mod_audio_launchMelodyOnThread(music_t musicName, playMode_t playMode){
     stop_current_melody();
-    return;
     // New area
     switch(musicName){
-        case MUS_DISCOVERING:
-            play_melody(MARIO);
-            break;
-        case MUS_EXPLORATION:
-            play_melody(UNDERWORLD);
-            break;
         case MUS_SONG:
             play_melody(STARWARS);
             break;
+        default:
+            return;
 
     }
 }

@@ -34,8 +34,9 @@
 // Semaphores
 BSEMAPHORE_DECL(sem_wip, true);
 
-
-
+/********************
+ *  Private functions to the main
+ */
 
 void initSystem(void){
     halInit();
@@ -45,6 +46,7 @@ void initSystem(void){
     mod_com_initModule();
     mod_explo_initModule();
 }
+
 
 void exploration(void){
     mod_basicIO_changeRobotState(WIP);
@@ -58,6 +60,7 @@ void exploration(void){
     history.exploration +=1;
 }
 
+
 void discovering(void){
     mod_basicIO_changeRobotState(WIP);
     mod_com_writeMessage("Will discover the area", 3);
@@ -69,6 +72,7 @@ void discovering(void){
     history.discovering +=1;
 }
 
+
 void song(void){
     mod_basicIO_changeRobotState(WIP);
     mod_com_writeMessage("Will launch a melody", 3);
@@ -77,6 +81,7 @@ void song(void){
     mod_audio_waitUntilMelodyEnd();
 }
 
+
 void sendMap(void){
     mod_basicIO_changeRobotState(WIP);
     mod_com_writeMessage("Will send the map", 3);
@@ -84,9 +89,11 @@ void sendMap(void){
     mod_explo_sendTheMap();
 }
 
+
 void calibrateSystem(void){
     mod_basicIO_changeRobotState(WIP);
-    mod_com_writeMessage("NOT AVAILABLE", 3);
+    mod_explo_doDefinedPath();
+    //mod_com_writeMessage("NOT AVAILABLE", 3);
     
     //mod_explo_calibration();
 }

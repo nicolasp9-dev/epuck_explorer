@@ -26,7 +26,7 @@
 
 #define ACCELERATION_FACTOR         2
 #define DEFAULT_TRANSLATION_SPEED   40 //mm/s
-#define DEFAULT_ROTATION_SPEED      0.33 //rad/s
+#define DEFAULT_ROTATION_SPEED      0.4 //rad/s
 
 #define ARENA_WALL_DISTANCE                             66  // Between epuck and wall in the arena (in mm)
 #define CALIBRATION_REF_TIME                            4000
@@ -191,8 +191,10 @@ void storeFrontDistanceSensorValue(measurement_t* measurement);
  */
 void rotateAndMeasureWallsDistance(measurement_t* measurement, int number);
 
-
-
+/**
+ * @brief 360 deg scan to identify objects
+ */
+void scan360(void);
 
 /***************/
 
@@ -254,7 +256,7 @@ void moveAndComputePositionWheelSpeedType(const wheelSpeed_t* wheelSpeed, int de
     
     changeMotorsState(*wheelSpeed);
     systime_t time = chVTGetSystemTime();
-    chThdSleepUntilWindowed(time, time + MS2ST(deltaTime*1.0200));
+    chThdSleepUntilWindowed(time, time + MS2ST(deltaTime*1.0220));
     stopMotors();
     waitForMovementEnd();
 }
@@ -346,7 +348,7 @@ void rotateAndMeasureWallsDistance(measurement_t* measurement, int number){
     }
 }
 
-// FAIRE DEF DE CETTE FONCTION
+
 void scanInFront(void){
     measurement_t *measurement = malloc(NUMBER_OF_STEPS_FRONT*sizeof(measurement_t));
     changeAngleRelative(-M_PI/8);
@@ -370,20 +372,33 @@ void scanInFront(void){
 
 void scan360(void){
     measurement_t measurement;
-    
-    for(int i=0; i < NUMBER_OF_STEPS_SCAN360; i++){
+    float begginAngle = mod_mapping_getActualPosition().theta;
+    int numberOfScans= 0;
+    while(numberOfScans < NUMBER_OF_SCANS_MIN || (mod_mapping_getActualPosition().theta < begginAngle || mod_mapping_getActualPosition().theta > begginAngle + M_PI)){
         chThdSleepMilliseconds(150);
         storeFrontDistanceSensorValue(&measurement);
-        point_t newObject = mod_mapping_checkEnvironmentRobotReferencial(&measurement, history.exploration);
-        if(newObject.x == -1 && newObject.y == -1){
+        numberOfScans++;
+        if(mod_mapping_checkEnvironmentLimitsRobotReferencial(&measurement, history.discovering)){
             changeAngleRelative(ANGLE_ELEMENT_SCAN360);
             continue;
         }
-        int distance = mod_mapping_computeDistanceForPictureRobotReferencial(&measurement);
-        moveAndComputePositionDistanceType(&((robotDistance_t){distance, 0}));
+        changeAngleRelative(-SIZE_FRONT_SCAN/2);
+        measurement_t distance[NUMBER_OF_STEPS_FRONT];
+        for(int j=0; j < NUMBER_OF_STEPS_FRONT; j++){
+            chThdSleepMilliseconds(150);
+            storeFrontDistanceSensorValue(&distance[j]);
+            changeAngleRelative(ANGLE_ELEMENT_FRONT);
+        }
+        point_t newObject;
+        robotDistance_t toDo = mod_mapping_findObjectBestPosition(distance, &newObject, history.discovering);
+        if(newObject.x ==-1 && newObject.y ==-1){
+            changeAngleRelative(ANGLE_ELEMENT_SCAN360);
+            continue;
+        }
+        moveAndComputePositionDistanceType(&toDo);
         mod_image_sendPicture(newObject.x, newObject.y);
-        moveAndComputePositionDistanceType(&((robotDistance_t){-distance, 0}));
-        changeAngleRelative(ANGLE_ELEMENT_SCAN360);
+        moveAndComputePositionRobotSpeedType(&((robotSpeed_t){((-toDo.translation< 0) ? -1 : 1 )*DEFAULT_TRANSLATION_SPEED, 0}), 1000*fabs(-toDo.translation/DEFAULT_TRANSLATION_SPEED));
+        changeAngleRelative(ANGLE_ELEMENT_SCAN360-toDo.rotation);
     }
 }
 
@@ -396,6 +411,8 @@ static THD_WORKING_AREA(discover_wa, 1024);
 static THD_FUNCTION(discover, arg){
     (void) arg;
     
+    changeAngleRelative(ANGLE_ELEMENT);
+
     mod_mapping_resetCoordinates();
     
     measurement_t * measurement = malloc(NUMBER_OF_STEPS*sizeof(measurement_t));
@@ -404,8 +421,8 @@ static THD_FUNCTION(discover, arg){
     mod_mapping_computeWallLocation(measurement);
     free(measurement);
     measurement = NULL;
-    
-    goTo(&((point_t){80, 80}));
+    point_t toGo = mod_mapping_getAreaCenter();
+    goTo(&(toGo));
     
     signalEndOfWork();
 }
@@ -458,4 +475,17 @@ void mod_explo_sendTheMap(void){
 
 void mod_explo_waitUntilEndOfWork(void){
     chBSemWait(&wipEndSignal_sem);
+}
+
+void mod_explo_doDefinedPath(void){
+    /*goTo(&((point_t){50,50}));
+    chThdSleepMilliseconds(500);
+    goTo(&((point_t){50,200}));
+    chThdSleepMilliseconds(500);
+    goTo(&((point_t){150,120}));
+    chThdSleepMilliseconds(500);
+    goTo(&((point_t){250,200}));
+    chThdSleepMilliseconds(500);
+    goTo(&((point_t){250,50}));
+    chThdSleepMilliseconds(500);*/
 }

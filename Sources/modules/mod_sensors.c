@@ -121,9 +121,7 @@ void mod_sensors_getAllProximityValues(int* table){
 }
 
 void mod_sensors_calibrateIRSensors(void){
-    calibrate_ir();
-
-    /*static bool i=false;
+    static bool i=false;
     static int previousValue[2];
     
     proximity_msg_t prox_values;
@@ -131,15 +129,15 @@ void mod_sensors_calibrateIRSensors(void){
     
     if(i == false){
         calibrate_ir();
-        previousValue[0] = currentValue;
+        previousValue[0] = mod_sensors_getValueTOF();
         previousValue[1] = prox_values.delta[0];
     }
     else if(i==true){
-        proximity_multiplier = (currentValue - previousValue[0])/ (prox_values.delta[0] - previousValue[1]);
+        proximity_multiplier = (mod_sensors_getValueTOF() - previousValue[0])/ (prox_values.delta[0] - previousValue[1]);
         proximity_bias = previousValue[0]-previousValue[1]/proximity_multiplier;
 
     }
-    i = !i;*/
+    i = !i;
     
 }
 

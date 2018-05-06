@@ -35,9 +35,9 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="p0a-KK-yiE">
-                                <rect key="frame" x="51" y="492" width="274" height="40"/>
+                                <rect key="frame" x="65" y="492" width="246" height="40"/>
                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="23"/>
-                                <state key="normal" title="Tell me more about this world"/>
+                                <state key="normal" title="Save the map of the world"/>
                                 <connections>
                                     <action selector="sendMapClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="00Z-KZ-nCT"/>
                                 </connections>
@@ -65,9 +65,9 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EEX-Xn-AH4">
-                                <rect key="frame" x="26" y="632" width="324" height="40"/>
+                                <rect key="frame" x="93" y="632" width="190" height="40"/>
                                 <fontDescription key="fontDescription" type="system" weight="thin" pointSize="23"/>
-                                <state key="normal" title="Calibrate your sensors in the arena">
+                                <state key="normal" title="Draw me something">
                                     <color key="titleColor" red="1" green="0.0" blue="0.058155415096606156" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>

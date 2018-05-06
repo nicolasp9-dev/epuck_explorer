@@ -23,10 +23,10 @@
 #define CALIBRATION_REF_TIME                            4000
 #define ROTATION_ELMT_TIME                              50
 #define TOLERATE_ERROR                                  4 // Error in mm
-#define TOLERANCE_WALL                                  40
+#define TOLERANCE_WALL                                  50
 #define TOLERANCE_OBJECT                                60
 #define TOLERANCE_OBJECT_BIS                            20
-#define PICTURE_DISTANCE                                100
+#define PICTURE_DISTANCE                                120
 
 #define ROBOT_RADIUS    27
 #define TOF_RADIUS      33
@@ -51,6 +51,7 @@ actualEnvironement_t environment;
 point_t *objectList;
 int objectListSize=0;
 
+static int lastStepObjectDistance = 1000;
 
 
 /********************
@@ -158,7 +159,7 @@ robotPosition_t newAbsolutePositionWheelSpeedType(robotPosition_t* lastPosition,
     robotPosition_t newPosition;
     newPosition.x = lastPosition->x +   time*(wheelSpeed->right+wheelSpeed->left)*cos(lastPosition->theta+M_PI/2)/(2*1000);
     newPosition.y = lastPosition->y +   time*(wheelSpeed->right+wheelSpeed->left)*sin(lastPosition->theta+M_PI/2)/(2*1000);
-    newPosition.theta = lastPosition->theta +   (wheelSpeed->right-wheelSpeed->left)*time/(ROBOT_RADIUS*2*1010);
+    newPosition.theta = lastPosition->theta +   (wheelSpeed->right-wheelSpeed->left)*time/(ROBOT_RADIUS*2*1000); // A revoir (1020)
     
     
     checkAngle(&newPosition.theta);
@@ -170,9 +171,6 @@ point_t measurementToPoint(measurement_t * measurement){
     point_t point;
     point.x = -(measurement->value+TOF_RADIUS)*sin(measurement->position.theta)+measurement->position.x;
     point.y = (measurement->value+TOF_RADIUS)*cos(measurement->position.theta)+measurement->position.y;
-    char toSend[50];
-    sprintf(toSend, "New point computed : %d, %d", point.x, point.y);
-    mod_com_writeMessage(toSend, 3);
     return point;
 }
 
@@ -180,7 +178,7 @@ point_t measurementToPoint(measurement_t * measurement){
 void moveOrigin(point_t intersection, float thetaWall){
     robotActualPosition.x -= cos(thetaWall)*intersection.x - sin(thetaWall)*intersection.y;
     robotActualPosition.y -= sin(thetaWall)*intersection.x + cos(thetaWall)*intersection.y;
-    robotActualPosition.theta += thetaWall ;
+    robotActualPosition.theta += thetaWall;
     checkAngle(&robotActualPosition.theta);
     char toSend[50];
     sprintf(toSend, "New origin: %d, %d, %f", robotActualPosition.x, robotActualPosition.y, robotActualPosition.theta);
@@ -195,15 +193,16 @@ void computeCoefDirecteur(point_t * point, int nbPoints, float * tot){
         m =  (float) (point[i].y-point[i+2].y) / (float) (point[i].x-point[i+2].x);
         p = (float) point[i].y - m * point[i].x;
         
-        char toSend[50];
-        sprintf(toSend, "m: %d / %d nb %d", (point[i].y-point[i+2].y), (point[i].x-point[i+2].x), nbPoints);
-        mod_com_writeMessage(toSend, 3);
-        
+
         mtot += m;
         ptot += p;
     }
     tot[0] = mtot/i;
     tot[1] = ptot/i;
+    char toSend[50];
+    sprintf(toSend, "m: %f / %f", mtot, ptot);
+    mod_com_writeMessage(toSend, 3);
+    
 }
 
 int computeObjectDistance(point_t point1, point_t point2){
@@ -253,7 +252,7 @@ void mod_mapping_resetCoordinates(void){
 void mod_mapping_updatePositionWheelSpeedType(const wheelSpeed_t *wheelSpeed, int time){
     robotActualPosition = newAbsolutePositionWheelSpeedType(&robotActualPosition, wheelSpeed, time);
     char toSend[50];
-    sprintf(toSend, "New position: %d, %d, %f", robotActualPosition.x, robotActualPosition.y, robotActualPosition.theta);
+    sprintf(toSend, "New position:%d:%d:%f: ", robotActualPosition.x, robotActualPosition.y, robotActualPosition.theta);
     mod_com_writeMessage(toSend, 3);
 }
 
@@ -336,7 +335,7 @@ bool mod_mapping_computeWallLocation(measurement_t* measurement){
     table[currentTable].total=measureNumber;
     
 
-    if(currentTable <3) return false;
+    if(currentTable <7) return false;
     
     int j;
     float coefsWall[NUMBER_OF_WALLS][2];
@@ -383,9 +382,8 @@ bool mod_mapping_computeWallLocation(measurement_t* measurement){
     wall.y3 = robotActualPosition.y + sin(thetaWall)*intersection[2].x + cos(thetaWall)*intersection[2].y;
     
     char toSend[50];
-    sprintf(toSend, "Wall location: %d, %d, %d, %d", wall.x0, wall.y1, wall.x2, wall.y3);
+    sprintf(toSend, "Walls:%d:%d: ",  wall.x2,  wall.y3);
     mod_com_writeMessage(toSend, 3);
-
     
     return true;
     
@@ -513,25 +511,28 @@ point_t mod_mapping_getAreaCenter(void){
 
 
 point_t mod_mapping_checkEnvironmentRobotReferencial(measurement_t * measurement, bool considerWalls){
-    static int lastStepObjectDistance = 1000;
     point_t point = measurementToPoint(measurement);
+    
+    char toSend[50];
+    sprintf(toSend, "PointClosest:%d:%d: ", point.x, point.y);
+    mod_com_writeMessage(toSend, 3);
+    
     int distance = measurement->value + TOF_RADIUS;
     if(considerWalls){
-        if(point.x < wall.x0 + TOLERANCE_WALL || point.x > wall.x2 - TOLERANCE_WALL ||
-           point.y < wall.y1 + TOLERANCE_WALL || point.y > wall.y3 - TOLERANCE_WALL){
-            return (point_t){-1,-1};
-        }
         if(checkIfObjectExists(point)){
+            sprintf(toSend, "Already seen");
+            mod_com_writeMessage(toSend, 3);
             return (point_t){-1,-1};
         }
         else{
-            environment.newObjectsLocation[environment.numberOfnewObjects] = point;
-            environment.numberOfnewObjects++;
+            objectList = realloc(objectList, sizeof(point_t)*(objectListSize+1));
+            objectList[objectListSize] = point;
+            objectListSize++;
         }
     }
     else{
-        if(distance > 300 ||(distance < lastStepObjectDistance + TOLERANCE_OBJECT_BIS && distance > lastStepObjectDistance - TOLERANCE_OBJECT_BIS)){
-            lastStepObjectDistance = 1000;
+        if((distance < lastStepObjectDistance + TOLERANCE_OBJECT_BIS && distance > lastStepObjectDistance - TOLERANCE_OBJECT_BIS)){
+            lastStepObjectDistance = 1000; // WARNING TO CHECK 
             return (point_t){-1,-1};
         }
         lastStepObjectDistance = distance;
@@ -539,7 +540,56 @@ point_t mod_mapping_checkEnvironmentRobotReferencial(measurement_t * measurement
     return point;
 }
 
+bool mod_mapping_checkEnvironmentLimitsRobotReferencial(measurement_t * measurement, bool considerWalls){
+    point_t point = measurementToPoint(measurement);
+    
+    char toSend[50];
+    sprintf(toSend, "PointInEnvironment:%d:%d: ", point.x, point.y);
+    mod_com_writeMessage(toSend, 3);
+    
+    int distance = measurement->value + TOF_RADIUS;
+    
+    if(considerWalls){
+        if(point.x < wall.x0 + TOLERANCE_WALL || point.x > wall.x2 - TOLERANCE_WALL ||
+           point.y < wall.y1 + TOLERANCE_WALL || point.y > wall.y3 - TOLERANCE_WALL){
+            lastStepObjectDistance = 1000;
+            return true;
+        }
+        else{
+            sprintf(toSend, "Not a wall");
+            mod_com_writeMessage(toSend, 3);
+            return false;
+        }
+    }
+    else{
+        if(distance > 300){
+            return true;
+            lastStepObjectDistance = 1000;
+        }
+        return false;
+    }
+    
+}
+
 int mod_mapping_computeDistanceForPictureRobotReferencial(measurement_t * measurement){
     return measurement->value - PICTURE_DISTANCE;
     
+}
+
+// returns the relative angle to do and the distance to take
+robotDistance_t mod_mapping_findObjectBestPosition(measurement_t* measurement, point_t* newPoint, bool considerWalls){
+    measurement_t* currentMeasurement = &measurement[0];
+    measurement_t* bestMeasurement = &measurement[0];
+    float angleToDo = -SIZE_FRONT_SCAN;
+    int distanceMin = currentMeasurement->value;
+    for(int i =0; i < NUMBER_OF_STEPS_FRONT; i++ ){
+        if(currentMeasurement->value < distanceMin){
+            distanceMin = currentMeasurement->value;
+            bestMeasurement = currentMeasurement;
+            angleToDo = i* ANGLE_ELEMENT_FRONT-SIZE_FRONT_SCAN;
+        }
+        currentMeasurement++;
+    }
+    *newPoint = mod_mapping_checkEnvironmentRobotReferencial(bestMeasurement, considerWalls);
+    return (robotDistance_t) {mod_mapping_computeDistanceForPictureRobotReferencial(bestMeasurement), angleToDo};
 }

@@ -136,7 +136,8 @@ build/obj/mod_image.o: modules/mod_image.c modules/headers/mod_errors.h \
  /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/sched.h \
  /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/machine/types.h \
  /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/stdio.h \
- modules/headers/mod_check.h
+ modules/headers/mod_check.h modules/headers/mod_basicIO.h \
+ modules/headers/mod_audio.h
 
 modules/headers/mod_errors.h:
 
@@ -415,3 +416,7 @@ modules/headers/mod_communication.h:
 /Applications/Eclipse_e-puck2.app/Contents/Eclipse_e-puck2/Tools/gcc-arm-none-eabi-7-2017-q4-major/arm-none-eabi/include/sys/stdio.h:
 
 modules/headers/mod_check.h:
+
+modules/headers/mod_basicIO.h:
+
+modules/headers/mod_audio.h:

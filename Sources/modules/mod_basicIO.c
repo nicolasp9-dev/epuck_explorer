@@ -33,6 +33,10 @@ void mod_basicIO_changeRobotState(state_t state){
             set_body_led(ON);
             set_front_led(OFF);
             break;
+        case ALL_OFF:
+            set_body_led(OFF);
+            set_front_led(OFF);
+            break;
     }
 }
 
